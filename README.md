@@ -11,10 +11,23 @@
 </p>
 
 <p align="center">
+  <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox"><img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="60"></a>
+  &nbsp;
+  <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
+</p>
+
+## Screenshots
+
+<p align="center">
   <img src="store/screenshots/01-boxes-inside-boxes.png" width="200" alt="Boxes inside boxes">
   <img src="store/screenshots/02-step-inside.png" width="200" alt="Step inside a box">
   <img src="store/screenshots/03-room-holds-itself.png" width="200" alt="A room that holds itself">
-  <img src="store/screenshots/04-ice-and-gates.png" width="200" alt="Ice and gates">
+  <img src="store/screenshots/04-ice-and-gates.png" width="200" alt="Ice that slides, gates that open">
+</p>
+<p align="center">
+  <img src="store/screenshots/05-hints.png" width="200" alt="Hints">
+  <img src="store/screenshots/06-350-levels-18-worlds.png" width="200" alt="350 levels in 18 worlds">
+  <img src="store/screenshots/07-english-arabic.png" width="200" alt="English and Arabic">
 </p>
 
 ## The game
