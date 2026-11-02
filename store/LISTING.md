@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.0 (version code 1)
+1.0.1 (version code 2)
 
 ## Category
 Games › Puzzle
@@ -49,8 +49,8 @@ Solve levels to earn points. Spend them on a hint that shows your next moves —
 • No ads, no accounts, no data collected
 • English and Arabic (full right-to-left layout)
 
-## What's new (1.0)
-First release: 350 levels in 18 worlds, hints and skips, English and Arabic.
+## What's new (1.0.1)
+New app icon. 1.0: first release — 350 levels in 18 worlds, hints and skips, English and Arabic.
 
 ## Tags / keywords
 puzzle, logic, sokoban-style, box pushing, recursive, brain teaser, offline, minimalist, casual, no ads
@@ -73,6 +73,6 @@ The game collects no personal data. Progress, points and language are saved only
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-350-levels-18-worlds.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox.apk` | — | The app to upload |
+| `../CubesParadox-1.0.1.apk` | — | The app to upload |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.
