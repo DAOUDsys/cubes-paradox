@@ -1,0 +1,23 @@
+{
+  "name": "matryo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cubes Paradox — a puzzle game about boxes that hold rooms",
+  "scripts": {
+    "solve": "node tools/solve.js",
+    "gen": "node tools/gen.js 300",
+    "curate": "node tools/curate.js",
+    "serve": "npx --yes http-server www -p 8080 -c-1",
+    "sync": "npx cap sync android",
+    "open": "npx cap open android",
+    "apk": "npx cap sync android && cd android && .\\gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.0"
+  }
+}

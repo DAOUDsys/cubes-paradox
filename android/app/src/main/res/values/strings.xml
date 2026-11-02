@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cubes Paradox</string>
+    <string name="title_activity_main">Cubes Paradox</string>
+    <string name="package_name">com.daoud.matryo</string>
+    <string name="custom_url_scheme">com.daoud.matryo</string>
+</resources>

@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#12141C">
+<title>Cubes Paradox</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- MAIN -->
+<section id="main" class="screen">
+  <div class="main-top">
+    <span id="main-progress" class="muted"></span>
+    <div class="top-end">
+      <span class="coins"><span class="coin" aria-hidden="true"></span><b class="coin-count">0</b></span>
+      <button id="lang" class="pill"></button>
+    </div>
+  </div>
+  <div class="main-hero">
+    <div class="logo" aria-hidden="true">
+      <div class="l1"><div class="l2"><div class="l3"><div class="l4"><span></span><span></span></div></div></div></div>
+    </div>
+    <h1 class="brand" data-t="brand"></h1>
+    <p class="muted tagline" data-t="tagline"></p>
+  </div>
+  <div class="main-actions">
+    <button id="main-play" class="btn-primary"><span id="main-play-label"></span><span id="main-play-level" class="small"></span></button>
+    <button id="main-levels" class="btn-secondary" data-t="levels"></button>
+  </div>
+</section>
+
+<!-- LEVELS -->
+<section id="levels" class="screen">
+  <header class="row">
+    <button id="levels-back" class="icon-btn" data-t-label="back">
+      <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <h1 class="h1" data-t="levels"></h1>
+    <span class="coins push-end"><span class="coin" aria-hidden="true"></span><b class="coin-count">0</b></span>
+  </header>
+  <div id="level-list" class="level-list"></div>
+</section>
+
+<!-- PLAY -->
+<section id="play" class="screen">
+  <header class="topbar">
+    <button id="play-back" class="icon-btn" data-t-label="backLevels">
+      <svg class="chev" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="title"><span id="play-sub" class="muted"></span><span id="play-name">—</span></div>
+    <div class="moves" aria-live="polite"><b id="moves">0</b><span data-t="moves"></span></div>
+  </header>
+  <div class="chips">
+    <div class="chip here" data-t-label="where"><span id="here-dot" class="dot"></span><span id="here-name" class="here-name"></span><span id="depth" class="depth" hidden></span></div>
+    <div class="chip goals">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9AA1B9" stroke-width="2" stroke-dasharray="3 3" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>
+      <span><b id="goals">0 / 0</b></span>
+    </div>
+    <div class="chip"><span class="coin" aria-hidden="true"></span><b class="coin-count">0</b></div>
+  </div>
+  <div id="board-wrap" class="board-wrap"><canvas id="board" role="img" data-t-label="board"></canvas></div>
+  <div class="info">
+    <div id="legend" class="legend"></div>
+    <div id="inside" class="inside" hidden>
+      <div class="mm-card"><span class="muted" data-t="outside"></span><canvas id="mini" aria-hidden="true"></canvas></div>
+      <div class="inside-text"><b id="inside-title"></b><p id="inside-msg"></p></div>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <p id="hint" class="hint" aria-live="polite"></p>
+  <div class="controls">
+    <button id="undo" class="ctrl">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14l-5-5 5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+      <span data-t="undo"></span>
+    </button>
+    <button id="restart" class="ctrl">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+      <span data-t="restart"></span>
+    </button>
+    <button id="hint-btn" class="ctrl">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg>
+      <span><span data-t="hint"></span> <small id="hint-cost" class="cost"></small></span>
+    </button>
+    <button id="skip-btn" class="ctrl">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="flip" d="M5 5l8 7-8 7z"/><path class="flip" d="M18 5v14"/></svg>
+      <span><span data-t="skip"></span> <small id="skip-cost" class="cost"></small></span>
+    </button>
+  </div>
+</section>
+
+<!-- WIN -->
+<section id="win" class="screen">
+  <div></div>
+  <div class="win-hero">
+    <div class="win-badge" aria-hidden="true"><div>
+      <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>
+    </div></div>
+    <h1 class="brand" data-t="solved"></h1>
+    <p id="win-sub" class="muted tagline"></p>
+    <p id="win-earned" class="earned"></p>
+    <div class="stats">
+      <div><b id="win-moves">0</b><span data-t="moves"></span></div>
+      <div><b id="win-undos">0</b><span data-t="undos"></span></div>
+      <div><b id="win-depth">0</b><span data-t="deepest"></span></div>
+    </div>
+  </div>
+  <div class="main-actions">
+    <button id="win-next" class="btn-primary center"></button>
+    <div class="row2">
+      <button id="win-again" class="btn-secondary" data-t="replay"></button>
+      <button id="win-levels" class="btn-secondary" data-t="levels"></button>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIRM -->
+<div id="modal" class="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="modal-text">
+    <p id="modal-text"></p>
+    <div class="row2">
+      <button id="modal-no" class="btn-secondary" data-t="cancel"></button>
+      <button id="modal-yes" class="btn-primary center"></button>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
