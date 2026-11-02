@@ -5,3 +5,6 @@ android/.gradle/
 *.apk
 android/local.properties
 .claude/
+keys/
+android/keystore.properties
+*.jks
