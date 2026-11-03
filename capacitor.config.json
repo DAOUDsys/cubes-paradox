@@ -2,8 +2,8 @@
   "appId": "com.daoud.matryo",
   "appName": "Cubes Paradox",
   "webDir": "www",
-  "backgroundColor": "#12141C",
+  "backgroundColor": "#1C1F12",
   "android": {
-    "backgroundColor": "#12141C"
+    "backgroundColor": "#1C1F12"
   }
 }

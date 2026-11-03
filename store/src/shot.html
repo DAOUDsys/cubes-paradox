@@ -31,13 +31,13 @@
 <script src="../../www/js/levels.js"></script>
 <script>
   const SHOTS = {
-    1: { title: 'Boxes <em style="color:#F5B83D">inside</em> boxes', sub: 'Every colored box is a whole room you can walk into.', a: '#3A5BB8', b: '#F5B83D', world: 3, n: 6, moves: 0 },
-    2: { title: 'Step <em style="color:#3CC9B0">inside</em>', sub: 'Push a box, or walk right into it. Then walk back out.', a: '#4F8A5B', b: '#3CC9B0', world: 1, n: 9, untilInside: true },
-    3: { title: 'A room that <em style="color:#9B8CFF">holds itself</em>', sub: 'Walk out of the room… and you walk back into it.', a: '#9B8CFF', b: '#FF7A59', world: 4, n: 7, moves: 0 },
-    4: { title: 'Ice that <em style="color:#7FB6CC">slides</em>, gates that <em style="color:#E8C547">open</em>', sub: 'Plus one-way arrows — mixed with rooms in rooms.', a: '#A9C4D6', b: '#E8C547', world: 11, n: 8, moves: 0 },
-    5: { title: 'Stuck? <em style="color:#FF7A59">Get a hint</em>', sub: 'Earn points as you solve. Spend them on hints or skips.', a: '#9A5050', b: '#F5B83D', world: 6, n: 10, moves: 6, hint: true },
-    6: { title: '<em style="color:#3CC9B0">350</em> levels · <em style="color:#F5B83D">18</em> worlds', sub: 'Each world has its own idea and its own colors.', a: '#8B6A4E', b: '#3CC9B0', levels: true },
-    7: { title: 'Play in English <em style="color:#F5B83D">or Arabic</em>', sub: 'Full right-to-left Arabic, switch any time.', a: '#557A9E', b: '#FF7A59', world: 8, n: 5, moves: 4, lang: 'ar' }
+    1: { title: 'Rooms <em style="color:#F5B83D">inside</em> rooms', sub: 'Every colored box is a whole room — some go three deep.', a: '#88994E', b: '#F5B83D', world: 7, n: 6, moves: 0 },
+    2: { title: 'Step <em style="color:#4FB9A0">inside</em>', sub: 'Push a box, or walk right into it. Then find the way out.', a: '#88994E', b: '#4FB9A0', world: 1, n: 8, untilInside: true },
+    3: { title: 'A room that <em style="color:#9B8CFF">holds itself</em>', sub: 'Walk out of the room… and you walk back into it.', a: '#9B8CFF', b: '#FF7A59', world: 8, n: 5, moves: 0 },
+    4: { title: 'Holes, cracks <em style="color:#F0C24B">&amp; colors</em>', sub: 'New rules in every world, always about rooms in rooms.', a: '#5A6630', b: '#F0C24B', world: 9, n: 6, moves: 0 },
+    5: { title: 'Stuck? <em style="color:#FF7A59">Get a hint</em>', sub: 'First the idea in one sentence, then the moves.', a: '#88994E', b: '#F5B83D', world: 5, n: 5, moves: 4, hint: true },
+    6: { title: '<em style="color:#4FB9A0">14</em> worlds · a <em style="color:#F0C24B">daily</em> puzzle', sub: 'Stars, achievements, and a new hard puzzle every day.', a: '#88994E', b: '#4FB9A0', levels: true },
+    7: { title: 'Play in English <em style="color:#F5B83D">or Arabic</em>', sub: 'Full right-to-left Arabic, switch any time.', a: '#5A6630', b: '#FF7A59', world: 11, n: 4, moves: 2, lang: 'ar' }
   };
   const S = SHOTS[new URLSearchParams(location.search).get('shot') || '1'];
   document.getElementById('title').innerHTML = S.title;

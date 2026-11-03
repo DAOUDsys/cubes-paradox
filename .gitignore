@@ -8,3 +8,4 @@ android/local.properties
 keys/
 android/keystore.properties
 *.jks
+*.aab

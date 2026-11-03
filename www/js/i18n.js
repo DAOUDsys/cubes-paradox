@@ -32,6 +32,22 @@
       noPoints: 'Not enough points — solve levels to earn more',
       skipAsk: 'Skip this level for {c} points?', skipYes: 'Skip it', cancel: 'Cancel',
       lang: 'العربية',
+      settings: 'Settings', sound: 'Sound effects', language: 'Language', on: 'On', off: 'Off',
+      music: 'Music', vibration: 'Vibration', achievements: 'Achievements', achUnlocked: 'Achievement unlocked',
+      daily: 'Daily puzzle', dailyDone: 'Solved today — come back tomorrow', dailyReward: 'A hard one · +{n} points', streak: '{n}-day streak',
+      dailyTip: 'Today’s puzzle: hard, but always solvable', home: 'Home',
+      starsOf: '{n} of 3 stars', par: 'Best possible: {n} moves', perfect: 'Perfect — shortest possible!',
+      hintChoose: 'How much help?', hintIdea: 'The idea', hintIdeaSub: 'One sentence about the key to this level',
+      hintMoves: 'The moves', hintMovesSub: 'Your next 8 moves, shown on the board', ideaNone: 'Look for the one thing that has to happen first',
+      legendHole: 'Hole: a box fills it', legendCrack: 'Cracked: breaks after you leave', legendTealBox: 'Teal box: into a teal room', legendVioletBox: 'Purple box: into a purple room',
+      ach: {
+        first: ['First steps', 'Solve your first level'], world1: ['Warmed up', 'Finish the first world'],
+        half: ['Halfway there', 'Solve half of all levels'], all: ['Cubes master', 'Solve every level'],
+        deep3: ['Three deep', 'Walk three rooms down'], clean10: ['Clean hands', 'Solve 10 levels without undo'],
+        stars30: ['Star collector', 'Collect 30 stars'], perfect10: ['Perfectionist', 'Get 3 stars on 10 levels'],
+        challenger: ['Challenger', 'Solve 5 challenge levels'], noHintWorld: ['On your own', 'Finish a world without hints'],
+        daily1: ['Daily visitor', 'Solve a daily puzzle'], streak7: ['Week streak', 'Solve the daily puzzle 7 days in a row']
+      },
       rooms: { navy: 'Main room', teal: 'Green box', violet: 'Purple box', pink: 'Pink box', violetRoot: 'Purple room' }
     },
     ar: {
@@ -63,30 +79,42 @@
       noPoints: 'نقاطك مش كافية — حلّ مراحل عشان تجمع أكتر',
       skipAsk: 'بدك تتخطّى هالمرحلة مقابل {c} نقطة؟', skipYes: 'تخطّاها', cancel: 'لا',
       lang: 'English',
+      settings: 'الإعدادات', sound: 'المؤثرات الصوتية', language: 'اللغة', on: 'شغّالة', off: 'مطفية',
+      music: 'الموسيقى', vibration: 'الاهتزاز', achievements: 'الإنجازات', achUnlocked: 'إنجاز جديد',
+      daily: 'لغز اليوم', dailyDone: 'حلّيته اليوم — ارجع بكرا', dailyReward: 'لغز صعب · +{n} نقطة', streak: '{n} يوم ورا بعض',
+      dailyTip: 'لغز اليوم: صعب، بس دايماً إله حل', home: 'الرئيسية',
+      starsOf: '{n} من ٣ نجوم', par: 'أقل عدد ممكن: {n} حركة', perfect: 'ممتاز — أقصر حل ممكن!',
+      hintChoose: 'قدّيش بدك مساعدة؟', hintIdea: 'الفكرة', hintIdeaSub: 'جملة وحدة عن مفتاح المرحلة',
+      hintMoves: 'الحركات', hintMovesSub: 'حركاتك الـ٨ الجاية عاللوحة', ideaNone: 'دوّر عالإشي اللي لازم يصير أول',
+      legendHole: 'حفرة: الصندوق بيعبّيها', legendCrack: 'أرض مشقّقة: بتنكسر بعد ما تطلع عنها', legendTealBox: 'صندوق أخضر: لجوّا غرفة خضرا', legendVioletBox: 'صندوق بنفسجي: لجوّا غرفة بنفسجية',
+      ach: {
+        first: ['أول خطوة', 'حلّ أول مرحلة'], world1: ['سخّنت', 'خلّص العالم الأول'],
+        half: ['نص الطريق', 'حلّ نص المراحل'], all: ['معلّم المكعبات', 'حلّ كل المراحل'],
+        deep3: ['تلات طبقات', 'فوت تلات غرف لجوّا'], clean10: ['إيد نضيفة', 'حلّ ١٠ مراحل بدون تراجع'],
+        stars30: ['جامع النجوم', 'اجمع ٣٠ نجمة'], perfect10: ['ولا غلطة', '٣ نجوم بـ١٠ مراحل'],
+        challenger: ['قدّ التحدي', 'حلّ ٥ مراحل تحدّي'], noHintWorld: ['لحالك', 'خلّص عالم بدون تلميح'],
+        daily1: ['زائر يومي', 'حلّ لغز يوم'], streak7: ['أسبوع كامل', 'حلّ لغز اليوم ٧ أيام ورا بعض']
+      },
       rooms: { navy: 'الغرفة الرئيسية', teal: 'الصندوق الأخضر', violet: 'الصندوق البنفسجي', pink: 'الصندوق الزهري', violetRoot: 'الغرفة البنفسجية' }
     }
   };
 
-  // Eighteen worlds: each has one idea and its own main-room colors (palette keys in render.js).
+  // Fourteen worlds: each built around one idea, with its own colour on the map (palette keys in render.js).
   const WORLDS = [
-    { palette: 'workshop', en: ['Workshop', 'Push boxes onto their spots — it gets tricky fast.'], ar: ['الورشة', 'ادفع الصناديق لأماكنها — وبسرعة بتصير صعبة.'] },
-    { palette: 'greenhouse', en: ['Greenhouse', 'Colored boxes are rooms. Walk in, walk through.'], ar: ['البيت الزجاجي', 'الصناديق الملوّنة غرف. فوت فيها وقطّع منها.'] },
-    { palette: 'warehouse', en: ['Warehouse', 'Push boxes into rooms — and back out again.'], ar: ['المستودع', 'دفّش الصناديق جوّا الغرف — وطلّعها كمان.'] },
-    { palette: 'well', en: ['The Well', 'A room in a room in a room. Order matters.'], ar: ['البير', 'غرفة جوّا غرفة جوّا غرفة. الترتيب مهم.'] },
-    { palette: 'violet', en: ['Mirror Hall', 'A room that holds itself.'], ar: ['قاعة المرايا', 'غرفة جوّاها حالها.'] },
-    { palette: 'ice', en: ['Ice Cave', 'On ice, everything slides until it hits something.'], ar: ['مغارة الجليد', 'عالجليد كل إشي بيزحط لحد ما يخبط.'] },
-    { palette: 'power', en: ['Power Station', 'Hold every plate down and the gates open.'], ar: ['محطة الكهربا', 'اضغط كل الأزرار والبوابات بتفتح.'] },
-    { palette: 'factory', en: ['Factory', 'Arrow tiles only let you cross one way.'], ar: ['المصنع', 'الأسهم بتخليك تقطع باتجاه واحد بس.'] },
-    { palette: 'lake', en: ['Frozen Lake', 'Ice inside the rooms, rooms on the ice.'], ar: ['البحيرة المتجمدة', 'جليد جوّا الغرف، وغرف عالجليد.'] },
-    { palette: 'control', en: ['Control Room', 'The plate is inside a box — the gate is outside.'], ar: ['غرفة التحكم', 'الزر جوّا صندوق — والبوابة برّا.'] },
-    { palette: 'conveyor', en: ['Conveyor', 'One-way paths in and out of rooms.'], ar: ['السير', 'طرق باتجاه واحد لجوّا الغرف ولبرّا.'] },
-    { palette: 'glacier', en: ['Glacier', 'Sliding boxes that have to stop on plates.'], ar: ['النهر الجليدي', 'صناديق بتزحط ولازم توقف عالأزرار.'] },
-    { palette: 'maze', en: ['Hedge Maze', 'Arrows and ice: every step is a commitment.'], ar: ['المتاهة', 'أسهم وجليد: كل خطوة إلها حساب.'] },
-    { palette: 'echo', en: ['Echo Chamber', 'A room inside itself, now with ice, gates and arrows.'], ar: ['غرفة الصدى', 'غرفة جوّا حالها، وكمان فيها جليد وبوابات وأسهم.'] },
-    { palette: 'freeze', en: ['Deep Freeze', 'Rooms in rooms, with a new rule in each.'], ar: ['التجميد العميق', 'غرف جوّا غرف، وبكل وحدة قاعدة جديدة.'] },
-    { palette: 'observatory', en: ['Observatory', 'Rooms, ice, gates and arrows together.'], ar: ['المرصد', 'غرف وجليد وبوابات وأسهم مع بعض.'] },
-    { palette: 'labyrinth', en: ['Labyrinth', 'Bigger rooms, longer plans.'], ar: ['القصر', 'غرف أكبر، وخطط أطول.'] },
-    { palette: 'paradox', en: ['The Paradox', 'Everything at once. Hard — never impossible.'], ar: ['المفارقة', 'كل إشي مع بعض. صعبة — بس مش مستحيلة.'] }
+    { palette: 'workshop', en: ["Workshop", "Push the boxes onto their spots."], ar: ["الورشة", "ادفع الصناديق لأماكنها."] },
+    { palette: 'greenhouse', en: ["Doorways", "A colored box is a door: push it, or walk right in."], ar: ["الأبواب", "الصندوق الملوّن باب: يا بتدفشه، يا بتفوت فيه."] },
+    { palette: 'warehouse', en: ["Storage", "Park a box inside a room, then take it back out."], ar: ["المخزن", "خبّي صندوق جوّا غرفة، وبعدين رجّعه."] },
+    { palette: 'conveyor', en: ["Moving Day", "Pack boxes into a room, then move the whole room."], ar: ["النقلة", "عبّي الصناديق جوّا غرفة، وانقل الغرفة كلها."] },
+    { palette: 'control', en: ["Unpacking", "Get boxes out of rooms. Walking out pushes what is outside."], ar: ["التفضية", "طلّع الصناديق من الغرف. طلعتك بتدفش اللي برّا."] },
+    { palette: 'well', en: ["Rooms in Rooms", "Put a room inside a room, two levels deep."], ar: ["غرفة جوّا غرفة", "حط غرفة جوّا غرفة، مستويين لتحت."] },
+    { palette: 'observatory', en: ["The Goal Room", "The room itself must reach the goal, and you must get inside it."], ar: ["الغرفة الهدف", "الغرفة نفسها لازم توصل للهدف، وإنت لازم تفوت جوّاها."] },
+    { palette: 'freeze', en: ["Deep Dive", "Three rooms down, and back up again."], ar: ["الغوص العميق", "تلات غرف لتحت، وارجع لفوق."] },
+    { palette: 'echo', en: ["Mirror Hall", "A room that holds itself."], ar: ["قاعة المرايا", "غرفة جوّاها حالها."] },
+    { palette: 'factory', en: ["Holes", "Fill a hole with a box to walk across."], ar: ["الحفر", "عبّي الحفرة بصندوق عشان تقطع."] },
+    { palette: 'glacier', en: ["Cracked Floor", "Cracked floor breaks once you step off. Plan one clean path."], ar: ["الأرض المشقّقة", "الأرض المشقّقة بتنكسر بعد ما تطلع عنها. خطط طريق واحد."] },
+    { palette: 'maze', en: ["Colors", "Each colored box belongs inside the room of its color."], ar: ["الألوان", "كل صندوق ملوّن مكانه جوّا الغرفة اللي بلونه."] },
+    { palette: 'power', en: ["Control Room", "A plate inside one room opens a gate in another."], ar: ["غرفة التحكم", "زر جوّا غرفة بيفتح بوابة بغرفة تانية."] },
+    { palette: 'paradox', en: ["One-Way Doors", "Arrows on room doors: in one way, out another."], ar: ["أبواب باتجاه واحد", "أسهم على أبواب الغرف: بتفوت من باب وبتطلع من غيره."] }
   ];
 
   const DIGITS_AR = '٠١٢٣٤٥٦٧٨٩';

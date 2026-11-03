@@ -7,7 +7,7 @@
 <p align="center">
   A puzzle game about boxes that hold whole rooms.<br>
   Push boxes, walk inside them, and find your way back out.<br>
-  <b>350 levels · 18 worlds · English &amp; Arabic · fully offline</b>
+  <b>200+ levels · 14 worlds · a daily puzzle · English &amp; Arabic · fully offline</b>
 </p>
 
 <p align="center">
@@ -16,17 +16,21 @@
   <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
 </p>
 
+<p align="center">
+  <img src="store/demo.gif" width="320" alt="Pushing the green box into the purple box, then walking inside it">
+</p>
+
 ## Screenshots
 
 <p align="center">
-  <img src="store/screenshots/01-boxes-inside-boxes.png" width="200" alt="Boxes inside boxes">
+  <img src="store/screenshots/01-rooms-inside-rooms.png" width="200" alt="Rooms inside rooms">
   <img src="store/screenshots/02-step-inside.png" width="200" alt="Step inside a box">
   <img src="store/screenshots/03-room-holds-itself.png" width="200" alt="A room that holds itself">
-  <img src="store/screenshots/04-ice-and-gates.png" width="200" alt="Ice that slides, gates that open">
+  <img src="store/screenshots/04-holes-cracks-colors.png" width="200" alt="Holes, cracks and colors">
 </p>
 <p align="center">
-  <img src="store/screenshots/05-hints.png" width="200" alt="Hints">
-  <img src="store/screenshots/06-350-levels-18-worlds.png" width="200" alt="350 levels in 18 worlds">
+  <img src="store/screenshots/05-hints.png" width="200" alt="Two-step hints">
+  <img src="store/screenshots/06-14-worlds-daily.png" width="200" alt="14 worlds and a daily puzzle">
   <img src="store/screenshots/07-english-arabic.png" width="200" alt="English and Arabic">
 </p>
 
@@ -34,27 +38,34 @@
 
 Every colored box is a complete room. Push it like any box — or, when it can't move, walk right into it. Inside, the room is just as real: push boxes around, walk out through a gap in the wall, and you're back where you were. Boxes can go into rooms, rooms can go into rooms, and a few rooms even contain themselves.
 
-The 18 worlds each focus on one idea, then start combining them:
+Every world after the first is built around rooms inside rooms, often two or three levels deep, and each one has its own idea:
 
-| # | World | Idea |
-|---|---|---|
-| 1 | Workshop | Push boxes onto their spots |
-| 2 | Greenhouse | Walk into boxes and through them |
-| 3 | Warehouse | Push boxes into rooms and back out |
-| 4 | The Well | Rooms inside rooms |
-| 5 | Mirror Hall | A room that holds itself |
-| 6 | Ice Cave | Ice: things slide until they hit something |
-| 7 | Power Station | Plates and gates: hold every plate to open the gates |
-| 8 | Factory | One-way arrow tiles |
-| 9–18 | Frozen Lake → The Paradox | The ideas above, mixed together and harder |
+| # | World | Idea | Difficulty |
+|---|---|---|---|
+| 1 | Workshop | Push boxes onto their spots | Easy |
+| 2 | Doorways | A colored box is a door: push it, or walk right in | Easy |
+| 3 | Storage | Park a box inside a room, then take it back out | Medium |
+| 4 | Moving Day | Pack boxes into a room, then move the whole room | Medium |
+| 5 | Unpacking | Get boxes out of rooms; walking out pushes what is outside | Medium |
+| 6 | Rooms in Rooms | A room inside a room, two levels deep | Medium |
+| 7 | The Goal Room | The room itself must reach the goal, with you inside | Hard |
+| 8 | Deep Dive | Three rooms down and back up | Hard |
+| 9 | Mirror Hall | A room that holds itself | Hard |
+| 10 | Holes | Fill a hole with a box to walk across | Hard |
+| 11 | Cracked Floor | Floor breaks after you step off: one clean path | Hard |
+| 12 | Colors | Each colored box belongs in the room of its color | Hard |
+| 13 | Control Room | A plate inside one room opens a gate in another | Hard |
+| 14 | One-Way Doors | Arrows on room doors: in one way, out another | Hard |
 
-The last three levels of each world are optional challenges. Solving levels earns points; points buy hints (your next 8 moves) or skips.
+The last three levels of each world are optional challenges, and they are always hard. A new hard **daily puzzle** waits every day.
 
 ## Features
 
-- 350 levels, each checked by a solver — every one can be solved
-- Hints that work from wherever you are, not just from the start
-- Unlimited undo and instant restart
+- Every level checked by a solver: every one can be solved, every box in it is needed, and the harder ones have no square to spare
+- Stars for solving in the fewest moves, 12 achievements, and a daily puzzle with a streak
+- Two-step hints: first the idea in one sentence, then your next moves — from wherever you are
+- Unlimited undo (or double-tap the board) and instant restart; come back to a level right where you left it
+- Sound effects and calm music made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
 - English and Arabic with full right-to-left layout
 - No ads, no accounts, no data collected — progress stays on the device

@@ -3,14 +3,16 @@
 const path = require('path');
 const Engine = require(path.join(__dirname, '../www/js/engine.js'));
 const LEVELS = require(path.join(__dirname, '../www/js/levels.js'));
+const DAILY = require(path.join(__dirname, '../www/js/daily.js'));
 const { verify } = require('./analyze.js');
+const ALL = LEVELS.concat(DAILY);
 
 const NAMES = ['U', 'R', 'D', 'L'];
 let failed = 0;
 const t0 = Date.now();
 
-for (const def of LEVELS) {
-  const label = `Level ${String(def.id).padStart(3)} (world ${def.w + 1}, #${def.n + 1})`;
+for (const def of ALL) {
+  const label = def.w === undefined ? `Daily ${def.id}` : `Level ${String(def.id).padStart(3)} (world ${def.w + 1}, #${def.n + 1})`;
   const { level, state } = Engine.parseLevel(def);
   const seen = new Map([[Engine.key(state), null]]);
   const queue = [state];
@@ -41,5 +43,5 @@ for (const def of LEVELS) {
   if (def.sol && !verify(def)) failed++;
   console.log(`${label}: ${moves.length} moves, ${seen.size} states, ${stored}`);
 }
-console.log(`\n${LEVELS.length - failed}/${LEVELS.length} levels OK in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+console.log(`\n${ALL.length - failed}/${ALL.length} levels OK (${LEVELS.length} world levels + ${DAILY.length} daily) in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
 process.exit(failed ? 1 : 0);

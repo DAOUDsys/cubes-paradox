@@ -2,11 +2,13 @@
 (function () {
   'use strict';
 
+  // Look D (chosen by Daoud): solid olive rooms, no tile gaps, one soft sheen per room.
   const PAL = {
-    navy:   { frame: '#1C2030', bg: '#161925', wall: '#3E4668', floor: '#1E2233', floorAlt: '#23283B', door: 'rgba(154,161,185,0.45)', shadow: '#151826' },
-    teal:   { frame: '#3CC9B0', bg: '#0E2A26', wall: '#3CC9B0', floor: '#143B36', floorAlt: '#17433D', door: 'rgba(127,224,206,0.55)', shadow: '#23917E' },
-    violet: { frame: '#9B8CFF', bg: '#1C1838', wall: '#9B8CFF', floor: '#28224A', floorAlt: '#2D2753', door: 'rgba(196,188,255,0.55)', shadow: '#6F62C9' },
-    pink:   { frame: '#F78FB3', bg: '#2E1621', wall: '#F78FB3', floor: '#3A1D2B', floorAlt: '#422131', door: 'rgba(250,190,212,0.55)', shadow: '#C2668A' },
+    olive:  { frame: '#88994E', bg: '#30361F', wall: '#88994E', floor: '#30361F', floorAlt: '#30361F', door: 'rgba(236,240,220,0.4)', shadow: '#4E5A26' },
+    navy:   { frame: '#88994E', bg: '#30361F', wall: '#88994E', floor: '#30361F', floorAlt: '#30361F', door: 'rgba(236,240,220,0.4)', shadow: '#4E5A26' },
+    teal:   { frame: '#4FB9A0', bg: '#173D35', wall: '#4FB9A0', floor: '#173D35', floorAlt: '#173D35', door: 'rgba(127,224,206,0.55)', shadow: '#2E7E6B' },
+    violet: { frame: '#9B8CFF', bg: '#28224A', wall: '#9B8CFF', floor: '#28224A', floorAlt: '#28224A', door: 'rgba(196,188,255,0.55)', shadow: '#6F62C9' },
+    pink:   { frame: '#F78FB3', bg: '#3A1D2B', wall: '#F78FB3', floor: '#3A1D2B', floorAlt: '#3A1D2B', door: 'rgba(250,190,212,0.55)', shadow: '#C2668A' },
     navyEnd: null
   };
   // one main-room theme per world, built from its wall color
@@ -27,17 +29,40 @@
     PAL[k] = { frame: w, bg: mix(w, '#0B0C10', 0.86), wall: w, floor: mix(w, '#12141C', 0.84), floorAlt: mix(w, '#12141C', 0.8), door: 'rgba(236,238,245,0.4)', shadow: mix(w, '#0B0C10', 0.9) };
   }
   const C = {
-    page: '#12141C',
+    page: '#1C1F12',
     box: '#F5B83D', boxShadow: '#B9851F', boxLine: 'rgba(18,20,28,0.2)',
     player: '#FF7A59', playerShadow: '#C9553A',
     goal: 'rgba(236,238,245,0.75)', goalOn: 'rgba(60,201,176,0.35)', pgoal: '#FF7A59',
     ice: 'rgba(178,232,255,0.20)', iceLine: 'rgba(220,245,255,0.55)',
-    plate: '#E8C547', plateOn: '#3CC9B0', gate: '#E8C547', arrow: 'rgba(236,238,245,0.55)'
+    plate: '#E8C547', plateOn: '#3CC9B0', gate: '#E8C547', arrow: 'rgba(236,238,245,0.55)',
+    pit: '#0D0F08', pitRim: 'rgba(0,0,0,0.45)', patch: 'rgba(255,255,230,0.07)', crack: 'rgba(14,16,8,0.75)',
+    door: 'rgba(255,248,210,0.16)', doorLine: 'rgba(255,248,210,0.55)',
+    boxColors: { teal: ['#4FB9A0', '#2E7E6B'], violet: ['#9B8CFF', '#6F62C9'] }
   };
   const PAD = 0.035;     // room frame thickness, as a share of the room's size
   const ROOMIN = 0.06;   // a room-box sits this far inside its cell
 
-  function pal(L, key) { return PAL[L.rooms[key].palette] || PAL.navy; }
+  // Every main room is olive; the world palettes still colour the world cards in the menus.
+  function pal(L, key) { return key === L.root ? PAL.olive : (PAL[L.rooms[key].palette] || PAL.olive); }
+
+  // rounded rect with its own radius per corner: [top-left, top-right, bottom-right, bottom-left]
+  function rr4(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r[0], y);
+    ctx.lineTo(x + w - r[1], y); ctx.arcTo(x + w, y, x + w, y + r[1], r[1]);
+    ctx.lineTo(x + w, y + h - r[2]); ctx.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+    ctx.lineTo(x + r[3], y + h); ctx.arcTo(x, y + h, x, y + h - r[3], r[3]);
+    ctx.lineTo(x, y + r[0]); ctx.arcTo(x, y, x + r[0], y, r[0]);
+    ctx.closePath();
+  }
+
+  // soft top highlight on the current path (boxes and the player), part of look D
+  function gloss(ctx, top, h) {
+    if (h < 10) return;
+    const g = ctx.createLinearGradient(0, top, 0, top + h);
+    g.addColorStop(0, 'rgba(255,255,255,0.32)'); g.addColorStop(0.5, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fill();
+  }
 
   function rr(ctx, x, y, w, h, r) {
     r = Math.max(0, Math.min(r, w / 2, h / 2));
@@ -136,39 +161,61 @@
       return;
     }
     const p = r.s * PAD;
-    rr(ctx, r.x, r.y, r.s, r.s, r.s * 0.07);
-    ctx.fillStyle = P.frame; ctx.fill();
     const ix = r.x + p, iy = r.y + p, is = r.s - 2 * p, cs = is / R.w;
-    rr(ctx, ix, iy, is, is, r.s * 0.045);
-    ctx.fillStyle = P.bg; ctx.fill();
+    // one soft light across the whole room: bright top-left, darker bottom-right
+    const sheen = ctx.createLinearGradient(r.x, r.y, r.x + r.s, r.y + r.s);
+    sheen.addColorStop(0, 'rgba(255,255,235,0.26)'); sheen.addColorStop(0.5, 'rgba(255,255,235,0)'); sheen.addColorStop(1, 'rgba(0,0,0,0.18)');
+    const solid = () => { ctx.fillStyle = P.wall; ctx.fill(); ctx.fillStyle = sheen; ctx.fill(); };
+    rr(ctx, r.x, r.y, r.s, r.s, r.s * 0.1);
+    solid();
+    rr(ctx, ix, iy, is, is, r.s * 0.06);
+    ctx.fillStyle = P.floor; ctx.fill();
     if (cs < 1.6) {
       ctx.globalAlpha *= 0.55; ctx.fillStyle = P.wall; ctx.fillRect(ix, iy, is, is); ctx.globalAlpha /= 0.55;
       return;
     }
 
-    // tiles
+    // walls are one merged shape: a wall cell rounds only the corners where both neighbours are open
     const open = Engine.gatesOpen(st, L);
+    const isWall = (x, y) => (x < 0 || y < 0 || x >= R.w || y >= R.h ? true : R.wall[y][x]);
+    const rad = cs * 0.42, fil = rad * 0.55;
     for (let y = 0; y < R.h; y++) {
       for (let x = 0; x < R.w; x++) {
         const cx = ix + x * cs, cy = iy + y * cs;
-        if (R.wall[y][x]) {
-          const b = cs * 0.033;
-          rr(ctx, cx + b, cy + b, cs - 2 * b, cs - 2 * b, cs * 0.065);
-          ctx.fillStyle = P.wall; ctx.fill();
+        if (isWall(x, y)) {
+          rr4(ctx, cx - 0.5, cy - 0.5, cs + 1, cs + 1, [
+            !isWall(x - 1, y) && !isWall(x, y - 1) ? rad : 0,
+            !isWall(x + 1, y) && !isWall(x, y - 1) ? rad : 0,
+            !isWall(x + 1, y) && !isWall(x, y + 1) ? rad : 0,
+            !isWall(x - 1, y) && !isWall(x, y + 1) ? rad : 0
+          ]);
+          solid();
           continue;
         }
         const edgeL = x === 0, edgeR = x === R.w - 1, edgeT = y === 0, edgeB = y === R.h - 1;
-        const edge = edgeL || edgeR || edgeT || edgeB;
-        if (edge) { // an opening: cut through the frame so it reads as a door
-          ctx.fillStyle = P.bg;
+        if (edgeL || edgeR || edgeT || edgeB) { // an opening: the floor runs out through the frame
+          ctx.fillStyle = P.floor;
           ctx.fillRect(cx - (edgeL ? p + 0.5 : 0), cy - (edgeT ? p + 0.5 : 0),
             cs + (edgeL ? p + 0.5 : 0) + (edgeR ? p + 0.5 : 0), cs + (edgeT ? p + 0.5 : 0) + (edgeB ? p + 0.5 : 0));
         }
-        const f = cs * 0.045;
-        rr(ctx, cx + f, cy + f, cs - 2 * f, cs - 2 * f, cs * 0.19);
-        ctx.fillStyle = (x + y) % 2 ? P.floorAlt : P.floor; ctx.fill();
-        if (edge && cs > 6) { ctx.strokeStyle = P.door; ctx.lineWidth = cs * 0.035; ctx.stroke(); }
-        if (cs > 4) this.drawTerrain(R, x, y, cx, cy, cs, open);
+        // inner corners: a little wall in the corner, then a floor curve, so the edge bends smoothly
+        for (const [dx, dy, ox, oy] of [[-1, -1, 0, 0], [1, -1, 1, 0], [1, 1, 1, 1], [-1, 1, 0, 1]]) {
+          if (!isWall(x + dx, y) || !isWall(x, y + dy)) continue;
+          if ((x + dx < 0 || x + dx >= R.w) && (y + dy < 0 || y + dy >= R.h)) continue;
+          const fx = cx + ox * cs, fy = cy + oy * cs;
+          ctx.beginPath(); ctx.rect(Math.min(fx, fx - dx * fil), Math.min(fy, fy - dy * fil), fil, fil);
+          solid();
+          ctx.beginPath(); ctx.arc(fx - dx * fil, fy - dy * fil, fil, 0, Math.PI * 2);
+          ctx.fillStyle = P.floor; ctx.fill();
+        }
+        if (cs > 4) this.drawTerrain(R, x, y, cx, cy, cs, open, st, L, key);
+        // the room you are inside: its gaps glow, so the way out is easy to find
+        if (o.doors === key && depth === 0 && cs > 8 && (edgeL || edgeR || edgeT || edgeB)) {
+          const g = cs * 0.1;
+          rr(ctx, cx + g, cy + g, cs - 2 * g, cs - 2 * g, cs * 0.22);
+          ctx.fillStyle = C.door; ctx.fill();
+          ctx.setLineDash([cs * 0.12, cs * 0.09]); ctx.strokeStyle = C.doorLine; ctx.lineWidth = cs * 0.045; ctx.stroke(); ctx.setLineDash([]);
+        }
       }
     }
 
@@ -204,8 +251,30 @@
   };
 
   // Ice, plates, gates and one-way arrows, drawn on top of a floor tile.
-  Renderer.prototype.drawTerrain = function (R, x, y, cx, cy, cs, open) {
+  Renderer.prototype.drawTerrain = function (R, x, y, cx, cy, cs, open, st, L, key) {
     const ctx = this.ctx;
+    const k = Engine.cellKey(key, x, y);
+    const filled = st.filled && st.filled.indexOf(k) !== -1;
+    const brokenNow = st.broken && st.broken.indexOf(k) !== -1;
+    if ((R.hole[y][x] || brokenNow) && !filled) {
+      // an open pit
+      const g = cs * 0.08;
+      rr(ctx, cx + g, cy + g, cs - 2 * g, cs - 2 * g, cs * 0.24);
+      ctx.fillStyle = C.pit; ctx.fill();
+      ctx.lineWidth = cs * 0.06; ctx.strokeStyle = C.pitRim; ctx.stroke();
+      return;
+    }
+    if (filled) {
+      // a hole a box has filled: floor again, with a faint ring
+      ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.32, 0, Math.PI * 2);
+      ctx.fillStyle = C.patch; ctx.fill();
+    } else if (R.crack[y][x] && cs > 8) {
+      // cracked floor that will give way once you step off it
+      ctx.beginPath();
+      ctx.moveTo(cx + cs * 0.2, cy + cs * 0.3); ctx.lineTo(cx + cs * 0.45, cy + cs * 0.48); ctx.lineTo(cx + cs * 0.4, cy + cs * 0.7);
+      ctx.moveTo(cx + cs * 0.45, cy + cs * 0.48); ctx.lineTo(cx + cs * 0.75, cy + cs * 0.4); ctx.lineTo(cx + cs * 0.82, cy + cs * 0.62);
+      ctx.strokeStyle = C.crack; ctx.lineWidth = cs * 0.055; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+    }
     if (R.ice[y][x]) {
       const f = cs * 0.045;
       rr(ctx, cx + f, cy + f, cs - 2 * f, cs - 2 * f, cs * 0.19);
@@ -263,7 +332,16 @@
     if (ob.kind === 'box') {
       const b = cs * 0.065, w = cs - 2 * b;
       if (cs > 8) { rr(ctx, cell.x + b, cell.y + b + cs * 0.08, w, w, cs * 0.2); ctx.fillStyle = C.boxShadow; ctx.fill(); }
-      rr(ctx, cell.x + b, cell.y + b, w, w, cs * 0.2); ctx.fillStyle = C.box; ctx.fill();
+      const bc = ob.color ? C.boxColors[ob.color] : null;
+      if (bc && cs > 8) { rr(ctx, cell.x + b, cell.y + b + cs * 0.08, w, w, cs * 0.2); ctx.fillStyle = bc[1]; ctx.fill(); }
+      rr(ctx, cell.x + b, cell.y + b, w, w, cs * 0.2); ctx.fillStyle = bc ? bc[0] : C.box; ctx.fill(); gloss(ctx, cell.y + b, w);
+      if (bc && cs > 8) {
+        // a light diamond marks a coloured box, so it never reads as a room-box of the same colour
+        const mx = cell.x + cs / 2, my = cell.y + cs / 2, d = cs * 0.2;
+        ctx.beginPath(); ctx.moveTo(mx, my - d); ctx.lineTo(mx + d, my); ctx.lineTo(mx, my + d); ctx.lineTo(mx - d, my); ctx.closePath();
+        ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fill();
+        return;
+      }
       if (cs > 10) {
         const i = cs * 0.25;
         rr(ctx, cell.x + i, cell.y + i, cs - 2 * i, cs - 2 * i, cs * 0.11);
@@ -274,14 +352,25 @@
     // player
     const b = cs * 0.11, w = cs - 2 * b;
     if (cs > 8) { rr(ctx, cell.x + b, cell.y + b + cs * 0.08, w, w, cs * 0.26); ctx.fillStyle = C.playerShadow; ctx.fill(); }
-    rr(ctx, cell.x + b, cell.y + b, w, w, cs * 0.26); ctx.fillStyle = C.player; ctx.fill();
+    rr(ctx, cell.x + b, cell.y + b, w, w, cs * 0.26); ctx.fillStyle = C.player; ctx.fill(); gloss(ctx, cell.y + b, w);
     if (cs > 9) {
       const look = Engine.DIRS[o.look == null ? 1 : o.look];
-      const ey = cell.y + cs * 0.47, er = cs * 0.105, pr = cs * 0.052;
+      const ey = cell.y + cs * 0.47;
       for (const ex of [cell.x + cs * 0.35, cell.x + cs * 0.65]) {
-        ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.fillStyle = '#FFFFFF'; ctx.fill();
-        ctx.beginPath(); ctx.arc(ex + look[0] * cs * 0.045, ey + look[1] * cs * 0.045, pr, 0, Math.PI * 2);
-        ctx.fillStyle = '#12141C'; ctx.fill();
+        if (o.face === 'happy') {
+          // closed, smiling eyes
+          ctx.beginPath(); ctx.arc(ex, ey + cs * 0.03, cs * 0.08, Math.PI * 1.1, Math.PI * 1.9);
+          ctx.strokeStyle = '#16180F'; ctx.lineWidth = cs * 0.05; ctx.lineCap = 'round'; ctx.stroke();
+        } else if (o.face === 'blink') {
+          ctx.beginPath(); ctx.moveTo(ex - cs * 0.08, ey); ctx.lineTo(ex + cs * 0.08, ey);
+          ctx.strokeStyle = '#16180F'; ctx.lineWidth = cs * 0.045; ctx.lineCap = 'round'; ctx.stroke();
+        } else {
+          const big = o.face === 'surprise';
+          const er = cs * (big ? 0.13 : 0.105), pr = cs * (big ? 0.04 : 0.052);
+          ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.fillStyle = '#FFFFFF'; ctx.fill();
+          ctx.beginPath(); ctx.arc(ex + look[0] * cs * 0.045, ey + look[1] * cs * 0.045, pr, 0, Math.PI * 2);
+          ctx.fillStyle = '#16180F'; ctx.fill();
+        }
       }
     }
   };

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Solid look options</title>
+<style>
+  html, body { margin: 0; background: #101209; font-family: Rubik, "Segoe UI", system-ui, sans-serif; color: #ECEEF5; }
+  .sheet { width: 1800px; height: 1000px; box-sizing: border-box; padding: 48px 56px; display: flex; flex-direction: column; gap: 34px; }
+  h1 { margin: 0; font-size: 40px; font-weight: 800; }
+  .row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px; }
+  .opt { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .card { width: 400px; height: 400px; border-radius: 34px; display: flex; align-items: center; justify-content: center; }
+  canvas { width: 360px; height: 360px; display: block; }
+  b { font-size: 26px; }
+  p { margin: -8px 0 0; font-size: 17px; color: #A9AE98; text-align: center; max-width: 380px; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <h1>Pick a look — solid, no tile gaps</h1>
+  <div class="row" id="row"></div>
+</div>
+<script>
+  // one sample level: a room with a room-box (A) that holds a smaller room
+  const ROOT = ['#######', '#...#.#', '#.P.#.#', '#..A..#', '##..b.#', '#._..=#', '#######'];
+  const INNER = ['##.##', '#...#', '..b.#', '#._.#', '#####'];
+
+  const LOOKS = [
+    { id: 'A', name: 'Olive night', note: 'Dark olive floor, soft olive walls. Calm and easy on the eyes.',
+      page: '#1A1D13', wall: '#7D8B4C', floor: '#2C3121', inWall: '#3CC9B0', inFloor: '#163A33', box: '#F0B43C', boxD: '#B3801C', player: '#FF7A59', playerD: '#C9553A', goal: 'rgba(236,240,220,.7)', gloss: 0 },
+    { id: 'B', name: 'Olive grove', note: 'Light version: pale sage floor, deep olive walls.',
+      page: '#E9ECDA', wall: '#5F6E2E', floor: '#D7DDBD', inWall: '#C9733E', inFloor: '#F2DFC9', box: '#E9A42E', boxD: '#B57916', player: '#E85A3C', playerD: '#B5402A', goal: 'rgba(60,66,35,.6)', gloss: 0 },
+    { id: 'C', name: 'Olive & gold', note: 'Deep olive with warm gold boxes. Rich, a bit premium.',
+      page: '#14170D', wall: '#4E5A26', floor: '#1F2414', inWall: '#B89A4B', inFloor: '#2C2817', box: '#E3B341', boxD: '#A27C22', player: '#F27052', playerD: '#B8492F', goal: 'rgba(227,179,65,.75)', gloss: 0 },
+    { id: 'D', name: 'Olive oil sheen', note: 'Same solid shapes with a soft glossy light, like oil paint.',
+      page: '#1C1F12', wall: '#88994E', floor: '#30361F', inWall: '#4FB9A0', inFloor: '#173D35', box: '#F2B53E', boxD: '#B07D1A', player: '#FF7A59', playerD: '#C9553A', goal: 'rgba(236,240,220,.7)', gloss: 1 }
+  ];
+
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r[0], y);
+    ctx.lineTo(x + w - r[1], y); ctx.arcTo(x + w, y, x + w, y + r[1], r[1]);
+    ctx.lineTo(x + w, y + h - r[2]); ctx.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+    ctx.lineTo(x + r[3], y + h); ctx.arcTo(x, y + h, x, y + h - r[3], r[3]);
+    ctx.lineTo(x, y + r[0]); ctx.arcTo(x, y, x + r[0], y, r[0]);
+    ctx.closePath();
+  }
+
+  // Draws a room as one solid shape: walls merge, only free corners get rounded.
+  function drawRoom(ctx, map, x, y, size, wallC, floorC, L, depth) {
+    const n = map.length, cs = size / n, rad = cs * 0.42;
+    const wall = (cx, cy) => cy < 0 || cx < 0 || cy >= n || cx >= n ? true : map[cy][cx] === '#';
+    // the room's outer edge, rounded
+    rr(ctx, x, y, size, size, [size * 0.12, size * 0.12, size * 0.12, size * 0.12]);
+    ctx.fillStyle = floorC; ctx.fill();
+    ctx.save(); ctx.clip();
+    for (let cy = 0; cy < n; cy++) for (let cx = 0; cx < n; cx++) {
+      const px = x + cx * cs, py = y + cy * cs;
+      if (wall(cx, cy)) {
+        // round a corner only where both neighbours on that corner are open floor
+        const r = [
+          !wall(cx - 1, cy) && !wall(cx, cy - 1) ? rad : 0,
+          !wall(cx + 1, cy) && !wall(cx, cy - 1) ? rad : 0,
+          !wall(cx + 1, cy) && !wall(cx, cy + 1) ? rad : 0,
+          !wall(cx - 1, cy) && !wall(cx, cy + 1) ? rad : 0
+        ];
+        rr(ctx, px - 0.5, py - 0.5, cs + 1, cs + 1, r);
+        ctx.fillStyle = wallC; ctx.fill();
+        if (L.gloss && depth === 0) {
+          // one light across the whole room (top-left bright, bottom-right darker), not per square
+          const g = ctx.createLinearGradient(x, y, x + size, y + size);
+          g.addColorStop(0, 'rgba(255,255,235,.28)'); g.addColorStop(0.5, 'rgba(255,255,235,0)'); g.addColorStop(1, 'rgba(0,0,0,.18)');
+          ctx.fillStyle = g; ctx.fill();
+        }
+      } else {
+        // inner (concave) corners: fill the corner with wall, then cut a round floor curve
+        const corners = [[-1, -1, 0, 0], [1, -1, 1, 0], [1, 1, 1, 1], [-1, 1, 0, 1]];
+        for (const [dx, dy, ox, oy] of corners) {
+          if (wall(cx + dx, cy) && wall(cx, cy + dy)) {
+            // a small wall square in the corner, then a floor circle that leaves a smooth curve
+            const fx = px + ox * cs, fy = py + oy * cs, f = rad * 0.55;
+            ctx.fillStyle = wallC;
+            ctx.fillRect(Math.min(fx, fx - dx * f), Math.min(fy, fy - dy * f), f, f);
+            ctx.beginPath(); ctx.arc(fx - dx * f, fy - dy * f, f, 0, Math.PI * 2);
+            ctx.fillStyle = floorC; ctx.fill();
+          }
+        }
+      }
+    }
+    ctx.restore();
+    // goals and objects
+    for (let cy = 0; cy < n; cy++) for (let cx = 0; cx < n; cx++) {
+      const ch = map[cy][cx], px = x + cx * cs, py = y + cy * cs;
+      if (ch === '_') { ctx.setLineDash([cs * 0.1, cs * 0.08]); rr(ctx, px + cs * 0.17, py + cs * 0.17, cs * 0.66, cs * 0.66, [cs * .16, cs * .16, cs * .16, cs * .16]); ctx.strokeStyle = L.goal; ctx.lineWidth = cs * 0.06; ctx.stroke(); ctx.setLineDash([]); }
+      if (ch === '=') { ctx.setLineDash([cs * 0.1, cs * 0.08]); ctx.beginPath(); ctx.arc(px + cs / 2, py + cs / 2, cs * 0.31, 0, 7); ctx.strokeStyle = L.player; ctx.lineWidth = cs * 0.06; ctx.stroke(); ctx.setLineDash([]); }
+      if (ch === 'b') block(ctx, px, py, cs, L.box, L.boxD, L, false);
+      if (ch === 'P') block(ctx, px, py, cs, L.player, L.playerD, L, true);
+      if (ch === 'A') {
+        const pad = cs * 0.05;
+        rr(ctx, px + pad, py + pad + cs * 0.06, cs - 2 * pad, cs - 2 * pad, [cs * .14, cs * .14, cs * .14, cs * .14]);
+        ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fill();
+        drawRoom(ctx, INNER, px + pad, py + pad, cs - 2 * pad, L.inWall, L.inFloor, L, depth + 1);
+      }
+    }
+  }
+
+  function block(ctx, px, py, cs, c, cd, L, eyes) {
+    const g = cs * 0.09, w = cs - 2 * g, r = [cs * .24, cs * .24, cs * .24, cs * .24];
+    rr(ctx, px + g, py + g + cs * 0.07, w, w, r); ctx.fillStyle = cd; ctx.fill();
+    rr(ctx, px + g, py + g, w, w, r); ctx.fillStyle = c; ctx.fill();
+    if (L.gloss) {
+      const gr = ctx.createLinearGradient(0, py + g, 0, py + g + w);
+      gr.addColorStop(0, 'rgba(255,255,255,.35)'); gr.addColorStop(0.5, 'rgba(255,255,255,0)');
+      ctx.fillStyle = gr; ctx.fill();
+    }
+    if (eyes) {
+      for (const ex of [0.36, 0.64]) {
+        ctx.beginPath(); ctx.arc(px + cs * ex, py + cs * 0.46, cs * 0.1, 0, 7); ctx.fillStyle = '#fff'; ctx.fill();
+        ctx.beginPath(); ctx.arc(px + cs * ex + cs * 0.035, py + cs * 0.46, cs * 0.05, 0, 7); ctx.fillStyle = '#16180F'; ctx.fill();
+      }
+    } else {
+      rr(ctx, px + cs * .27, py + cs * .27, cs * .46, cs * .46, [cs * .1, cs * .1, cs * .1, cs * .1]);
+      ctx.strokeStyle = 'rgba(0,0,0,.16)'; ctx.lineWidth = cs * 0.045; ctx.stroke();
+    }
+  }
+
+  const row = document.getElementById('row');
+  for (const L of LOOKS) {
+    const opt = document.createElement('div'); opt.className = 'opt';
+    const card = document.createElement('div'); card.className = 'card'; card.style.background = L.page;
+    const cv = document.createElement('canvas'); cv.width = 720; cv.height = 720;
+    card.appendChild(cv); opt.appendChild(card);
+    opt.insertAdjacentHTML('beforeend', `<b>${L.id} · ${L.name}</b><p>${L.note}</p>`);
+    row.appendChild(opt);
+    const ctx = cv.getContext('2d');
+    drawRoom(ctx, ROOT, 20, 20, 680, L.wall, L.floor, L, 0);
+  }
+</script>
+</body>
+</html>
