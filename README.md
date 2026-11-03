@@ -103,6 +103,7 @@ Levels are generated, solved and picked by scripts in `tools/`:
 |---|---|
 | `www/js/engine.js` | Game rules (no DOM), also used by the solver in Node |
 | `www/js/render.js` | Canvas renderer, draws rooms inside rooms recursively |
+| `www/js/planets.js` | The planets on the world map, the player and logo as SVG |
 | `www/js/app.js` | Screens, input, animation, progress, hints |
 | `www/js/i18n.js` | English and Arabic text, world names |
 | `www/js/levels.js`, `daily.js` | The 193 world levels and 90 daily puzzles |

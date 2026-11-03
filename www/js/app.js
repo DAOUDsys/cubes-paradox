@@ -26,6 +26,7 @@
   const worldSize = (w) => LEVELS.filter((lv) => lv.w === w).length;
   const isChallenge = (i) => LEVELS[i].n >= worldSize(LEVELS[i].w) - CHALLENGES;
   const reward = (i) => 10 + LEVELS[i].w + (isChallenge(i) ? 10 : 0);
+  const ROOM_INSET = 0.1;
   const ARROWS = ['↑', '→', '↓', '←'];
 
   /* ---------- progress ---------- */
@@ -151,43 +152,86 @@
     $('daily-card').classList.toggle('solved', solved);
   }
 
-  const LOCK_SVG = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
-
-  // the map: one node per world, along a winding path from the first world to the last
+  // the map: one planet per world, along a winding trail from the first world to the last
   function renderMap() {
     const list = $('level-list');
     list.textContent = '';
-    let currentNode = null;
-    const cur = LEVELS[nextLevelIndex()].w;
+    const W = Math.min(list.clientWidth || 340, 480), rtl = progress.lang === 'ar';
+    const cur = LEVELS.every((_, i) => passed(i)) ? -1 : LEVELS[nextLevelIndex()].w;
+    const trail = document.createElement('div');
+    trail.className = 'trail';
+    let currentNode = null, y = 64;
+    const pts = [];
     I18N.WORLDS.forEach((world, w) => {
       const idx = worldLevels(w);
       if (!idx.length) return;
-      const open = worldOpen(w);
+      const open = worldOpen(w), here = w === cur, r = here ? 60 : 42;
+      const onLeft = (w % 2 === 0) !== rtl;
+      const x = W * (onLeft ? 0.25 : 0.75);
+      if (here) y += 22;
       const [title] = world[progress.lang] || world.en;
       const P = Render.PAL[world.palette] || Render.PAL.olive;
       const stars = idx.reduce((n, i) => n + ((progress.best[LEVELS[i].id] || {}).s || 0), 0);
       const solved = idx.filter(isDone).length;
       const node = document.createElement('button');
-      node.className = 'map-node side-' + ['l', 'c', 'r', 'c'][w % 4] + (open ? '' : ' locked') + (w === cur ? ' current' : '');
+      node.className = 'map-node' + (open ? '' : ' locked') + (here ? ' current' : '');
       node.disabled = !open;
-      node.innerHTML = '<span class="map-room" aria-hidden="true"><span></span></span><span class="map-text"><b></b><small></small></span>';
-      const room = node.querySelector('.map-room');
-      room.style.background = P.wall; room.style.boxShadow = '0 6px 0 ' + P.shadow;
-      room.querySelector('span').style.background = P.floor;
-      room.querySelector('span').textContent = num(w + 1);
+      node.style.top = (y - r) + 'px';
+      node.style.height = 2 * r + 'px';
+      node.innerHTML = '<span class="map-planet"></span><span class="map-text"><b></b><small></small></span>';
+      const planet = node.querySelector('.map-planet');
+      planet.innerHTML = Planets.marked(w, P.wall);
+      planet.style.left = (x - r) + 'px';
+      planet.style.width = planet.style.height = 2 * r + 'px';
+      const text = node.querySelector('.map-text');
+      text.style[onLeft ? 'left' : 'right'] = (onLeft ? x : W - x) + r + 12 + 'px';
+      text.style[onLeft ? 'right' : 'left'] = '4px';
+      text.style.textAlign = onLeft ? 'left' : 'right';
       node.querySelector('b').textContent = title;
       node.querySelector('small').textContent = open
         ? num(solved) + ' / ' + num(idx.length) + '  ·  ★ ' + num(stars)
         : t('unlockAt', { n: num(unlockNeed(w - 1)), w: num(w) });
+      if (here) {
+        const tag = document.createElement('span');
+        tag.className = 'map-here';
+        tag.textContent = S.youHere;
+        tag.style.alignSelf = onLeft ? 'flex-start' : 'flex-end';
+        text.appendChild(tag);
+        const hero = document.createElement('span');
+        hero.className = 'map-hero';
+        hero.style.left = (x - 21) + 'px';
+        hero.innerHTML = Planets.hero();
+        node.appendChild(hero);
+        currentNode = node;
+      }
       node.setAttribute('aria-label', num(w + 1) + '. ' + title + (open ? '' : ', ' + S.locked));
       if (open) node.addEventListener('click', () => { Sfx.play('tap'); G.viewWorld = w; show('world'); });
-      list.appendChild(node);
-      if (w === cur) currentNode = node;
+      trail.appendChild(node);
+      pts.push({ x, y, open });
+      y += r + (w + 1 === cur ? 80 : 63);
     });
+    const H = y - 20;
+    trail.style.width = W + 'px';
+    trail.style.height = H + 'px';
+    let lit = '', dim = '', sky = '';
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i], my = (a.y + b.y) / 2;
+      const seg = 'M' + a.x + ' ' + a.y + 'C' + a.x + ' ' + my + ' ' + b.x + ' ' + my + ' ' + b.x + ' ' + b.y;
+      if (b.open) lit += seg; else dim += seg;
+    }
+    for (let i = 1; i * 90 < H; i++) sky += '<circle cx="' + ((i * 137) % W) + '" cy="' + (i * 90) + '" r="' + (1 + (i % 3) * 0.4) + '" opacity="' + (0.3 + (i % 3) * 0.1) + '"/>';
+    const back = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    back.setAttribute('class', 'trail-back');
+    back.setAttribute('width', W);
+    back.setAttribute('height', H);
+    back.setAttribute('aria-hidden', 'true');
+    back.innerHTML = '<g fill="#ECF0DC">' + sky + '</g><path class="lit" d="' + lit + '"/><path class="dim" d="' + dim + '"/>';
+    trail.insertBefore(back, trail.firstChild);
+    list.appendChild(trail);
     if (currentNode) requestAnimationFrame(() => currentNode.scrollIntoView({ block: 'center' }));
   }
 
-  // one world: its idea, progress, and a grid of its levels with their stars
+  // one world: a planet whose islands are the main levels, with the challenges as moons around it
   function renderWorld(w) {
     const world = I18N.WORLDS[w];
     const [title, desc] = world[progress.lang] || world.en;
@@ -200,35 +244,83 @@
     $('world-bar').style.background = P.wall;
     const grid = $('world-grid');
     grid.textContent = '';
-    grid.className = 'world-grid level-grid';
-    for (const i of idx) {
-      const lv = LEVELS[i], ch = isChallenge(i);
+    const rtl = progress.lang === 'ar';
+    const W = Math.max(300, Math.min(grid.clientWidth || 335, (grid.clientHeight || 400) / 1.16, 440));
+    const R = W * 0.46, orbit = R + W * 0.1, moon = 48, cx = W / 2, cy = orbit + moon / 2 + 2;
+    const view = document.createElement('div');
+    view.className = 'planet-view';
+    view.style.width = W + 'px';
+    view.style.height = cy + R + 10 + 'px';
+    const disc = document.createElement('span');
+    disc.className = 'planet-disc';
+    disc.style.left = (cx - R) + 'px';
+    disc.style.top = (cy - R) + 'px';
+    disc.style.width = disc.style.height = 2 * R + 'px';
+    disc.innerHTML = Planets.plain(P.wall);
+    view.appendChild(disc);
+
+    const place = (i, x, y, cls, size) => {
+      const lv = LEVELS[i], ch = isChallenge(i), open = isOpen(i), d = isDone(i), sk = isSkipped(i);
       const b = document.createElement('button');
-      const n = document.createElement('span'); n.className = 'num'; n.textContent = num(lv.n + 1);
-      const name = document.createElement('span'); name.className = 'name';
-      name.textContent = ch ? S.challenge : loc(lv.name);
+      b.className = cls + ' ' + (!open ? 'locked' : d ? 'done' : sk ? 'skipped' : i === current ? 'current' : 'open');
+      b.style.left = x + 'px';
+      b.style.top = y + 'px';
+      b.style.width = b.style.height = size + 'px';
+      b.style.setProperty('--isle', P.floor);
+      b.textContent = num(lv.n + 1);
       const label = levelLabel(i) + (ch ? ', ' + S.challenge : '');
-      if (!isOpen(i)) {
-        b.className = 'tile locked' + (ch ? ' challenge' : ''); b.disabled = true;
-        b.setAttribute('aria-label', label + ', ' + S.locked);
-        b.innerHTML = LOCK_SVG;
-        name.textContent = num(lv.n + 1);
-        b.appendChild(name);
-      } else {
-        const d = isDone(i), sk = isSkipped(i);
-        b.className = 'tile ' + (d ? 'done' : sk ? 'skipped' : (i === current ? 'current' : 'open')) + (ch ? ' challenge' : '');
-        b.setAttribute('aria-label', label + (d ? ', ' + S.solvedTag : sk ? ', ' + S.skippedTag : ''));
-        b.appendChild(n); b.appendChild(name);
-        if (d) {
-          const s = (progress.best[lv.id] || {}).s || 1;
-          const st = document.createElement('span'); st.className = 'tile-stars';
-          st.textContent = '★'.repeat(s) + '☆'.repeat(3 - s);
-          st.setAttribute('aria-label', t('starsOf', { n: num(s) }));
-          b.appendChild(st);
-        }
-        b.addEventListener('click', () => startLevel(i));
+      b.setAttribute('aria-label', label + (!open ? ', ' + S.locked : d ? ', ' + S.solvedTag : sk ? ', ' + S.skippedTag : ''));
+      if (open) b.addEventListener('click', () => startLevel(i));
+      else b.disabled = true;
+      if (d) {
+        const s = (progress.best[lv.id] || {}).s || 1;
+        const st = document.createElement('span');
+        st.className = 'isle-stars';
+        st.textContent = '★'.repeat(s) + '☆'.repeat(3 - s);
+        st.setAttribute('aria-label', t('starsOf', { n: num(s) }));
+        b.appendChild(st);
       }
-      grid.appendChild(b);
+      view.appendChild(b);
+    };
+
+    // the islands snake across the planet, row by row
+    const main = idx.filter((i) => !isChallenge(i)), ROWS = [3, 4, 4, 3], rows = [];
+    for (let left = main.length, r = 0; left > 0; r++) { const n = Math.min(left, ROWS[r % 4]); rows.push(n); left -= n; }
+    const size = Math.max(44, W * 0.13), gapX = size * 1.4, gapY = size * 1.46;
+    const spots = [];
+    rows.forEach((n, r) => {
+      for (let k = 0; k < n; k++) {
+        const col = r % 2 ? n - 1 - k : k, x = cx + (col - (n - 1) / 2) * gapX;
+        spots.push([rtl ? W - x : x, cy + (r - (rows.length - 1) / 2) * gapY]);
+      }
+    });
+    const route = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    route.setAttribute('class', 'planet-route');
+    route.setAttribute('width', W);
+    route.setAttribute('height', cy + R + 10);
+    route.setAttribute('aria-hidden', 'true');
+    route.innerHTML = '<path d="M' + spots.map((p) => p.join(' ')).join('L') + '" stroke="' + P.floor + '"/>';
+    view.appendChild(route);
+    main.forEach((i, k) => place(i, spots[k][0], spots[k][1], 'isle', size));
+
+    // the challenges orbit the planet
+    idx.filter(isChallenge).forEach((i, k) => {
+      const a = (k - 1) * 42 * Math.PI / 180 * (rtl ? -1 : 1);
+      place(i, cx + orbit * Math.sin(a), cy - orbit * Math.cos(a), 'moon', moon);
+    });
+    const cap = document.createElement('span');
+    cap.className = 'moon-caption';
+    cap.textContent = S.challenge;
+    cap.style.left = (cx + moon / 2 + 8) + 'px';
+    view.appendChild(cap);
+    grid.appendChild(view);
+
+    const next = idx.filter((i) => isOpen(i) && !passed(i)).sort((a, b) => isChallenge(a) - isChallenge(b))[0];
+    const play = $('world-play');
+    play.style.display = next === undefined ? 'none' : '';
+    if (next !== undefined) {
+      play.textContent = S.play + ' · ' + t('level', { n: num(LEVELS[next].n + 1) });
+      play.onclick = () => startLevel(next);
     }
   }
 
@@ -373,7 +465,11 @@
 
   /* ---------- drawing & animation ---------- */
 
-  function boardRect() { return { x: 0, y: 0, s: renderer.size }; }
+  // inside a box the room takes 80% of the board, so the bigger room around it shows at the edges
+  function boardRect(st, room) {
+    const m = Engine.roomObject(st, room) ? renderer.size * ROOM_INSET : 0;
+    return { x: m, y: m, s: renderer.size - 2 * m };
+  }
 
   // the room whose exits should glow: the one you are in, unless it is a plain main room
   function exitsRoom() {
@@ -382,10 +478,11 @@
 
   function draw(opts) {
     if (!renderer.size || !G.L) return;
-    renderer.render(G.st, G.L, G.focus, boardRect(), Object.assign({ look: G.look, doors: exitsRoom(), face: face() }, opts || {}));
+    const R = boardRect(G.st, G.focus);
+    renderer.render(G.st, G.L, G.focus, R, Object.assign({ look: G.look, doors: exitsRoom(), hole: R, peek: true, face: face() }, opts || {}));
     if (G.hint && G.hint.length && !G.anim) {
       const p = Engine.player(G.st);
-      renderer.drawHint(Render.cellRect(G.L, G.focus, boardRect(), p.x, p.y), G.hint[0]);
+      renderer.drawHint(Render.cellRect(G.L, G.focus, R, p.x, p.y), G.hint[0]);
     }
   }
 
@@ -422,12 +519,13 @@
 
   // Build an animation from one state to another. `events` are the player's room changes.
   function transition(from, to, events, speed) {
-    const L = G.L, R = boardRect();
+    const L = G.L;
     const anchor = Engine.player(from).room;
+    const R = boardRect(from, anchor), End = boardRect(to, Engine.player(to).room);
     const zoom = events.length > 0;
     const Q = zoom ? cameraTarget(to, L, events, R) : R;
-    const k = R.s / Q.s;
-    const Rp = { x: R.x + (R.x - Q.x) * k, y: R.y + (R.y - Q.y) * k, s: R.s * k };
+    const k = End.s / Q.s;
+    const Rp = { x: End.x + (R.x - Q.x) * k, y: End.y + (R.y - Q.y) * k, s: R.s * k };
 
     const slide = new Map(), skip = new Set(), movers = [];
     let layFrom = null, layTo = null, far = 1;
@@ -463,7 +561,7 @@
     }
     return {
       kind: 'move', t0: performance.now(), dur: (zoom ? ZOOM_MS : MOVE_MS * (1 + 0.45 * (far - 1))) * (speed || 1),
-      from, to, anchor, R, Rp, k, zoom, slide, skip, movers
+      from, to, anchor, R, Q, Rp, k, zoom, slide, skip, movers
     };
   }
 
@@ -512,7 +610,7 @@
         }
       }
       renderer.render(a.to, G.L, a.anchor, cur, {
-        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay,
+        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay, hole: lerpRect(cur, toCur(a.Q), e), peek: !a.zoom,
         doors: a.zoom ? null : exitsRoom(), face: face()
       });
     }
@@ -899,6 +997,7 @@
 
   if (window.ResizeObserver) new ResizeObserver(resizeBoard).observe($('board-wrap'));
   window.addEventListener('resize', resizeBoard);
+  window.addEventListener('resize', () => { if (screen === 'levels') renderMap(); if (screen === 'world') renderWorld(G.viewWorld || 0); });
 
   // Android back button (Capacitor App plugin)
   const App = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
@@ -986,6 +1085,7 @@
   }
 
   // hook for automated browser tests
+  document.querySelector('.logo').innerHTML = Planets.logo();
   window.__matryo = { G, startLevel, input, show, restart, askHint, progress, jump, today };
 
   Sfx.setEnabled(progress.sound);

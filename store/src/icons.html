@@ -34,16 +34,21 @@
   const BG = `<g><rect width="1024" height="1024" fill="${C.olive}"/><rect width="1024" height="1024" fill="url(#sheen)"/></g>`;
   const rect = (x, y, s, r, fill) => `<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${r}" fill="${fill}"/>`;
 
-  // the hero: coral block with a lip, a soft highlight and eyes
+  // the hero, as render.js draws it: a coral block with a lip, a sprout on its head, eyes and a smile
   function hero(x, y, s, look) {
-    const lip = s * 0.08, r = s * 0.28;
-    const [dx, dy] = look || [0.05, 0];
-    let out = rect(x, y + lip, s, r, C.coralD) + rect(x, y, s, r, C.coral) + rect(x, y, s, r, 'url(#gloss)');
-    for (const ex of [0.33, 0.67]) {
-      out += `<circle cx="${x + s * ex}" cy="${y + s * 0.46}" r="${s * 0.125}" fill="#fff"/>`;
-      out += `<circle cx="${x + s * (ex + dx)}" cy="${y + s * (0.46 + dy)}" r="${s * 0.06}" fill="${C.ink}"/>`;
+    const [dx, dy] = look || [0.03, 0];
+    const bx = x + s * 0.13, by = y + s * 0.24, w = s * 0.74, h = s * 0.68, r = s * 0.24, mid = x + s / 2;
+    const body = (top, fill) => `<rect x="${bx}" y="${top}" width="${w}" height="${h}" rx="${r}" fill="${fill}"/>`;
+    let out = `<path d="M${mid} ${by + s * 0.02}V${by - s * 0.13}" stroke="#6E9E3F" stroke-width="${s * 0.045}" stroke-linecap="round"/>` +
+      `<ellipse cx="${mid - s * 0.1}" cy="${by - s * 0.17}" rx="${s * 0.105}" ry="${s * 0.055}" transform="rotate(29 ${mid - s * 0.1} ${by - s * 0.17})" fill="#9BCB5E"/>` +
+      `<ellipse cx="${mid + s * 0.1}" cy="${by - s * 0.17}" rx="${s * 0.105}" ry="${s * 0.055}" transform="rotate(-29 ${mid + s * 0.1} ${by - s * 0.17})" fill="#86B94C"/>` +
+      body(by + s * 0.08, C.coralD) + body(by, C.coral) + body(by, 'url(#gloss)');
+    for (const side of [-0.15, 0.15]) {
+      out += `<circle cx="${mid + s * side}" cy="${by + s * 0.27}" r="${s * 0.105}" fill="#fff"/>`;
+      out += `<circle cx="${mid + s * (side + dx)}" cy="${by + s * (0.27 + dy)}" r="${s * 0.055}" fill="${C.ink}"/>`;
     }
-    return out;
+    const sx = s * 0.05 * Math.cos(Math.PI * 0.15), sy = by + s * 0.42 + s * 0.05 * Math.sin(Math.PI * 0.15);
+    return out + `<path d="M${mid - sx} ${sy}A${s * 0.05} ${s * 0.05} 0 0 0 ${mid + sx} ${sy}" fill="none" stroke="${C.ink}" stroke-width="${s * 0.04}" stroke-linecap="round"/>`;
   }
   function box(x, y, s) {
     const lip = s * 0.08, r = s * 0.2;
@@ -70,7 +75,7 @@
   function iconC() {
     return BG +
       `<path d="M 232 1024 V 400 a 140 140 0 0 1 140 -140 H 652 a 140 140 0 0 1 140 140 V 1024 Z" fill="${C.floor}"/>` +
-      hero(342, 470, 340, [0.03, -0.03]);
+      hero(302, 410, 420, [0.02, -0.02]);
   }
 
   /* D · Endless: a room holding a room holding a room */

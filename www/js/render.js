@@ -31,16 +31,17 @@
   const C = {
     page: '#1C1F12',
     box: '#F5B83D', boxShadow: '#B9851F', boxLine: 'rgba(18,20,28,0.2)',
-    player: '#FF7A59', playerShadow: '#C9553A',
+    player: '#FF7A59', playerShadow: '#C9553A', stem: '#6E9E3F', leaf: '#9BCB5E', leafDark: '#86B94C',
     goal: 'rgba(236,238,245,0.75)', goalOn: 'rgba(60,201,176,0.35)', pgoal: '#FF7A59',
     ice: 'rgba(178,232,255,0.20)', iceLine: 'rgba(220,245,255,0.55)',
     plate: '#E8C547', plateOn: '#3CC9B0', gate: '#E8C547', arrow: 'rgba(236,238,245,0.55)',
     pit: '#0D0F08', pitRim: 'rgba(0,0,0,0.45)', patch: 'rgba(255,255,230,0.07)', crack: 'rgba(14,16,8,0.75)',
-    doorLine: 'rgba(255,248,210,0.7)',
+    doorLine: 'rgba(255,248,210,0.7)', dim: 'rgba(0,0,0,0.38)',
     boxColors: { teal: ['#4FB9A0', '#2E7E6B'], violet: ['#9B8CFF', '#6F62C9'] }
   };
   const PAD = 0.035;     // room frame thickness, as a share of the room's size
   const ROOMIN = 0.06;   // a room-box sits this far inside its cell
+  const PEEK_GAP = 0.025; // gap between the room and what peeks in next to it, as a share of the board
 
   // Every main room is olive; the world palettes still colour the world cards in the menus.
   function pal(L, key) { return key === L.root ? PAL.olive : (PAL[L.rooms[key].palette] || PAL.olive); }
@@ -201,7 +202,7 @@
         // inner corners: a little wall in the corner, then a floor curve, so the edge bends smoothly
         for (const [dx, dy, ox, oy] of [[-1, -1, 0, 0], [1, -1, 1, 0], [1, 1, 1, 1], [-1, 1, 0, 1]]) {
           if (!isWall(x + dx, y) || !isWall(x, y + dy)) continue;
-          if ((x + dx < 0 || x + dx >= R.w) && (y + dy < 0 || y + dy >= R.h)) continue;
+          if (x + dx < 0 || x + dx >= R.w || y + dy < 0 || y + dy >= R.h) continue; // an exit keeps straight sides
           const fx = cx + ox * cs, fy = cy + oy * cs;
           ctx.beginPath(); ctx.rect(Math.min(fx, fx - dx * fil), Math.min(fy, fy - dy * fil), fil, fil);
           solid();
@@ -209,15 +210,10 @@
           ctx.fillStyle = P.floor; ctx.fill();
         }
         if (cs > 4) this.drawTerrain(R, x, y, cx, cy, cs, open, st, L, key);
-        // the room you are inside: its gaps show an arrow pointing out, so the way out is easy to find
-        if (o.doors === key && depth === 0 && cs > 8 && (edgeL || edgeR || edgeT || edgeB)) {
-          ctx.save();
-          ctx.translate(cx + cs / 2, cy + cs / 2);
-          ctx.rotate((edgeT ? 0 : edgeR ? 1 : edgeB ? 2 : 3) * Math.PI / 2);
-          ctx.beginPath();
-          ctx.moveTo(-cs * 0.2, cs * 0.08); ctx.lineTo(0, -cs * 0.12); ctx.lineTo(cs * 0.2, cs * 0.08);
-          ctx.strokeStyle = C.doorLine; ctx.lineWidth = cs * 0.08; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
-          ctx.restore();
+        // the room you are inside: its gaps show a dot, so the way out is easy to find
+        if (o.doors === key && depth === o.doorDepth && cs > 8 && (edgeL || edgeR || edgeT || edgeB)) {
+          ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.1, 0, Math.PI * 2);
+          ctx.fillStyle = C.doorLine; ctx.fill();
         }
       }
     }
@@ -352,14 +348,26 @@
       }
       return;
     }
-    // player
-    const b = cs * 0.11, w = cs - 2 * b;
-    if (cs > 8) { rr(ctx, cell.x + b, cell.y + b + cs * 0.08, w, w, cs * 0.26); ctx.fillStyle = C.playerShadow; ctx.fill(); }
-    rr(ctx, cell.x + b, cell.y + b, w, w, cs * 0.26); ctx.fillStyle = C.player; ctx.fill(); gloss(ctx, cell.y + b, w);
+    // player: a coral block with a sprout on its head
+    const b = cs * 0.13, w = cs - 2 * b, top = cell.y + cs * 0.24, h = cs * 0.68, mid = cell.x + cs / 2;
+    if (cs > 6) {
+      ctx.beginPath(); ctx.moveTo(mid, top + cs * 0.02); ctx.lineTo(mid, top - cs * 0.13);
+      ctx.strokeStyle = C.stem; ctx.lineWidth = cs * 0.045; ctx.lineCap = 'round'; ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(mid - cs * 0.1, top - cs * 0.17, cs * 0.105, cs * 0.055, 0.5, 0, Math.PI * 2); ctx.fillStyle = C.leaf; ctx.fill();
+      ctx.beginPath(); ctx.ellipse(mid + cs * 0.1, top - cs * 0.17, cs * 0.105, cs * 0.055, -0.5, 0, Math.PI * 2); ctx.fillStyle = C.leafDark; ctx.fill();
+    }
+    if (cs > 8) { rr(ctx, cell.x + b, top + cs * 0.08, w, h, cs * 0.24); ctx.fillStyle = C.playerShadow; ctx.fill(); }
+    rr(ctx, cell.x + b, top, w, h, cs * 0.24); ctx.fillStyle = C.player; ctx.fill(); gloss(ctx, top, h);
     if (cs > 9) {
       const look = Engine.DIRS[o.look == null ? 1 : o.look];
-      const ey = cell.y + cs * 0.47;
-      for (const ex of [cell.x + cs * 0.35, cell.x + cs * 0.65]) {
+      const ey = top + cs * 0.27;
+      if (o.face === 'surprise') {
+        ctx.beginPath(); ctx.arc(mid, top + cs * 0.46, cs * 0.045, 0, Math.PI * 2); ctx.fillStyle = '#16180F'; ctx.fill();
+      } else {
+        ctx.beginPath(); ctx.arc(mid, top + cs * 0.42, cs * (o.face === 'happy' ? 0.07 : 0.05), Math.PI * 0.15, Math.PI * 0.85);
+        ctx.strokeStyle = '#16180F'; ctx.lineWidth = cs * 0.04; ctx.lineCap = 'round'; ctx.stroke();
+      }
+      for (const ex of [mid - cs * 0.15, mid + cs * 0.15]) {
         if (o.face === 'happy') {
           // closed, smiling eyes
           ctx.beginPath(); ctx.arc(ex, ey + cs * 0.03, cs * 0.08, Math.PI * 1.1, Math.PI * 1.9);
@@ -391,14 +399,18 @@
     ctx.fillStyle = C.page;
     ctx.fillRect(0, 0, S, S);
 
-    let top = anchor, tr = r;
+    let top = anchor, tr = r, hops = 0;
     for (let i = 0; i < 8; i++) {
       if (tr.x <= 0 && tr.y <= 0 && tr.x + tr.s >= S && tr.y + tr.s >= S) break;
       const ro = Engine.roomObject(st, top);
       if (!ro) break;
-      tr = parentRect(L, tr, ro);
+      // a room pushed while you are inside it stays put on screen: what is around it slides instead
+      const sl = o.slide && o.slide.get(ro.id);
+      tr = parentRect(L, tr, sl ? { room: ro.room, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
       top = ro.room;
+      hops++;
     }
+    o.doorDepth = hops;
     this.drawRoom(st, L, top, tr, 0, o);
 
     if (o.overlay) {
@@ -407,6 +419,48 @@
         this.drawObject(st, L, ov.obj, ov.rect, 1, o);
         ctx.globalAlpha = 1;
       }
+    }
+    if (o.peek && hops) this.drawPeeks(st, L, anchor, r, hops, o);
+    // the room you are in stays bright; the bigger room showing around it is dimmed
+    const h = o.hole;
+    if (h && !(h.x <= 0 && h.y <= 0 && h.x + h.s >= S && h.y + h.s >= S)) {
+      const hr = h.s * 0.1;
+      ctx.beginPath();
+      ctx.rect(0, 0, S, S);
+      ctx.moveTo(h.x + hr, h.y);
+      ctx.arcTo(h.x + h.s, h.y, h.x + h.s, h.y + h.s, hr);
+      ctx.arcTo(h.x + h.s, h.y + h.s, h.x, h.y + h.s, hr);
+      ctx.arcTo(h.x, h.y + h.s, h.x, h.y, hr);
+      ctx.arcTo(h.x, h.y, h.x + h.s, h.y, hr);
+      ctx.closePath();
+      ctx.fillStyle = C.dim;
+      ctx.fill('evenodd');
+    }
+    ctx.restore();
+  };
+
+  // What stands right next to the room's box barely reaches the board's edge at true scale,
+  // so it is drawn nudged towards the room: its side shows in the frame around the room.
+  Renderer.prototype.drawPeeks = function (st, L, anchor, r, hops, o) {
+    const ctx = this.ctx, S = this.size;
+    const ro = Engine.roomObject(st, anchor);
+    const sl = o.slide && o.slide.get(ro.id);
+    const pr = parentRect(L, r, sl ? { room: ro.room, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, S, S);
+    ctx.rect(r.x, r.y, r.s, r.s);
+    ctx.clip('evenodd');
+    for (const [dx, dy] of Engine.DIRS) {
+      const nx = ro.x + dx, ny = ro.y + dy;
+      const ob = Engine.objectAt(st, ro.room, nx, ny);
+      if (!ob || (o.skip && o.skip.has(ob.id))) continue;
+      const cell = cellRect(L, ro.room, pr, nx, ny);
+      const near = (ob.kind === 'player' ? 0.13 : ob.kind === 'box' ? 0.065 : ROOMIN) * cell.s;
+      const dist = dx > 0 ? cell.x + near - (r.x + r.s) : dx < 0 ? r.x - (cell.x + cell.s - near)
+        : dy > 0 ? cell.y + near - (r.y + r.s) : r.y - (cell.y + cell.s - near);
+      const shift = dist - S * PEEK_GAP;
+      this.drawObject(st, L, ob, { x: cell.x - dx * shift, y: cell.y - dy * shift, s: cell.s }, hops + 1, o);
     }
     ctx.restore();
   };
