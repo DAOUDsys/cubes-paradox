@@ -22,7 +22,8 @@ const KINDS = {
   unpack:   { root: [6, 8], kids: 1, boxes: [1, 2], density: [0.1, 0.3], kidBoxes: true, extraNest: 0.25, need: { unpack: true } },
   nest2:    { root: [6, 8], kids: 2, boxes: [0, 1], density: [0.1, 0.3], kidGoals: true, nestGoal: true, need: { nested: true, depth: 2 } },
   roomgoal: { root: [6, 8], kids: [1, 2], boxes: [0, 1], density: [0.1, 0.3], kidGoals: true, roomGoal: true, extraNest: 0.4, need: { roomGoal: true } },
-  deep3:    { root: [7, 8], kids: 3, chain: true, boxes: [0, 1], density: [0.05, 0.25], deepGoal: true, need: { depth: 3 } },
+  // Deep Dive: a box has to travel through the levels, down to the deepest room or up out of it
+  deep3:    { root: [6, 7], kids: 3, chain: true, wallKids: true, faceDoor: true, boxes: [1, 2], density: [0.1, 0.3], dive: true, need: { depth: 3, boxDive: 2 } },
   self:     { root: [7, 7], self: true, kids: [0, 1], boxes: [1, 2], density: [0.1, 0.3], pgoal: 0.5, need: { exits: 1 } },
   holes:    { root: [7, 8], kids: 1, boxes: [1, 2], density: [0.05, 0.25], holes: [0, 1], holeLine: true, kidBoxes: 0.5, extraNest: 0.4, need: { drops: 1, enters: 1 } },
   crumble:  { root: [7, 8], kids: 1, boxes: [0, 2], density: [0.05, 0.25], cracks: [1, 4], crackLine: true, kidGoals: true, extraNest: 0.4, need: { broken: 2, enters: 1 } },
@@ -246,15 +247,16 @@ function build(kind, rng) {
       return;
     }
     const holder = chain && i > 0 ? rooms[kidKeys[i - 1]] : rooms[k].inside ? rooms[rooms[k].inside] : root;
-    if (K.wallKids && holder === root) {
-      const by = (x, y) => root.g[y - 1][x] === '#' || root.g[y + 1][x] === '#' || root.g[y][x - 1] === '#' || root.g[y][x + 1] === '#';
-      if (!pick(rng, holder, k, (x, y) => by(x, y) && (!near || near(x, y)))) throw new Error('no room');
+    if (K.wallKids) {
+      const hg = holder.g;
+      const by = (x, y) => hg[y - 1][x] === '#' || hg[y + 1][x] === '#' || hg[y][x - 1] === '#' || hg[y][x + 1] === '#';
+      if (!pick(rng, holder, k, (x, y) => by(x, y) && (holder !== root || !near || near(x, y)))) throw new Error('no room');
       // open the door that faces away from the wall, so a box pushed toward the wall goes in
-      if (K.colorBoxes) {
-        const n = root.g.length;
+      if (K.colorBoxes || K.faceDoor) {
+        const n = hg.length;
         for (let y = 1; y < n - 1; y++) for (let x = 1; x < n - 1; x++) {
-          if (root.g[y][x] !== k) continue;
-          const back = [[0, -1], [1, 0], [0, 1], [-1, 0]].findIndex(([dx, dy]) => root.g[y + dy][x + dx] === '#');
+          if (hg[y][x] !== k) continue;
+          const back = [[0, -1], [1, 0], [0, 1], [-1, 0]].findIndex(([dx, dy]) => hg[y + dy][x + dx] === '#');
           const r = rooms[k], rn = r.g.length, m = Math.floor(rn / 2);
           const [dxp, dyp] = [[m, 0], [rn - 1, m], [m, rn - 1], [0, m]][(back + 2) % 4];
           r.g[dyp][dxp] = '.';
@@ -267,8 +269,10 @@ function build(kind, rng) {
   });
   if (self && !pick(rng, root, rootKey)) return null;
   const nb = rint(rng, K.boxes);
+  // Deep Dive: carry boxes down to the deepest room, or bring them up to the main room
+  const diveUp = K.dive && rng() < 0.35;
   for (let i = 0; i < nb; i++) {
-    const room = K.kidBoxes && kidKeys.length && rng() < (K.kidBoxes === true ? 1 : K.kidBoxes) ? anyKid() : root;
+    const room = diveUp ? deepest() : K.kidBoxes && kidKeys.length && rng() < (K.kidBoxes === true ? 1 : K.kidBoxes) ? anyKid() : root;
     if (!pick(rng, room, 'b', room === root ? near : null)) return null;
   }
   const nc = rint(rng, K.colorBoxes || 0);
@@ -277,6 +281,10 @@ function build(kind, rng) {
   // goals
   if (K.nestGoal && kidKeys.length > 1 && !pick(rng, rooms[kidKeys[kidKeys.length - 1]], '_')) return null;
   let boxGoals = useGates ? Math.max(0, nb - 1) : nb;
+  if (K.dive) {
+    for (let i = 0; i < nb; i++) if (!pick(rng, diveUp ? root : i === 0 ? deepest() : anyKid(), '_')) return null;
+    boxGoals = 0;
+  }
   if (useHoles) boxGoals = Math.max(0, boxGoals - 1);
   if (K.kidBoxGoals && kidKeys.length && boxGoals > 0) {
     const inKid = Math.max(1, Math.min(boxGoals, rint(rng, [1, boxGoals])));
@@ -322,6 +330,7 @@ function meets(kind, a) {
   if (need.exits && a.exits < need.exits) return false;
   if (need.nested && !a.nested) return false;
   if (need.depth && a.maxDepth < need.depth) return false;
+  if (need.boxDive && a.boxDive < need.boxDive) return false;
   if (need.doorway && !a.doorway) return false;
   if (need.pocket && !a.pocket) return false;
   if (need.carryMove && !(a.carryMove && a.carried)) return false;
@@ -446,7 +455,7 @@ function metrics(b) {
   return {
     moves: b.moves, pushes: b.pushes, pushRuns: b.pushRuns, states: b.states, seenAtWin: b.seenAtWin,
     deadRatio: +b.deadRatio.toFixed(3), enters: b.enters, exits: b.exits, slides: b.slides, maxDepth: b.maxDepth,
-    drops: b.drops, broken: b.broken, unique: b.unique, freedom: +b.freedom.toFixed(2), score: +score(b).toFixed(2)
+    drops: b.drops, broken: b.broken, boxDive: b.boxDive, unique: b.unique, freedom: +b.freedom.toFixed(2), score: +score(b).toFixed(2)
   };
 }
 
@@ -468,7 +477,7 @@ if (!isMainThread) {
     let b = analyze(def, cap);
     if (!b || !meets(kind, b)) continue;
     // medium and hard levels: no square to spare
-    if (score(b) >= 40 && b.states < 80000) {
+    if (score(b) >= 40 && (b.states < 80000 || kind === 'deep3')) {
       def = trim(tighten(kind, def, cap), cap);
       b = analyze(def, cap);
       if (!b || !meets(kind, b)) continue;

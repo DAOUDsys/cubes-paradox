@@ -189,102 +189,98 @@
   },
   {
     id: 11, w: 1, n: 2,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"Walk in one door and out the other","ar":"فوت من باب واطلع من الباب التاني"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '####.##',
-        '##P...#',
-        '#....##',
-        '#.##..#',
-        '#.A...#',
+        '#...=.#',
+        '###.###',
+        '#P.A###',
+        '#######',
+        '#######',
         '#######'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
         '#...#',
-        '.....',
-        '#=..#',
+        '....#',
+        '#...#',
         '#####'
       ] }
     },
-    sol: 'DLDDRRRRRD'
+    sol: 'RRRURUUUR'
   },
   {
     id: 12, w: 1, n: 3,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"Line the box up under the gap, then go through it","ar":"ظبّط الصندوق تحت الفتحة، وبعدين قطّع من جوّاه"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#=...##',
+        '####.##',
+        '#PA..##',
+        '#######',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '....#',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'RRRRURUUULLL'
+  },
+  {
+    id: 13, w: 1, n: 4,
+    idea: {"en":"Boxes use doors too: send the yellow box through the room","ar":"الصناديق كمان بتقطع من الأبواب: مرّق الصندوق الأصفر من جوّا الغرفة"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#..###',
-        '#...##',
-        '#.A..#',
-        '###.P#',
+        '####_#',
+        '####.#',
+        '#P.bA#',
+        '######',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '#######',
-        '##.####',
-        '#...#.#',
-        '....#=#',
-        '#.#...#',
-        '#...#.#',
-        '###.###'
+        '##.##',
+        '#...#',
+        '....#',
+        '#...#',
+        '#####'
       ] }
     },
-    sol: 'ULULLDRRRRRRDRRU'
-  },
-  {
-    id: 13, w: 1, n: 4,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
-        '#P...##',
-        '##....#',
-        '#..#..#',
-        '##.#A.#',
-        '###...#',
-        '#######'
-      ] },
-      A: { palette: 'teal', map: [
-        '#######',
-        '#...#.#',
-        '#...=.#',
-        '#....##',
-        '#...#.#',
-        '#.....#',
-        '###.###'
-      ] }
-    },
-    sol: 'RRRDRDDDLUUUUUUUUR'
+    sol: 'RRRRDRUUUU'
   },
   {
     id: 14, w: 1, n: 5,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"Park the yellow box first, so the room stops on its spot","ar":"حط الصندوق الأصفر أول، عشان الغرفة توقف على مكانها"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '#.#...#',
-        '#..A..#',
-        '##....#',
-        '####..#',
-        '###.P##',
+        '#######',
+        '#######',
+        '#PA_.##',
+        '#...b##',
+        '###..##',
         '#######'
       ] },
       A: { palette: 'teal', map: [
         '#####',
-        '#..=#',
+        '#...#',
         '....#',
-        '##..#',
+        '#.=.#',
         '#####'
       ] }
     },
-    sol: 'UULLURRRRURR'
+    sol: 'RDRDRULLURRRD'
   },
   {
     id: 15, w: 1, n: 6,
@@ -1162,7 +1158,7 @@
   },
   {
     id: 51, w: 3, n: 12,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -1594,7 +1590,7 @@
   },
   {
     id: 68, w: 4, n: 14,
-    idea: {"en":"Something has to come out of the purple box","ar":"في إشي لازم يطلع من الصندوق البنفسجي"},
+    idea: {"en":"Something has to come out of the green box","ar":"في إشي لازم يطلع من الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -2316,7 +2312,7 @@
   },
   {
     id: 91, w: 6, n: 7,
-    idea: {"en":"The green box has to go inside the purple box","ar":"الصندوق الأخضر لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"The green box has to go inside the main room","ar":"الصندوق الأخضر لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -2406,7 +2402,7 @@
   },
   {
     id: 94, w: 6, n: 10,
-    idea: {"en":"The pink box has to go inside the main room","ar":"الصندوق الزهري لازم يفوت جوّا الغرفة الرئيسية"},
+    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -2469,7 +2465,7 @@
   },
   {
     id: 96, w: 6, n: 12,
-    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
+    idea: {"en":"The green box has to go inside the main room","ar":"الصندوق الأخضر لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -2533,7 +2529,7 @@
   },
   {
     id: 98, w: 6, n: 14,
-    idea: {"en":"The green box has to go inside the purple box","ar":"الصندوق الأخضر لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"The green box has to go inside the main room","ar":"الصندوق الأخضر لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -2574,193 +2570,268 @@
   },
   {
     id: 99, w: 7, n: 0,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '#######',
-        '####P##',
-        '##.#A##',
-        '##.#..#',
-        '#_....#',
-        '####..#',
-        '#######'
+        '######',
+        '##..A#',
+        '#P..##',
+        '##.b##',
+        '##..##',
+        '######'
       ] },
       A: { palette: 'teal', map: [
         '#######',
-        '##.B..#',
-        '##..#.#',
-        '###.#..',
+        '##.B.##',
+        '###.###',
+        '....###',
+        '##..###',
         '#######',
-        '#######',
-        '###.###'
+        '#######'
       ] },
       B: { palette: 'violet', map: [
         '#######',
-        '#.#####',
-        '#C#####',
-        '..###..',
-        '#..##.#',
+        '#####C#',
+        '#####.#',
+        '#####..',
         '##....#',
-        '#######'
+        '##....#',
+        '###.###'
       ] },
       C: { palette: 'pink', map: [
         '#####',
         '#####',
         '#####',
-        '#=.##',
+        '##_##',
         '##.##'
       ] }
     },
-    sol: 'DDRDLLLLLUULLLLDDLLLULUUUUL'
+    sol: 'RDDRUULURRRRDRUUUULURRDRUUUU'
   },
   {
     id: 100, w: 7, n: 1,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#####',
+        '#####',
+        '#Ab.#',
+        '##P.#',
+        '#####'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '##B####',
+        '##.####',
+        '##.....',
+        '##.#.##',
+        '##...##',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '####..#',
+        '####.C#',
+        '####..#',
+        '##....#',
+        '##....#',
+        '###.###'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '#####',
+        '.####',
+        '##_##',
+        '##.##'
+      ] }
+    },
+    sol: 'RULLLLLRDDLLUUUUULURRDRUUUU'
+  },
+  {
+    id: 101, w: 7, n: 2,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#P..##',
-        '#.#A##',
-        '##...#',
         '######',
+        '#P..##',
+        '###.=#',
+        '##Ab.#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#.B.###',
+        '##.####',
+        '##.....',
+        '##.##.#',
+        '##....#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '##..C##',
+        '##..###',
+        '..#.###',
+        '#.#.###',
+        '#...###',
+        '###.###'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '##.##',
+        '.._##',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'RRDRDLLLLLRRDDLLLUUUUUUUULURRRLLDDDDDDDRRRRRUR'
+  },
+  {
+    id: 102, w: 7, n: 3,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#####',
+        '###A#',
+        '###b#',
+        '###P#',
+        '#####'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#######',
+        '###....',
+        '##....#',
+        '##..B.#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '##..C##',
+        '##.####',
+        '...####',
+        '#######',
+        '#######',
+        '#######'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '#####',
+        '..._#',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'UUULURURDDULDRRRRUURRRR'
+  },
+  {
+    id: 103, w: 7, n: 4,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#####',
+        '###A#',
+        '#.b.#',
+        '#.P.#',
+        '#####'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#######',
+        '####...',
+        '##....#',
+        '##..B.#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
+        '###.###',
+        '###..#.',
+        '#C...##',
+        '#######',
+        '#######'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '##..#',
+        '##...',
+        '#_..#',
+        '#####'
+      ] }
+    },
+    sol: 'LURDRUUURLLURRURDDDDDRDLLLLULDRDL'
+  },
+  {
+    id: 104, w: 7, n: 5,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '######',
+        '#P#..#',
+        '#.#.b#',
+        '#.A..#',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '###.###',
+        '###.###',
+        '###.###',
+        '..#.###',
+        '#....##',
+        '#B...##',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
         '#.#.###',
-        '#.#...#',
-        '.......',
-        '#.B#..#',
-        '#..####',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '#.....#',
-        '#C###..',
-        '#######',
-        '#######',
-        '#######'
-      ] },
-      C: { palette: 'pink', map: [
-        '##.##',
-        '##.##',
-        '##.##',
-        '#=.##',
-        '#####'
-      ] }
-    },
-    sol: 'RRDDDDDLLDDRULURRURDRDLLULLLLDDDDL'
-  },
-  {
-    id: 101, w: 7, n: 2,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
-        '##..###',
-        '##A.###',
+        '#C#..##',
+        '#....##',
         '#...###',
-        '#..P.##',
-        '###_.##',
-        '#######'
-      ] },
-      A: { palette: 'teal', map: [
-        '#######',
-        '###.B.#',
-        '###.###',
-        '.##.#..',
-        '###.#.#',
-        '###...#',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '###.###',
-        '##..C.#',
-        '#####.#',
-        '..###.#',
-        '#.###.#',
-        '#.....#',
-        '#######'
-      ] },
-      C: { palette: 'pink', map: [
-        '#####',
-        '###=#',
-        '###..',
-        '#####',
-        '#####'
-      ] }
-    },
-    sol: 'UUULDDLDRURDRDLLDDLLUUUURRRDDRRRRUUUULLLLU'
-  },
-  {
-    id: 102, w: 7, n: 3,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '########',
-        '#._#.A.#',
-        '#..b..##',
-        '#.P#.###',
-        '#....###',
-        '########',
-        '########',
-        '########'
-      ] },
-      A: { palette: 'teal', map: [
-        '#######',
-        '#B#####',
-        '#.#####',
-        '..#####',
-        '#######',
-        '#######',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '#..####',
-        '#C.####',
-        '#..####',
-        '##..###',
         '###.###'
       ] },
       C: { palette: 'pink', map: [
         '##.##',
+        '##_##',
         '##.##',
         '##.##',
-        '#=.##',
-        '#####'
+        '##.##'
       ] }
     },
-    sol: 'DRRUULRDDLLUURRURRRUUULUUULDDDDDL'
+    sol: 'DDRRUURDDDDDUUUULDRRDRDRRULLRUUUUULDRRDDDDDRDLLDLUUUUU'
   },
   {
-    id: 103, w: 7, n: 4,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    id: 105, w: 7, n: 6,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '##P####',
-        '##b####',
-        '#..####',
-        '#_..###',
-        '#.A...#',
+        '#P#####',
+        '#....##',
+        '##.#..#',
+        '##.##A#',
+        '##.b..#',
         '#######'
       ] },
       A: { palette: 'teal', map: [
-        '#######',
-        '####B##',
-        '####.##',
-        '.....##',
-        '###..##',
-        '#######',
+        '###.###',
+        '###.###',
+        '#..B###',
+        '..#..##',
+        '#....##',
+        '#..####',
         '#######'
       ] },
       B: { palette: 'violet', map: [
@@ -2773,352 +2844,260 @@
         '###.###'
       ] },
       C: { palette: 'pink', map: [
-        '##.##',
-        '##.=#',
-        '##.##',
+        '#####',
+        '#####',
+        '##_##',
         '##.##',
         '##.##'
       ] }
     },
-    sol: 'DDLDDRRULRDRRRRRRUUULLUUUUUUUR'
+    sol: 'DRRRDRDDDDDRDLLDLURRUUUUUULULLDDDRRRRLLLLUUURRDRDDDDDDLLUUULLUUUUU'
   },
   {
-    id: 104, w: 7, n: 5,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    id: 106, w: 7, n: 7,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '########',
-        '##..####',
-        '##A.##_#',
-        '##P....#',
-        '#....#.#',
-        '#.##.###',
-        '########',
-        '########'
+        '######',
+        '######',
+        '###P.#',
+        '##..b#',
+        '#.A..#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '###.###',
+        '###.###',
+        '..#.###',
+        '#.#.###',
+        '#..B.##',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
+        '##..###',
+        '..#.###',
+        '#.#..##',
+        '#...C.#',
+        '###.###'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '##.##',
+        '#....',
+        '#.._#',
+        '##.##'
+      ] }
+    },
+    sol: 'DLDDDDDDDDDDRDDDRRRLULDLLUULLLUULLRRUURDDDDDDDDDDDDDDDLDR'
+  },
+  {
+    id: 107, w: 7, n: 8,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##A###',
+        '#=.###',
+        '##.bP#',
+        '##..##',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#######',
+        '.....##',
+        '#....##',
+        '#B..###',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.#.#',
+        '###..C#',
+        '###.#.#',
+        '##..#.#',
+        '##....#',
+        '###.###'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '##_##',
+        '...##',
+        '#..##',
+        '##.##'
+      ] }
+    },
+    sol: 'LDLUUUULUURRDLLULDDDDRRRRUUUDDDUULLDDLDRRRRDRULLLLUUUUUURRDDDL'
+  },
+  {
+    id: 108, w: 7, n: 9,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '###P.#',
+        '##..b#',
+        '#=A..#',
+        '######',
+        '######'
       ] },
       A: { palette: 'teal', map: [
         '###.###',
         '###.###',
         '###.###',
         '....##.',
-        '###.###',
-        '###.B##',
-        '###.###'
+        '##....#',
+        '##B...#',
+        '#######'
       ] },
       B: { palette: 'violet', map: [
-        '#######',
-        '####.C#',
-        '####.##',
-        '..##.##',
-        '#.##.##',
-        '#....##',
+        '###.###',
+        '###.###',
+        '###.#.#',
+        '###..C#',
+        '##..#.#',
+        '##....#',
         '###.###'
       ] },
       C: { palette: 'pink', map: [
-        '#####',
-        '#####',
-        '.=###',
-        '#####',
+        '##.##',
+        '##._#',
+        '.....',
+        '##..#',
         '#####'
       ] }
     },
-    sol: 'RUULDDDDDDLLLLRRRRRRDDDDULURRRRRRDDDDUUURRDDRRRUUUURR'
+    sol: 'DLDDDDLLLLRRUURDDDDDLDRDRRULLULDDDDDRRRRUUUDDULLDLDRRRRRDRULUUUULLUUUUULLLLL'
   },
   {
-    id: 105, w: 7, n: 6,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    id: 109, w: 7, n: 10,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '#######',
-        '#####.#',
-        '#..##.#',
-        '#P..bA#',
-        '#.....#',
-        '##_####',
-        '#######'
+        '######',
+        '##.#=#',
+        '#P...#',
+        '#b.A##',
+        '#...##',
+        '######'
       ] },
       A: { palette: 'teal', map: [
         '#######',
         '###.B.#',
-        '###...#',
+        '####.##',
+        '.###...',
         '##...##',
-        '###.###',
-        '###.###',
+        '##...##',
         '###.###'
       ] },
       B: { palette: 'violet', map: [
         '#######',
         '#C#####',
         '#.#####',
-        '..####.',
-        '#######',
-        '#######',
-        '#######'
-      ] },
-      C: { palette: 'pink', map: [
-        '#####',
-        '#####',
-        '###=#',
-        '##..#',
-        '##.##'
-      ] }
-    },
-    sol: 'RRDRRULLDLLUURDDURRRUUUUUUURRRUUURU'
-  },
-  {
-    id: 106, w: 7, n: 7,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '########',
-        '########',
-        '########',
-        '####..##',
-        '###.b..#',
-        '#A_....#',
-        '##P#####',
-        '########'
-      ] },
-      A: { palette: 'teal', map: [
-        '#######',
-        '#B..###',
-        '##...##',
-        '##.....',
-        '###..##',
-        '#######',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '#######',
-        '#####..',
-        '####..#',
-        '###C.##',
-        '#######'
-      ] },
-      C: { palette: 'pink', map: [
-        '#####',
-        '###=#',
-        '###..',
-        '#####',
-        '#####'
-      ] }
-    },
-    sol: 'URURURDRDLLLLLLLULLDRRRRLLULULLLDLDLLU'
-  },
-  {
-    id: 107, w: 7, n: 8,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
-        '####.P#',
-        '#.b..A#',
-        '#.##..#',
-        '#.##..#',
-        '#..._##',
-        '#######'
-      ] },
-      A: { palette: 'teal', map: [
-        '###.###',
-        '###.###',
-        '###..##',
-        '####...',
-        '####.B#',
-        '#####.#',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '#######',
-        '..C..##',
-        '###..##',
-        '#######',
-        '#######'
-      ] },
-      C: { palette: 'pink', map: [
-        '#####',
-        '#####',
-        '###=.',
-        '##..#',
-        '##.##'
-      ] }
-    },
-    sol: 'DDLDDLLLUUURRLLDDDRRRUURUULDDDURDDDRDDRRRRDRUURU'
-  },
-  {
-    id: 108, w: 7, n: 9,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
-        '####..#',
-        '#..#..#',
-        '#....A#',
-        '#Pb####',
-        '#_.####',
-        '#######'
-      ] },
-      A: { palette: 'teal', map: [
-        '###.###',
-        '###.###',
-        '#.#.###',
-        '..#.###',
-        '#B#.###',
+        '..#....',
+        '#.....#',
         '#...###',
         '###.###'
       ] },
-      B: { palette: 'violet', map: [
-        '###.###',
-        '#######',
-        '#######',
-        '#######',
-        '#..####',
-        '#C..###',
-        '###.###'
-      ] },
       C: { palette: 'pink', map: [
-        '##.##',
-        '##.=#',
         '#####',
-        '#####',
-        '#####'
+        '#_###',
+        '.....',
+        '#...#',
+        '##.##'
       ] }
     },
-    sol: 'DRULURRRURDDDDDDLLUULLLLULDDURRRRRUULULDDR'
+    sol: 'RDDRUUUURURRRLLDDLUUULURDRUUUUULURURRDLLLDLUUUUURULDLURDDDDLLRDDRRRRRU'
   },
   {
-    id: 109, w: 7, n: 10,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    id: 110, w: 7, n: 11,
+    idea: {"en":"A box has to end up inside the pink box","ar":"في صندوق لازم يفوت جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '###..#',
-        '#.b.A#',
-        '#P#._#',
-        '#....#',
+        '##.A.#',
+        '##.#.#',
+        '##P#b#',
+        '##...#',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '###.###',
-        '###...#',
-        '###.#B#',
-        '###....',
         '#######',
         '#######',
-        '#######'
-      ] },
-      B: { palette: 'violet', map: [
-        '###.###',
-        '###.C##',
         '####.##',
-        '####...',
-        '#######',
-        '#######',
-        '###.###'
-      ] },
-      C: { palette: 'pink', map: [
-        '#####',
-        '#=###',
-        '...##',
-        '##.##',
-        '##.##'
-      ] }
-    },
-    sol: 'DRRUUURDDLDLLUURRURDDDDRRDDDRRRDDDDRRRLLLLLUUUULLLUUUUDDDDRRU'
-  },
-  {
-    id: 110, w: 7, n: 11,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
+        '####B..',
         '##....#',
-        '#.A##.#',
-        '##.##.#',
-        '##.b._#',
-        '####P##',
-        '#######'
-      ] },
-      A: { palette: 'teal', map: [
-        '#######',
-        '#######',
-        '####..#',
-        '####...',
-        '###...#',
-        '#...B.#',
+        '#.....#',
         '###.###'
       ] },
       B: { palette: 'violet', map: [
         '###.###',
         '###.###',
-        '###.###',
-        '##..##.',
-        '###..C#',
-        '#######',
+        '###..##',
+        '##.....',
+        '##.#.##',
+        '##..C##',
         '#######'
       ] },
       C: { palette: 'pink', map: [
-        '#####',
-        '#=###',
-        '..###',
+        '##.##',
+        '##.##',
+        '..._#',
         '#####',
         '#####'
       ] }
     },
-    sol: 'URUUULLLDDUURRRDDDLLLLDDLULDURRUULDRDDLLURDRULURRRRLLLDDLLDDDDDRRRU'
+    sol: 'UURLDDDRRUUUURURULLLULUUUDDRDLLLURDRRUULDRDLLLLLLDDDDLLLLUURURDDDDUUULLDDRRRR'
   },
   {
     id: 111, w: 7, n: 12,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '########',
-        '##.#...#',
-        '#......#',
-        '#.P.#..#',
-        '#.#.._.#',
-        '##.b...#',
-        '#..A...#',
-        '########'
+        '######',
+        '##._##',
+        '#...##',
+        '#._.P#',
+        '##A###',
+        '######'
       ] },
       A: { palette: 'teal', map: [
         '###.###',
-        '#.....#',
-        '##....#',
-        '#..#..#',
-        '#.....#',
-        '#.B...#',
-        '###.###'
+        '###.B.#',
+        '###...#',
+        '#######',
+        '#######',
+        '#######',
+        '#######'
       ] },
       B: { palette: 'violet', map: [
         '#######',
-        '#....C#',
+        '#######',
+        '#######',
+        '.###...',
         '#.....#',
-        '....#..',
-        '#.....#',
-        '#.....#',
+        '#C....#',
         '###.###'
       ] },
       C: { palette: 'pink', map: [
         '##.##',
+        '##b##',
+        '.....',
         '#...#',
-        '#..=.',
-        '#...#',
-        '##.##'
+        '#####'
       ] }
     },
-    sol: 'RDRDDLUUULURRURDDULLDDDLDDRDDDDLLLLUUUUR'
+    sol: 'LLDDDRUUULLDDUURDLLDLLURRRRURRURRRDLUULURRURRRLLLLDDRULURRLDDLLDDUUULURDRUDLDDDRRULDLUU'
   },
   {
     id: 112, w: 8, n: 0,
@@ -3778,7 +3757,7 @@
   },
   {
     id: 135, w: 9, n: 8,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to fill a hole before you can cross","ar":"لازم صندوق يعبّي الحفرة قبل ما تقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -3876,7 +3855,7 @@
   },
   {
     id: 137, w: 9, n: 10,
-    idea: {"en":"A box has to fill a hole before you can cross","ar":"لازم صندوق يعبّي الحفرة قبل ما تقطع"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -3910,7 +3889,7 @@
   },
   {
     id: 138, w: 9, n: 11,
-    idea: {"en":"A box has to fill a hole before you can cross","ar":"لازم صندوق يعبّي الحفرة قبل ما تقطع"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -3944,7 +3923,7 @@
   },
   {
     id: 139, w: 9, n: 12,
-    idea: {"en":"A box has to fill a hole before you can cross","ar":"لازم صندوق يعبّي الحفرة قبل ما تقطع"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4564,7 +4543,7 @@
   },
   {
     id: 154, w: 11, n: 0,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4596,7 +4575,7 @@
   },
   {
     id: 155, w: 11, n: 1,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4626,7 +4605,7 @@
   },
   {
     id: 156, w: 11, n: 2,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4658,7 +4637,7 @@
   },
   {
     id: 157, w: 11, n: 3,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4688,7 +4667,7 @@
   },
   {
     id: 158, w: 11, n: 4,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4718,7 +4697,7 @@
   },
   {
     id: 159, w: 11, n: 5,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4782,7 +4761,7 @@
   },
   {
     id: 161, w: 11, n: 7,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4812,7 +4791,7 @@
   },
   {
     id: 162, w: 11, n: 8,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4875,7 +4854,7 @@
   },
   {
     id: 164, w: 11, n: 10,
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4937,7 +4916,7 @@
   },
   {
     id: 166, w: 11, n: 12,
-    idea: {"en":"The green box has to go inside the purple box","ar":"الصندوق الأخضر لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"The green box has to go inside the main room","ar":"الصندوق الأخضر لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -4968,7 +4947,7 @@
   },
   {
     id: 167, w: 12, n: 0,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5008,7 +4987,7 @@
   },
   {
     id: 168, w: 12, n: 1,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5052,7 +5031,7 @@
   },
   {
     id: 169, w: 12, n: 2,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5097,7 +5076,7 @@
   },
   {
     id: 170, w: 12, n: 3,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5141,7 +5120,7 @@
   },
   {
     id: 171, w: 12, n: 4,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5232,7 +5211,7 @@
   },
   {
     id: 173, w: 12, n: 6,
-    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
+    idea: {"en":"The green box has to go inside the purple box","ar":"الصندوق الأخضر لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5279,7 +5258,7 @@
   },
   {
     id: 174, w: 12, n: 7,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5323,7 +5302,7 @@
   },
   {
     id: 175, w: 12, n: 8,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5370,7 +5349,7 @@
   },
   {
     id: 176, w: 12, n: 9,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5417,7 +5396,7 @@
   },
   {
     id: 177, w: 12, n: 10,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5511,7 +5490,7 @@
   },
   {
     id: 179, w: 12, n: 12,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5595,7 +5574,7 @@
   },
   {
     id: 181, w: 12, n: 14,
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5715,7 +5694,7 @@
   },
   {
     id: 184, w: 13, n: 2,
-    idea: {"en":"The purple box has to go inside the green box","ar":"الصندوق البنفسجي لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5876,7 +5855,7 @@
   },
   {
     id: 187, w: 13, n: 5,
-    idea: {"en":"The purple box has to go inside the green box","ar":"الصندوق البنفسجي لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -5978,7 +5957,7 @@
   },
   {
     id: 189, w: 13, n: 7,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"The way forward starts inside the pink box","ar":"الطريق بيبلش من جوّا الصندوق الزهري"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -6050,7 +6029,7 @@
   },
   {
     id: 190, w: 13, n: 8,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"The way forward starts inside the purple box","ar":"الطريق بيبلش من جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -6093,7 +6072,7 @@
   },
   {
     id: 191, w: 13, n: 9,
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"The way forward starts inside the purple box","ar":"الطريق بيبلش من جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
@@ -6140,7 +6119,7 @@
   },
   {
     id: 192, w: 13, n: 10,
-    idea: {"en":"The green box has to go inside the purple box","ar":"الصندوق الأخضر لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"The pink box has to go inside the purple box","ar":"الصندوق الزهري لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [

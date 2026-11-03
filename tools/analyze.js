@@ -97,6 +97,7 @@ function analyze(def, cap) {
   let lastPushDir = -1, pushRuns = 0, slides = 0, gateUsed = false, arrowUsed = false, doorArrowUsed = false;
   let carryMove = false, unpacked = false, tunnel = false, pocket = false, remoteGate = false;
   const boxRooms = new Map(); // box id → rooms it has been inside
+  let boxDive = 0; // the most levels of depth any one box travels from where it started
   let inside = null; // { room, dir } while the player is inside a room it entered
   for (let mi = 0; mi < moves.length; mi++) {
     const d = moves[mi];
@@ -140,6 +141,11 @@ function analyze(def, cap) {
         inside = null;
       }
     }
+    for (const o of res.state.objects) {
+      if (o.kind !== 'box') continue;
+      const start = Engine.byId(state, o.id);
+      boxDive = Math.max(boxDive, Math.abs(depthOf(res.state, level, o.room) - depthOf(state, level, start.room)));
+    }
     st = res.state;
     solConfigs.add(configKey(st));
     maxDepth = Math.max(maxDepth, depthOf(st, level, Engine.player(st).room));
@@ -161,7 +167,7 @@ function analyze(def, cap) {
     // freedom: how many different arrangements can still lead to a win, per arrangement in the solution
     freedom: aliveConfigs.size / solConfigs.size,
     movedIds, enteredRooms, receivedRooms, carried, nested, slides, gateUsed, arrowUsed,
-    doorway, tunnel, carryMove, unpacked, pocket, pistons, maxDepth, roomGoal, drops,
+    boxDive, doorway, tunnel, carryMove, unpacked, pocket, pistons, maxDepth, roomGoal, drops,
     broken: st.broken.length, colorBoxes, remoteGate, doorArrowUsed
   };
 }

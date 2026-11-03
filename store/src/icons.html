@@ -5,19 +5,19 @@
 <title>Cubes Paradox icon options</title>
 <link rel="stylesheet" href="../../www/fonts.css">
 <style>
-  html, body { margin: 0; background: #0D0F15; font-family: Rubik, system-ui, sans-serif; color: #ECEEF5; }
+  html, body { margin: 0; background: #14170D; font-family: Rubik, system-ui, sans-serif; color: #EEF0E2; }
   /* ?opt=A (one icon, 1024×1024, full bleed) or no opt: the comparison sheet */
-  .sheet { width: 1600px; height: 900px; box-sizing: border-box; padding: 56px 64px; display: flex; flex-direction: column; gap: 36px; }
-  .sheet h1 { margin: 0; font-size: 40px; font-weight: 800; }
+  .sheet { width: 1600px; height: 700px; box-sizing: border-box; padding: 48px 64px; display: flex; flex-direction: column; gap: 32px; }
+  .sheet h1 { margin: 0; font-size: 38px; font-weight: 800; }
   .row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; }
-  .opt { display: flex; flex-direction: column; align-items: center; gap: 18px; }
-  .big { width: 320px; height: 320px; border-radius: 72px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.5); }
-  .small { display: flex; align-items: center; gap: 18px; background: #1C1F2B; border-radius: 22px; padding: 14px 20px; }
-  .small div { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; }
-  .small div.sq { border-radius: 18px; }
-  .small span { font-size: 15px; color: #B9BED0; }
+  .opt { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .big { width: 300px; height: 300px; border-radius: 68px; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.5); }
+  .small { display: flex; align-items: center; gap: 16px; background: #272B1A; border-radius: 20px; padding: 12px 18px; }
+  .small div { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; }
+  .small div.sq { border-radius: 16px; }
+  .small span { font-size: 14px; color: #CDD1BE; }
   .opt b { font-size: 24px; }
-  .opt p { margin: -10px 0 0; font-size: 16px; color: #9AA1B9; text-align: center; }
+  .opt p { margin: -8px 0 0; font-size: 16px; color: #A9AE98; text-align: center; }
   svg { display: block; width: 100%; height: 100%; }
   .solo { width: 1024px; height: 1024px; }
 </style>
@@ -25,125 +25,73 @@
 <body>
 <div id="root"></div>
 <script>
-  const C = { coral: '#FF7A59', coralD: '#C9553A', amber: '#F5B83D', amberD: '#C38E22', amberL: '#FFD27A', teal: '#3CC9B0', tealD: '#23917E', tealL: '#7FE0CE', violet: '#9B8CFF', violetD: '#6F62C9', violetL: '#C4BCFF', ink: '#12141C' };
-  const P = (pts) => pts.map((p) => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-  const poly = (pts, fill) => `<polygon points="${P(pts)}" fill="${fill}"/>`;
+  const C = { olive: '#88994E', oliveD: '#4E5A26', floor: '#30361F', coral: '#FF7A59', coralD: '#C9553A', amber: '#F5B83D', amberD: '#B9851F', teal: '#4FB9A0', tealD: '#2E7E6B', tealF: '#173D35', violet: '#9B8CFF', violetD: '#6F62C9', violetF: '#28224A', ink: '#16180F' };
+  // the same soft light the rooms have in the game: bright top-left, darker bottom-right
+  const DEFS = `<defs>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFEB" stop-opacity=".3"/><stop offset=".5" stop-color="#FFFFEB" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>`;
+  const BG = `<g><rect width="1024" height="1024" fill="${C.olive}"/><rect width="1024" height="1024" fill="url(#sheen)"/></g>`;
+  const rect = (x, y, s, r, fill) => `<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="${r}" fill="${fill}"/>`;
 
-  // isometric cube: c = the near top corner, s = edge length on screen
-  function cube(cx, cy, s, top, left, right) {
-    const k = 0.866;
-    const T = [cx, cy - s], UR = [cx + k * s, cy - s / 2], C0 = [cx, cy], UL = [cx - k * s, cy - s / 2];
-    const B = [cx, cy + s], LR = [cx + k * s, cy + s / 2], LL = [cx - k * s, cy + s / 2];
-    return { svg: poly([UL, C0, B, LL], left) + poly([C0, UR, LR, B], right) + poly([T, UR, C0, UL], top), T, UR, C0, UL, B, LR, LL };
+  // the hero: coral block with a lip, a soft highlight and eyes
+  function hero(x, y, s, look) {
+    const lip = s * 0.08, r = s * 0.28;
+    const [dx, dy] = look || [0.05, 0];
+    let out = rect(x, y + lip, s, r, C.coralD) + rect(x, y, s, r, C.coral) + rect(x, y, s, r, 'url(#gloss)');
+    for (const ex of [0.33, 0.67]) {
+      out += `<circle cx="${x + s * ex}" cy="${y + s * 0.46}" r="${s * 0.125}" fill="#fff"/>`;
+      out += `<circle cx="${x + s * (ex + dx)}" cy="${y + s * (0.46 + dy)}" r="${s * 0.06}" fill="${C.ink}"/>`;
+    }
+    return out;
+  }
+  function box(x, y, s) {
+    const lip = s * 0.08, r = s * 0.2;
+    return rect(x, y + lip, s, r, C.amberD) + rect(x, y, s, r, C.amber) + rect(x, y, s, r, 'url(#gloss)') +
+      `<rect x="${x + s * 0.25}" y="${y + s * 0.25}" width="${s * 0.5}" height="${s * 0.5}" rx="${s * 0.1}" fill="none" stroke="rgba(18,20,28,.18)" stroke-width="${s * 0.05}"/>`;
   }
 
-  /* A · Nested cubes: an open violet box, a teal cube inside it, the player cube on top */
+  /* A · The room: a carved corridor like a real level, the hero about to push a box */
   function iconA() {
-    let s = '<rect width="1024" height="1024" fill="#1F1B3D"/>';
-    const k = 0.866, cx = 512, cy = 600, S = 270, d = 120;
-    const T = [cx, cy - S], UR = [cx + k * S, cy - S / 2], C0 = [cx, cy], UL = [cx - k * S, cy - S / 2];
-    const B = [cx, cy + S], LR = [cx + k * S, cy + S / 2], LL = [cx - k * S, cy + S / 2];
-    const down = (p) => [p[0], p[1] + d];
-    // the opening: dark floor, then the inside of the two back walls
-    s += `<clipPath id="open"><polygon points="${P([T, UR, C0, UL])}"/></clipPath>`;
-    s += poly([T, UR, C0, UL], '#2B2460');
-    s += `<g clip-path="url(#open)">` + poly([UL, T, down(T), down(UL)], '#7A6BE0') + poly([T, UR, down(UR), down(T)], '#5A4CC0') + `</g>`;
-    // teal cube rising out of the box, coral cube on top
-    const t = cube(cx, cy - 150, 150, C.tealL, C.teal, C.tealD);
-    s += t.svg;
-    const p = cube(cx, cy - 300, 92, '#FFA285', C.coral, C.coralD);
-    s += p.svg;
-    // eyes on the player's two front faces
-    const eye = (x, y, m) => `<ellipse cx="0" cy="0" rx="9" ry="16" fill="${C.ink}" transform="translate(${x},${y}) matrix(${m})"/>`;
-    // centre of the player's left face is about (cx - 40, cy - 277); step along the face's width
-    s += eye(cx - 56, cy - 286, '1,0.577,0,1') + eye(cx - 25, cy - 268, '1,0.577,0,1');
-    // front walls of the open box (drawn last so they hide the cube's lower part)
-    s += poly([UL, C0, B, LL], C.violet) + poly([C0, UR, LR, B], C.violetD);
-    // rim
-    s += `<polyline points="${P([UL, C0, UR])}" fill="none" stroke="${C.violetL}" stroke-width="10" stroke-linejoin="round"/>`;
-    return s;
+    return BG +
+      `<path d="M 262 300 H 762 V 520 H 400 V 760" fill="none" stroke="${C.floor}" stroke-width="176" stroke-linecap="round" stroke-linejoin="round"/>` +
+      hero(190, 228, 150, [0.05, 0]) + box(520, 226, 150) +
+      `<rect x="340" y="704" width="120" height="120" rx="26" fill="none" stroke="rgba(238,240,226,.8)" stroke-width="12" stroke-dasharray="26 20"/>`;
   }
 
-  /* B · Infinite spiral: boxes inside boxes, each a little smaller and turned */
+  /* B · Box in a box: the game's idea in one look */
   function iconB() {
-    let s = `<rect width="1024" height="1024" fill="${C.violet}"/>`;
-    const cols = [[C.amber, C.amberD], [C.teal, C.tealD], ['#7D6FE6', '#5A4CC0'], [C.amber, C.amberD], [C.teal, C.tealD], ['#7D6FE6', '#5A4CC0']];
-    let size = 700, rot = 0;
-    for (let i = 0; i < cols.length; i++) {
-      const r = size * 0.24, lip = size * 0.045;
-      s += `<g transform="translate(512,${512 + i * 6}) rotate(${rot})">`;
-      s += `<rect x="${-size / 2}" y="${-size / 2 + lip}" width="${size}" height="${size}" rx="${r}" fill="${cols[i][1]}"/>`;
-      s += `<rect x="${-size / 2}" y="${-size / 2}" width="${size}" height="${size}" rx="${r}" fill="${cols[i][0]}"/>`;
-      s += `</g>`;
-      size *= 0.76; rot += 9;
-    }
-    // the player at the very centre
-    const ps = size * 1.05;
-    s += `<g transform="translate(512,${512 + cols.length * 6}) rotate(${rot})">`;
-    s += `<rect x="${-ps / 2}" y="${-ps / 2 + ps * 0.08}" width="${ps}" height="${ps}" rx="${ps * 0.3}" fill="${C.coralD}"/>`;
-    s += `<rect x="${-ps / 2}" y="${-ps / 2}" width="${ps}" height="${ps}" rx="${ps * 0.3}" fill="${C.coral}"/>`;
-    s += `<rect x="${-ps * 0.2 - 5}" y="${-ps * 0.14}" width="10" height="${ps * 0.26}" rx="5" fill="${C.ink}"/>`;
-    s += `<rect x="${ps * 0.2 - 5}" y="${-ps * 0.14}" width="10" height="${ps * 0.26}" rx="5" fill="${C.ink}"/>`;
-    s += `</g>`;
-    return s;
+    return BG + rect(192, 192, 640, 120, C.floor) +
+      rect(322, 338, 380, 76, C.tealD) + rect(322, 322, 380, 76, C.teal) + rect(322, 322, 380, 76, 'url(#sheen)') +
+      rect(380, 380, 264, 52, C.tealF) + hero(432, 426, 160, [0.05, 0]);
   }
 
-  /* C · Peek-a-box: the player peeking out of an open box */
+  /* C · Doorway: the hero standing in a gap in the olive wall, about to walk in */
   function iconC() {
-    let s = `<rect width="1024" height="1024" fill="${C.violet}"/>`;
-    // soft floor shadow
-    s += `<ellipse cx="512" cy="850" rx="330" ry="38" fill="${C.violetD}" opacity=".55"/>`;
-    // the player, rising out of the box (its lower half is hidden by the box front)
-    s += `<rect x="352" y="250" width="320" height="320" rx="92" fill="${C.coralD}"/>`;
-    s += `<rect x="352" y="232" width="320" height="320" rx="92" fill="${C.coral}"/>`;
-    // eyes looking up and to the right
-    for (const ex of [450, 574]) {
-      s += `<circle cx="${ex}" cy="356" r="44" fill="#FFFFFF"/>`;
-      s += `<circle cx="${ex + 14}" cy="342" r="21" fill="${C.ink}"/>`;
-    }
-    // the box: a squarish crate with a lip, an inner panel like the game's boxes
-    s += `<rect x="232" y="500" width="560" height="350" rx="76" fill="${C.amberD}"/>`;
-    s += `<rect x="232" y="476" width="560" height="350" rx="76" fill="${C.amber}"/>`;
-    s += `<rect x="322" y="566" width="380" height="190" rx="44" fill="none" stroke="rgba(18,20,28,.16)" stroke-width="18"/>`;
-    return s;
+    return BG +
+      `<path d="M 232 1024 V 400 a 140 140 0 0 1 140 -140 H 652 a 140 140 0 0 1 140 140 V 1024 Z" fill="${C.floor}"/>` +
+      hero(342, 470, 340, [0.03, -0.03]);
   }
 
-  /* D · Room in a room: a tiny level whose box holds the same level, again and again */
+  /* D · Endless: a room holding a room holding a room */
   function iconD() {
-    let s = `<rect width="1024" height="1024" fill="#171A2C"/>`;
-    const MAP = ['#####', '#...#', '#.R.#', '#P..#', '##.##'];
-    function room(x, y, size, depth) {
-      const cs = size / 5, g = cs * 0.08;
-      let out = `<rect x="${x}" y="${y}" width="${size}" height="${size}" rx="${size * 0.09}" fill="#221D47"/>`;
-      for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
-        const ch = MAP[r][c], cx = x + c * cs, cy = y + r * cs;
-        if (ch === '#') out += `<rect x="${cx + g}" y="${cy + g}" width="${cs - 2 * g}" height="${cs - 2 * g}" rx="${cs * 0.16}" fill="${C.violet}"/>`;
-        else out += `<rect x="${cx + g * 1.4}" y="${cy + g * 1.4}" width="${cs - 2.8 * g}" height="${cs - 2.8 * g}" rx="${cs * 0.2}" fill="${(r + c) % 2 ? '#2C2660' : '#28225A'}"/>`;
-        if (ch === 'P' && depth === 0) {
-          const pg = cs * 0.12;
-          out += `<rect x="${cx + pg}" y="${cy + pg + cs * 0.06}" width="${cs - 2 * pg}" height="${cs - 2 * pg}" rx="${cs * 0.24}" fill="${C.coralD}"/>`;
-          out += `<rect x="${cx + pg}" y="${cy + pg}" width="${cs - 2 * pg}" height="${cs - 2 * pg}" rx="${cs * 0.24}" fill="${C.coral}"/>`;
-          out += `<rect x="${cx + cs * 0.34}" y="${cy + cs * 0.38}" width="${cs * 0.08}" height="${cs * 0.2}" rx="${cs * 0.04}" fill="${C.ink}"/>`;
-          out += `<rect x="${cx + cs * 0.58}" y="${cy + cs * 0.38}" width="${cs * 0.08}" height="${cs * 0.2}" rx="${cs * 0.04}" fill="${C.ink}"/>`;
-        } else if (ch === 'P' && size > 60) {
-          out += `<rect x="${cx + cs * 0.15}" y="${cy + cs * 0.15}" width="${cs * 0.7}" height="${cs * 0.7}" rx="${cs * 0.22}" fill="${C.coral}"/>`;
-        }
-        if (ch === 'R') {
-          const inset = cs * 0.06;
-          if (size > 40) out += `<rect x="${cx + inset}" y="${cy + inset + cs * 0.05}" width="${cs - 2 * inset}" height="${cs - 2 * inset}" rx="${cs * 0.12}" fill="${C.amberD}"/>`;
-          out += `<rect x="${cx + inset}" y="${cy + inset}" width="${cs - 2 * inset}" height="${cs - 2 * inset}" rx="${cs * 0.12}" fill="${C.amber}"/>`;
-          if (depth < 4 && cs > 14) out += room(cx + inset + cs * 0.05, cy + inset + cs * 0.05, cs - 2 * inset - cs * 0.1, depth + 1);
-        }
+    const colors = [[C.olive, C.floor], [C.teal, C.tealF], [C.violet, C.violetF], [C.amber, '#3A2C08'], [C.teal, C.tealF]];
+    function room(x, y, s, d) {
+      let out = '';
+      if (d > 0) {
+        out += rect(x, y + s * 0.05, s, s * 0.18, 'rgba(0,0,0,.35)');
+        out += rect(x, y, s, s * 0.18, colors[d][0]);
       }
+      out += rect(x + s * 0.11, y + s * 0.11, s * 0.78, s * 0.12, colors[d][1]);
+      if (d < colors.length - 1) out += room(x + s * 0.36, y + s * 0.36, s * 0.47, d + 1);
       return out;
     }
-    s += room(112, 112, 800, 0);
-    return s;
+    return BG + room(62, 62, 900, 0) + hero(205, 205, 200, [0.05, 0]);
   }
 
   const ICONS = { A: iconA, B: iconB, C: iconC, D: iconD };
-  const NAMES = { A: ['Nested cubes', 'A box opens, a room rises out of it'], B: ['Infinite spiral', 'Boxes inside boxes, forever'], C: ['Peek-a-box', 'The hero peeking out of a box'], D: ['Room in a room', 'A level that holds itself'] };
-  const svg = (id) => `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${ICONS[id]()}</svg>`;
+  const NAMES = { A: ['The Room', 'A carved corridor, just like a level'], B: ['Box in a Box', 'The whole idea, simple and bold'], C: ['Doorway', 'The hero stepping into the wall'], D: ['Endless', 'A room in a room in a room'] };
+  const svg = (id) => `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${DEFS}${ICONS[id]()}</svg>`;
 
   const q = new URLSearchParams(location.search);
   const opt = q.get('opt');
@@ -152,18 +100,16 @@
     // ?layer=fg drops the background (adaptive icon foreground), ?layer=bg keeps only it;
     // ?scale=0.78 shrinks the artwork into Android's adaptive-icon safe zone
     const layer = q.get('layer') || 'full', scale = +(q.get('scale') || 1);
-    let body = ICONS[opt]();
-    const bgEnd = body.indexOf('/>') + 2;
-    const bg = body.slice(0, bgEnd), art = body.slice(bgEnd);
+    const art = ICONS[opt]().slice(BG.length);
     const scaled = `<g transform="translate(512 512) scale(${scale}) translate(-512 -512)">${art}</g>`;
-    body = layer === 'bg' ? bg : layer === 'fg' ? scaled : bg + scaled;
+    const body = layer === 'bg' ? BG : layer === 'fg' ? scaled : BG + scaled;
     document.documentElement.style.background = document.body.style.background = 'transparent';
     root.className = 'solo';
-    root.innerHTML = `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+    root.innerHTML = `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">${DEFS}${body}</svg>`;
   } else {
     root.innerHTML = '<div class="sheet"><h1>Pick an icon</h1><div class="row">' + Object.keys(ICONS).map((id) =>
       `<div class="opt"><div class="big">${svg(id)}</div>
-        <div class="small"><div>${svg(id)}</div><div class="sq">${svg(id)}</div><span>launcher size</span></div>
+        <div class="small"><div>${svg(id)}</div><div class="sq">${svg(id)}</div><span>phone size</span></div>
         <b>${id} · ${NAMES[id][0]}</b><p>${NAMES[id][1]}</p></div>`).join('') + '</div></div>';
   }
 </script>

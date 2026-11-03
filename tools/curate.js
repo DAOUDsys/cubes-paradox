@@ -60,19 +60,36 @@ const T = {
 // Every world ends with 3 challenge levels, and those are always hard.
 // `alt` lists close kinds to borrow from when a pool runs short (never an unrelated idea).
 
+// Doorways levels 3–6: one clear idea each, designed by hand (doors on the left and top of the room).
+const LEFT_TOP_DOORS = ['##.##', '#...#', '....#', '#...#', '#####'];
+const DOORWAYS_HAND = [
+  { idea: { en: 'Walk in one door and out the other', ar: 'فوت من باب واطلع من الباب التاني' }, root: 'R', rooms: {
+    R: { palette: 'navy', map: ['#######', '#...=.#', '###.###', '#P.A###', '#######', '#######', '#######'] },
+    A: { palette: 'teal', map: LEFT_TOP_DOORS } } },
+  { idea: { en: 'Line the box up under the gap, then go through it', ar: 'ظبّط الصندوق تحت الفتحة، وبعدين قطّع من جوّاه' }, root: 'R', rooms: {
+    R: { palette: 'navy', map: ['#######', '#=...##', '####.##', '#PA..##', '#######', '#######', '#######'] },
+    A: { palette: 'teal', map: LEFT_TOP_DOORS } } },
+  { idea: { en: 'Boxes use doors too: send the yellow box through the room', ar: 'الصناديق كمان بتقطع من الأبواب: مرّق الصندوق الأصفر من جوّا الغرفة' }, root: 'R', rooms: {
+    R: { palette: 'navy', map: ['######', '####_#', '####.#', '#P.bA#', '######', '######'] },
+    A: { palette: 'teal', map: LEFT_TOP_DOORS } } },
+  { idea: { en: 'Park the yellow box first, so the room stops on its spot', ar: 'حط الصندوق الأصفر أول، عشان الغرفة توقف على مكانها' }, root: 'R', rooms: {
+    R: { palette: 'navy', map: ['#######', '#######', '#######', '#PA_.##', '#...b##', '###..##', '#######'] },
+    A: { palette: 'teal', map: ['#####', '#...#', '....#', '#.=.#', '#####'] } } }
+];
+
 const BANDS = { easy: [22, 46], medium: [38, 64], hard: [55, 92] };
 const CHALLENGE_BAND = [72, 140];
 const CHALLENGES = 3;
 
 const WORLDS = [
   { tier: 'easy', main: 5, tut: 'first', kinds: ['push'], alt: [] },
-  { tier: 'easy', main: 12, tut: 'enter', kinds: ['doorway'], alt: [] },
+  { tier: 'easy', main: 12, tut: 'enter', kinds: ['doorway'], alt: [], hand: { at: 2, levels: DOORWAYS_HAND } },
   { tier: 'medium', main: 12, kinds: ['pocket'], alt: ['unpack'] },
   { tier: 'medium', main: 12, tut: 'carry', kinds: ['carry'], alt: [] },
   { tier: 'medium', main: 12, kinds: ['unpack'], alt: ['pocket'] },
   { tier: 'medium', main: 12, tut: 'nest', kinds: ['nest2'], alt: [] },
   { tier: 'hard', main: 12, kinds: ['roomgoal'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['deep3'], alt: [] },
+  { tier: 'hard', main: 10, kinds: ['deep3'], alt: [] },
   { tier: 'hard', main: 12, tut: 'loop', kinds: ['self'], alt: [] },
   { tier: 'hard', main: 12, kinds: ['holes'], alt: [] },
   { tier: 'hard', main: 12, kinds: ['crumble'], alt: [] },
@@ -152,7 +169,7 @@ function ideaFor(def) {
     st = res.state;
   }
   if (!found.length) return null;
-  const best = found.reduce((a, b) => (b[0] < a[0] ? b : a));
+  const best = found.reduce((a, b) => (b[0] <= a[0] ? b : a)); // same importance: the latest one, where things finally end up
   const [, type, a, b] = best;
   const MAKE = {
     roomInRoom: () => [`The ${room(a, 'en')} has to go inside the ${room(b, 'en')}`, `${room(a, 'ar')} لازم يفوت جوّا ${room(b, 'ar')}`],
@@ -207,10 +224,18 @@ WORLDS.forEach((W, w) => {
   }
   for (const p of picked) list.push(p);
   for (const c of challenges) list.push(Object.assign(c, { challenge: true }));
+  // hand-made levels take fixed places in the world
+  if (W.hand) {
+    list.splice(W.hand.at, W.hand.levels.length, ...W.hand.levels.map((h) => {
+      const def = JSON.parse(JSON.stringify(h));
+      const a = analyze(def);
+      return { def: Object.assign(def, { sol: a.sol }), m: { moves: a.moves, score: 0, unique: a.unique }, kind: 'hand' };
+    }));
+  }
   list.forEach((x, n) => {
     const d = x.def;
     if (n > 0) { delete d.name; delete d.tip; }
-    d.idea = ideaFor(d);
+    d.idea = d.idea || ideaFor(d);
     levels.push(Object.assign(x, { w, n }));
   });
 });

@@ -250,7 +250,7 @@
     G.moves = 0; G.undos = 0; G.depth = 0; G.maxDepth = 0;
     G.anim = null; G.queue = []; G.won = false; G.look = 1;
     G.focus = Engine.player(G.st).room;
-    G.hint = null; G.hintLeft = 0; G.search = (G.search || 0) + 1;
+    G.hint = null; G.hintLeft = 0; G.ideaShown = false; G.search = (G.search || 0) + 1;
     // states along the stored solution, so a hint is instant while the player is on it
     G.solAt = new Map();
     let st = G.init;
@@ -288,7 +288,16 @@
   function showHintText(msg) {
     const el = $('hint');
     el.textContent = '';
+    const idea = !msg && !(G.hint && G.hint.length) && G.ideaShown;
+    el.classList.toggle('idea', !!idea);
+    $('play').classList.toggle('has-idea', !!idea);
     if (msg) { el.textContent = msg; return; }
+    if (idea) {
+      const label = document.createElement('b'); label.textContent = S.hintIdea;
+      el.appendChild(label);
+      el.appendChild(document.createTextNode(loc(G.def.idea) || S.ideaNone));
+      return;
+    }
     if (G.hint && G.hint.length) {
       el.appendChild(document.createTextNode(S.hintFollow));
       const arr = document.createElement('span'); arr.className = 'hint-arrows';
@@ -366,10 +375,14 @@
 
   function boardRect() { return { x: 0, y: 0, s: renderer.size }; }
 
+  // the room whose exits should glow: the one you are in, unless it is a plain main room
+  function exitsRoom() {
+    return G.focus !== G.L.root || Engine.roomObject(G.st, G.focus) ? G.focus : null;
+  }
+
   function draw(opts) {
     if (!renderer.size || !G.L) return;
-    const inside = G.focus !== G.L.root || !!Engine.roomObject(G.st, G.focus);
-    renderer.render(G.st, G.L, G.focus, boardRect(), Object.assign({ look: G.look, doors: inside ? G.focus : null, face: face() }, opts || {}));
+    renderer.render(G.st, G.L, G.focus, boardRect(), Object.assign({ look: G.look, doors: exitsRoom(), face: face() }, opts || {}));
     if (G.hint && G.hint.length && !G.anim) {
       const p = Engine.player(G.st);
       renderer.drawHint(Render.cellRect(G.L, G.focus, boardRect(), p.x, p.y), G.hint[0]);
@@ -499,7 +512,8 @@
         }
       }
       renderer.render(a.to, G.L, a.anchor, cur, {
-        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay
+        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay,
+        doors: a.zoom ? null : exitsRoom(), face: face()
       });
     }
     if (t < 1) { requestAnimationFrame(frame); return; }
@@ -742,7 +756,7 @@
       progress.points -= IDEA_COST; G.ideaShown = true; saveProgress(); updatePoints();
     }
     Sfx.play('hint');
-    showHintText(loc(G.def.idea) || S.ideaNone);
+    showHintText();
   }
 
   function askHint() {

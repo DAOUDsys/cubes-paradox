@@ -7,7 +7,7 @@
 <p align="center">
   A puzzle game about boxes that hold whole rooms.<br>
   Push boxes, walk inside them, and find your way back out.<br>
-  <b>200+ levels · 14 worlds · a daily puzzle · English &amp; Arabic · fully offline</b>
+  <b>193 levels · 14 worlds · a daily puzzle · English &amp; Arabic · fully offline</b>
 </p>
 
 <p align="center">
@@ -94,7 +94,7 @@ The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
 Levels are generated, solved and picked by scripts in `tools/`:
 
 - `npm run gen` — generates candidate levels for 5 minutes into `tools/out/`
-- `npm run curate` — picks the 350 levels by world and difficulty and writes `www/js/levels.js`
+- `npm run curate` — picks the levels by world and difficulty and writes `www/js/levels.js` and `www/js/daily.js`
 - `npm run solve` — checks that every level can be won and that its stored solution (used by hints) works
 
 ## Project layout
@@ -105,7 +105,7 @@ Levels are generated, solved and picked by scripts in `tools/`:
 | `www/js/render.js` | Canvas renderer, draws rooms inside rooms recursively |
 | `www/js/app.js` | Screens, input, animation, progress, hints |
 | `www/js/i18n.js` | English and Arabic text, world names |
-| `www/js/levels.js` | The 350 levels |
+| `www/js/levels.js`, `daily.js` | The 193 world levels and 90 daily puzzles |
 | `tools/` | Level generator, picker and solver |
 | `store/` | Store listing text, icon, banner and screenshots |
 | `android/` | Capacitor Android project |

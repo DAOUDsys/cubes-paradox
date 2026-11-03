@@ -9,13 +9,13 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.1.0 (version code 3)
+1.1.1 (version code 4)
 
 ## Category
 Games › Puzzle
 
 ## Short description (max 80 characters)
-Push boxes, walk inside them, rooms inside rooms. 200+ puzzles, daily too.
+Push boxes, walk inside them, rooms inside rooms. 193 levels + daily puzzles.
 
 ## Full description
 
@@ -52,8 +52,8 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • English and Arabic (full right-to-left layout)
 
-## What's new (1.1.0)
-A new look (solid olive rooms), 14 new worlds built on rooms inside rooms, harder levels with no wasted space, a daily puzzle, stars, achievements, two-step hints, music, vibration, and resume.
+## What's new (1.1.1)
+A new icon, a harder Deep Dive where a box must travel through the rooms, new Doorways levels, clearer exits and a clearer idea hint. 1.1.0 brought the olive look, 14 worlds, the daily puzzle, stars, achievements and two-step hints.
 
 ## Tags / keywords
 puzzle, logic, sokoban-style, box pushing, recursive, rooms in rooms, daily puzzle, brain teaser, offline, no ads
@@ -76,6 +76,6 @@ The game collects no personal data. Progress, points and language are saved only
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.1.0.apk` | — | The app to upload (or the .aab for Google Play) |
+| `../CubesParadox-1.1.1.apk` | — | The app to upload (or the .aab for Google Play) |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

@@ -36,7 +36,7 @@
     ice: 'rgba(178,232,255,0.20)', iceLine: 'rgba(220,245,255,0.55)',
     plate: '#E8C547', plateOn: '#3CC9B0', gate: '#E8C547', arrow: 'rgba(236,238,245,0.55)',
     pit: '#0D0F08', pitRim: 'rgba(0,0,0,0.45)', patch: 'rgba(255,255,230,0.07)', crack: 'rgba(14,16,8,0.75)',
-    door: 'rgba(255,248,210,0.16)', doorLine: 'rgba(255,248,210,0.55)',
+    doorLine: 'rgba(255,248,210,0.7)',
     boxColors: { teal: ['#4FB9A0', '#2E7E6B'], violet: ['#9B8CFF', '#6F62C9'] }
   };
   const PAD = 0.035;     // room frame thickness, as a share of the room's size
@@ -209,12 +209,15 @@
           ctx.fillStyle = P.floor; ctx.fill();
         }
         if (cs > 4) this.drawTerrain(R, x, y, cx, cy, cs, open, st, L, key);
-        // the room you are inside: its gaps glow, so the way out is easy to find
+        // the room you are inside: its gaps show an arrow pointing out, so the way out is easy to find
         if (o.doors === key && depth === 0 && cs > 8 && (edgeL || edgeR || edgeT || edgeB)) {
-          const g = cs * 0.1;
-          rr(ctx, cx + g, cy + g, cs - 2 * g, cs - 2 * g, cs * 0.22);
-          ctx.fillStyle = C.door; ctx.fill();
-          ctx.setLineDash([cs * 0.12, cs * 0.09]); ctx.strokeStyle = C.doorLine; ctx.lineWidth = cs * 0.045; ctx.stroke(); ctx.setLineDash([]);
+          ctx.save();
+          ctx.translate(cx + cs / 2, cy + cs / 2);
+          ctx.rotate((edgeT ? 0 : edgeR ? 1 : edgeB ? 2 : 3) * Math.PI / 2);
+          ctx.beginPath();
+          ctx.moveTo(-cs * 0.2, cs * 0.08); ctx.lineTo(0, -cs * 0.12); ctx.lineTo(cs * 0.2, cs * 0.08);
+          ctx.strokeStyle = C.doorLine; ctx.lineWidth = cs * 0.08; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+          ctx.restore();
         }
       }
     }
