@@ -33,7 +33,7 @@
 
   const STORE = 'cubesparadox.progress.v1';
   function loadProgress() {
-    const base = { done: [], skipped: [], points: START_POINTS, lang: 'en', sound: true, music: false, vibrate: true,
+    const base = { done: [], skipped: [], points: START_POINTS, lang: 'en', sound: true, vibrate: true,
       best: {}, ach: [], stats: { clean: 0, challenges: 0, hinted: {} }, daily: { last: -1, streak: 0, best: 0, done: [] }, resume: null };
     try {
       const v = JSON.parse(localStorage.getItem(STORE));
@@ -75,7 +75,7 @@
   const curChallenge = () => G.daily || isChallenge(G.index);
   const totalStars = () => Object.values(progress.best).reduce((n, b) => n + (b.s || 0), 0);
   function dailyDate() {
-    try { return new Date().toLocaleDateString(progress.lang === 'ar' ? 'ar' : 'en', { day: 'numeric', month: 'long' }); } catch (e) { return ''; }
+    try { return new Date().toLocaleDateString(progress.lang, { day: 'numeric', month: 'long' }); } catch (e) { return ''; }
   }
   function haptic(kind) {
     if (!progress.vibrate) return;
@@ -95,7 +95,8 @@
     if (vars) for (const k of Object.keys(vars)) s = s.replace('{' + k + '}', vars[k]);
     return s;
   }
-  const loc = (v) => (v && typeof v === 'object' ? (v[progress.lang] || v.en) : v || '');
+  // level texts come in English and Arabic; the other languages look them up by their English text
+  const loc = (v) => (v && typeof v === 'object' ? (v[progress.lang] || ((I18N.LEVEL_TEXT || {})[v.en] || {})[progress.lang] || v.en) : v || '');
   function roomName(L, key) {
     const p = L.rooms[key].palette;
     return key === L.root && p === 'violet' ? S.rooms.violetRoot : (S.rooms[p] || S.rooms.navy);
@@ -689,7 +690,7 @@
     snd.setAttribute('aria-checked', progress.sound ? 'true' : 'false');
     snd.classList.toggle('on', !!progress.sound);
     $('set-sound-state').textContent = progress.sound ? S.on : S.off;
-    for (const [id, on] of [['set-music', progress.music], ['set-vibrate', progress.vibrate]]) {
+    for (const [id, on] of [['set-vibrate', progress.vibrate]]) {
       $(id).setAttribute('aria-checked', on ? 'true' : 'false');
       $(id).classList.toggle('on', !!on);
       $(id + '-state').textContent = on ? S.on : S.off;
@@ -937,12 +938,18 @@
   $('set-sound').addEventListener('click', () => {
     progress.sound = !progress.sound;
     Sfx.setEnabled(progress.sound);
-  // music can only start after a touch
-  if (progress.music) window.addEventListener('pointerdown', function first() { Music.start(); window.removeEventListener('pointerdown', first); });
     saveProgress();
     renderSettings();
     Sfx.play('tap');
   });
+  // one button per language in Settings
+  for (const [code, name] of I18N.LANGS) {
+    const b = document.createElement('button');
+    b.dataset.lang = code;
+    b.lang = code;
+    b.textContent = name;
+    $('lang-list').appendChild(b);
+  }
   for (const b of document.querySelectorAll('[data-lang]')) {
     b.addEventListener('click', () => {
       progress.lang = b.dataset.lang;
@@ -963,10 +970,6 @@
   $('hint-idea').addEventListener('click', askIdea);
   $('hint-moves').addEventListener('click', askHint);
   $('hint-close').addEventListener('click', () => { $('hint-sheet').hidden = true; });
-  $('set-music').addEventListener('click', () => {
-    progress.music = !progress.music; saveProgress(); renderSettings();
-    if (progress.music) Music.start(); else Music.stop();
-  });
   $('set-vibrate').addEventListener('click', () => {
     progress.vibrate = !progress.vibrate; saveProgress(); renderSettings(); haptic('goal');
   });
@@ -1110,8 +1113,6 @@
   window.__matryo = { G, startLevel, input, show, restart, askHint, progress, jump, today };
 
   Sfx.setEnabled(progress.sound);
-  // music can only start after a touch
-  if (progress.music) window.addEventListener('pointerdown', function first() { Music.start(); window.removeEventListener('pointerdown', first); });
   applyLang();
   show('main');
 })();

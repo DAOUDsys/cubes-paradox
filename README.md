@@ -7,7 +7,7 @@
 <p align="center">
   A puzzle game about boxes that hold whole rooms.<br>
   Push boxes, walk inside them, and find your way back out.<br>
-  <b>193 levels · 14 worlds · a daily puzzle · English &amp; Arabic · fully offline</b>
+  <b>193 levels · 14 worlds · a daily puzzle · 7 languages · fully offline</b>
 </p>
 
 <p align="center">
@@ -65,9 +65,9 @@ The last three levels of each world are optional challenges, and they are always
 - Stars for solving in the fewest moves, 12 achievements, and a daily puzzle with a streak
 - Two-step hints: first the idea in one sentence, then your next moves — from wherever you are
 - Unlimited undo (or double-tap the board) and instant restart; come back to a level right where you left it
-- Sound effects and calm music made on the fly, vibration on Android
+- Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
-- English and Arabic with full right-to-left layout
+- 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
 - No ads, no accounts, no data collected — progress stays on the device
 
 ## Run it
@@ -106,6 +106,7 @@ Levels are generated, solved and picked by scripts in `tools/`:
 | `www/js/planets.js` | The planets on the world map, the player and logo as SVG |
 | `www/js/app.js` | Screens, input, animation, progress, hints |
 | `www/js/i18n.js` | English and Arabic text, world names |
+| `www/js/i18n-langs.js` | Spanish, French, German, Portuguese and Turkish |
 | `www/js/levels.js`, `daily.js` | The 193 world levels and 90 daily puzzles |
 | `tools/` | Level generator, picker and solver |
 | `store/` | Store listing text, icon, banner and screenshots |

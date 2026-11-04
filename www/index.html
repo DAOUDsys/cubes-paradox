@@ -139,20 +139,13 @@
       <span class="set-label"><span data-t="sound"></span><small id="set-sound-state" class="muted"></small></span>
       <span class="switch" aria-hidden="true"><span></span></span>
     </button>
-    <button id="set-music" class="set-row" role="switch" aria-checked="false">
-      <span class="set-label"><span data-t="music"></span><small id="set-music-state" class="muted"></small></span>
-      <span class="switch" aria-hidden="true"><span></span></span>
-    </button>
     <button id="set-vibrate" class="set-row" role="switch" aria-checked="true">
       <span class="set-label"><span data-t="vibration"></span><small id="set-vibrate-state" class="muted"></small></span>
       <span class="switch" aria-hidden="true"><span></span></span>
     </button>
-    <div class="set-row static">
+    <div class="set-row static lang-row">
       <span class="set-label"><span data-t="language"></span></span>
-      <span class="seg" role="group" data-t-label="language">
-        <button data-lang="en">English</button>
-        <button data-lang="ar" lang="ar">العربية</button>
-      </span>
+      <div id="lang-list" class="lang-grid" role="group" data-t-label="language"></div>
     </div>
   </div>
 </section>
@@ -208,6 +201,7 @@
 </div>
 
 <script src="js/i18n.js"></script>
+<script src="js/i18n-langs.js"></script>
 <script src="js/sfx.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/levels.js"></script>

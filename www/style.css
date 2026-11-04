@@ -196,9 +196,10 @@ h1, h2, p { margin: 0; }
 .set-row.on .switch { background: #88994E; }
 .set-row.on .switch span { background: #FFFFFF; transform: translateX(22px); }
 [dir="rtl"] .set-row.on .switch span { transform: translateX(-22px); }
-.seg { display: flex; padding: 4px; gap: 4px; border-radius: 14px; background: #1C1F12; }
-.seg button { height: 40px; padding: 0 14px; border-radius: 10px; border: none; background: transparent; color: var(--muted); font-size: 15px; font-weight: 500; }
-.seg button.on { background: #88994E; color: #1C1F12; }
+.lang-row { flex-direction: column; align-items: stretch; gap: 12px; padding-top: 16px; padding-bottom: 16px; }
+.lang-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.lang-grid button { height: 44px; border-radius: 12px; border: none; background: #1C1F12; color: var(--muted); font-size: 15px; font-weight: 500; }
+.lang-grid button.on { background: #88994E; color: #1C1F12; }
 
 /* ---------- stars, daily, map, world, achievements, hints, toast ---------- */
 .star { color: #F0C24B; font-size: 16px; }
