@@ -328,6 +328,8 @@
 
   const renderer = new Render.Renderer($('board'));
   const G = {};
+  // the sprout on the player's head sways for a moment after each step
+  const SWAY_MS = 800;
 
   function startLevel(i) {
     G.daily = i === 'daily';
@@ -340,7 +342,7 @@
     G.st = Engine.cloneState(parsed.state);
     G.history = [];
     G.moves = 0; G.undos = 0; G.depth = 0; G.maxDepth = 0;
-    G.anim = null; G.queue = []; G.won = false; G.look = 1;
+    G.anim = null; G.queue = []; G.won = false; G.look = 1; G.stepAt = -1e9;
     G.focus = Engine.player(G.st).room;
     G.hint = null; G.hintLeft = 0; G.ideaShown = false; G.search = (G.search || 0) + 1;
     // states along the stored solution, so a hint is instant while the player is on it
@@ -479,7 +481,7 @@
   function draw(opts) {
     if (!renderer.size || !G.L) return;
     const R = boardRect(G.st, G.focus);
-    renderer.render(G.st, G.L, G.focus, R, Object.assign({ look: G.look, doors: exitsRoom(), hole: R, peek: true, face: face() }, opts || {}));
+    renderer.render(G.st, G.L, G.focus, R, Object.assign({ look: G.look, doors: exitsRoom(), hole: R, peek: true, face: face(), sway: sway() }, opts || {}));
     if (G.hint && G.hint.length && !G.anim) {
       const p = Engine.player(G.st);
       renderer.drawHint(Render.cellRect(G.L, G.focus, R, p.x, p.y), G.hint[0]);
@@ -610,7 +612,7 @@
         }
       }
       renderer.render(a.to, G.L, a.anchor, cur, {
-        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay, hole: lerpRect(cur, toCur(a.Q), e), peek: !a.zoom,
+        look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay, hole: lerpRect(cur, toCur(a.Q), e), peek: !a.zoom, sway: sway(),
         doors: a.zoom ? null : exitsRoom(), face: face()
       });
     }
@@ -620,6 +622,24 @@
     draw();
     if (done) done();
     if (!G.anim) pump();
+  }
+
+  // a step inside one room sets the sprout swaying
+  function startSway(events, dir) {
+    if (events.length) return;
+    G.stepAt = performance.now();
+    G.stepDir = dir;
+    if (!G.swaying) { G.swaying = true; requestAnimationFrame(swayLoop); }
+  }
+  function sway() {
+    const age = performance.now() - G.stepAt;
+    return age < SWAY_MS ? { dir: G.stepDir, age } : null;
+  }
+  // keeps drawing while the sprout settles after the step itself is done
+  function swayLoop() {
+    const on = screen === 'play' && sway();
+    if (!G.anim && screen === 'play') draw();
+    if (on) requestAnimationFrame(swayLoop); else G.swaying = false;
   }
 
   function run(anim, after) {
@@ -708,6 +728,7 @@
     G.maxDepth = Math.max(G.maxDepth, G.depth);
     G.moves++;
     const anim = transition(from, res.state, res.events);
+    startSway(res.events, dir);
     G.st = res.state;
     G.focus = Engine.player(G.st).room;
     updateHud();

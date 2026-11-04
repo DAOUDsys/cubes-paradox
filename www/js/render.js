@@ -351,10 +351,18 @@
     // player: a coral block with a sprout on its head
     const b = cs * 0.13, w = cs - 2 * b, top = cell.y + cs * 0.24, h = cs * 0.68, mid = cell.x + cs / 2;
     if (cs > 6) {
+      ctx.save();
+      if (o.sway) {
+        // the sprout sways after each step and settles
+        const [sdx] = Engine.DIRS[o.sway.dir];
+        const angle = (sdx ? -sdx : 0.6) * 0.8 * Math.exp(-o.sway.age / 260) * Math.cos(o.sway.age / 70);
+        ctx.translate(mid, top + cs * 0.02); ctx.rotate(angle); ctx.translate(-mid, -(top + cs * 0.02));
+      }
       ctx.beginPath(); ctx.moveTo(mid, top + cs * 0.02); ctx.lineTo(mid, top - cs * 0.13);
       ctx.strokeStyle = C.stem; ctx.lineWidth = cs * 0.045; ctx.lineCap = 'round'; ctx.stroke();
       ctx.beginPath(); ctx.ellipse(mid - cs * 0.1, top - cs * 0.17, cs * 0.105, cs * 0.055, 0.5, 0, Math.PI * 2); ctx.fillStyle = C.leaf; ctx.fill();
       ctx.beginPath(); ctx.ellipse(mid + cs * 0.1, top - cs * 0.17, cs * 0.105, cs * 0.055, -0.5, 0, Math.PI * 2); ctx.fillStyle = C.leafDark; ctx.fill();
+      ctx.restore();
     }
     if (cs > 8) { rr(ctx, cell.x + b, top + cs * 0.08, w, h, cs * 0.24); ctx.fillStyle = C.playerShadow; ctx.fill(); }
     rr(ctx, cell.x + b, top, w, h, cs * 0.24); ctx.fillStyle = C.player; ctx.fill(); gloss(ctx, top, h);

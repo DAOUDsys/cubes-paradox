@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.2.0 (version code 5)
+1.2.1 (version code 6)
 
 ## Category
 Games › Puzzle
@@ -52,8 +52,8 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • English and Arabic (full right-to-left layout)
 
-## What's new (1.2.0)
-Meet the new hero: a little block with a sprout on its head. The world map is now a trail of planets, and inside each planet the levels are islands and the challenges are moons. When you are inside a box you can now see the bigger room around it, and what stands next to the box. New icon, cleaner exits, and a fixed Cancel button in the hint menu.
+## What's new (1.2.1)
+The sprout on the hero's head now sways after each step. The game fits small screens and split screen: the buttons always stay on screen, the board uses the space it has, and on short, wide windows the board sits beside the controls. 1.2.0 brought the new hero, the planet map, and a view of the bigger room around you.
 
 ## Tags / keywords
 puzzle, logic, sokoban-style, box pushing, recursive, rooms in rooms, daily puzzle, brain teaser, offline, no ads
@@ -76,6 +76,6 @@ The game collects no personal data. Progress, points and language are saved only
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.2.0.apk` | — | The app to upload (or the .aab for Google Play) |
+| `../CubesParadox-1.2.1.apk` | — | The app to upload (or the .aab for Google Play) |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.
