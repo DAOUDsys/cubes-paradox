@@ -31,7 +31,7 @@
 <p align="center">
   <img src="store/screenshots/05-hints.png" width="200" alt="Two-step hints">
   <img src="store/screenshots/06-14-worlds-daily.png" width="200" alt="14 worlds and a daily puzzle">
-  <img src="store/screenshots/07-english-arabic.png" width="200" alt="English and Arabic">
+  <img src="store/screenshots/07-english-arabic.png" width="200" alt="Seven languages">
 </p>
 
 ## The game
