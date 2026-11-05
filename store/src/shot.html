@@ -31,8 +31,8 @@
 <script src="../../www/js/levels.js"></script>
 <script>
   const SHOTS = {
-    1: { title: 'Rooms <em style="color:#F5B83D">inside</em> rooms', sub: 'Every colored box is a whole room — some go three deep.', a: '#88994E', b: '#F5B83D', world: 7, n: 6, moves: 0 },
-    2: { title: 'Step <em style="color:#4FB9A0">inside</em>', sub: 'Push a box, or walk right into it. Then find the way out.', a: '#88994E', b: '#4FB9A0', world: 1, n: 8, untilInside: true },
+    1: { title: 'Hard. Made for <em style="color:#F5B83D">smart players</em>.', sub: 'No luck and no timers. Only your logic can solve these.', a: '#88994E', b: '#F5B83D', world: 13, n: 7, moves: 0 },
+    2: { title: '<em style="color:#4FB9A0">Sharpen</em> your thinking', sub: 'Plan ahead and think in layers: every box holds a whole room.', a: '#88994E', b: '#4FB9A0', world: 7, n: 2, moves: 29 },
     3: { title: 'A room that <em style="color:#9B8CFF">holds itself</em>', sub: 'Walk out of the room… and you walk back into it.', a: '#9B8CFF', b: '#FF7A59', world: 8, n: 5, moves: 0 },
     4: { title: 'Holes, cracks <em style="color:#F0C24B">&amp; colors</em>', sub: 'New rules in every world, always about rooms in rooms.', a: '#5A6630', b: '#F0C24B', world: 9, n: 6, moves: 0 },
     5: { title: 'Stuck? <em style="color:#FF7A59">Get a hint</em>', sub: 'First the idea in one sentence, then the moves.', a: '#88994E', b: '#F5B83D', world: 5, n: 5, moves: 4, hint: true },
@@ -71,6 +71,8 @@
 
   frame.onload = async () => {
     const W = frame.contentWindow, M = W.__matryo;
+    // the screen fade can stall in a headless render and leave the picture dim
+    W.document.head.appendChild(Object.assign(W.document.createElement('style'), { textContent: '*{animation:none!important;transition:none!important}' }));
     await wait(300);
     if (S.levels) {
       M.show('levels');

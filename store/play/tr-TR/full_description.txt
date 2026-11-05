@@ -21,6 +21,8 @@ Günün bulmacasını çöz ve serini sürdür.
 YILDIZLAR, BAŞARIMLAR VE İPUÇLARI
 En az hamleyle çözüp üç yıldız al, 12 başarımı aç. Takıldın mı? Fikri tek cümleyle satın al, gerekirse sonraki hamlelerini de. İstediğin kadar geri al ya da oyun alanına iki kez dokun.
 
+İlk 6 dünya ücretsizdir. Tek bir uygulama içi satın alma diğer 8 dünyayı ve 110 bölümü açar. Günün bulmacası ücretsiz kalır.
+
 TELEFON İÇİN YAPILDI
 • Hareket etmek için kaydır, tek el yeter
 • Küçük ekranlarda ve bölünmüş ekranda çalışır

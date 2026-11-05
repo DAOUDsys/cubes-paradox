@@ -6,12 +6,12 @@
 
 | الحقل | الملف |
 |---|---|
-| ملف الرفع | `CubesParadox-1.3.1.aab` (بمجلد المشروع، مش على الريبو) |
+| ملف الرفع | `CubesParadox-1.4.0.aab` (بمجلد المشروع، مش على الريبو) |
 | App icon | `store/icon-512.png` |
 | Feature graphic | `store/feature-graphic-1024x500.png` |
 | Phone screenshots | `store/screenshots/` (7 صور، 1080×1920) |
 | اسم اللعبة والوصف باللغات السبعة | `store/play/<اللغة>/` |
-| Privacy policy | `https://github.com/DAOUDsys/cubes-paradox/blob/main/PRIVACY.md` |
+| Privacy policy | `https://daoudsys.github.io/cubes-paradox-privacy/` |
 
 ## 1. الحساب
 
@@ -19,20 +19,26 @@
 - **انتبه:** الحساب الشخصي الجديد ما بينشر مباشرة. لازم أول تعمل **closed test مع 12 شخص على الأقل، مشتركين 14 يوم ورا بعض**، وبعدها بتقدم طلب للنشر، والمراجعة عادة 7 أيام أو أقل.
 - إذا طلع حسابك أقدم من 13 نوفمبر 2023، أو حساب شركة، هاد الشرط ما بينطبق عليك.
 
+## حساب الدفع (عشان تستلم المصاري)
+
+- من Play Console: Setup، ثم Payments profile. أنشئ ملف دفع واربطه بحساب بنكي.
+- بحسب [جدول جوجل](https://support.google.com/googleplay/android-developer/answer/9306917?hl=en) فلسطين مدعومة لاستلام الأرباح، وعملتها الدولار. راجع الجدول حسب البلد اللي مسجل فيه.
+- **بلد الحساب ما بيتغير بعد التسجيل**، فاختاره صح من الأول.
+
 ## 2. إنشاء التطبيق
 
 - App name: `Cubes Paradox`
 - Default language: `English (United States)`
 - App or game: `Game`
-- Free or paid: `Free` (ما بتقدر ترجع تحوّله لمدفوع بعدين)
+- Free or paid: `Free`. اللعبة مجانية التنزيل، والدفع من جوا اللعبة. (ما بتقدر تغيّرها لـ Paid بعدين)
 
-## 3. مفتاح التوقيع (قرار مهم، مرة وحدة وما بينعكس)
+## 3. مفتاح التوقيع
 
-لما ترفع أول ملف، جوجل بتسألك عن Play App Signing. **بنصح تختار رفع مفتاحك الحالي** (Use a different key، ثم Export and upload a key from Java keystore) بدل مفتاح تولّده جوجل.
+لما ترفع أول ملف، جوجل بتسألك عن Play App Signing. اختار **Use Google-generated key**، وهو الخيار الأبسط.
 
-- **السبب:** هيك نسخة جوجل بلاي ونسخة جيت هب وOrion بيكون إلهم نفس التوقيع، وبتتحدث وحدة فوق التانية بدون ما اللاعب يمسح اللعبة ويخسر تقدمه.
-- **إذا خليت جوجل تولّد المفتاح:** اللي مثبّت من جيت هب أو Orion لازم يمسح اللعبة ويخسر تقدمه عشان ينتقل لجوجل بلاي.
-- المفتاح بمجلد `keys/`. **خذ منه نسخة احتياطية برا الكمبيوتر، مع كلمة السر بملف `android/keystore.properties`.** إذا ضاع ما بتقدر تحدّث نسخة جيت هب أبداً. وما ترفعه على الريبو.
+- الملف موقّع بمفتاحك بمجلد `keys/`، وهاد بيصير مفتاح الرفع (upload key)، وجوجل بتوقّع النسخة النهائية بمفتاحها.
+- **انتبه:** اللي مثبّت اللعبة من Orion أو جيت هب لازم يمسحها ويخسر تقدمه عشان ينزلها من جوجل بلاي.
+- خذ نسخة احتياطية من `keys/` ومن `android/keystore.properties` برا الكمبيوتر. إذا ضاعوا، بتقدر تطلب من جوجل مفتاح رفع جديد، بس بياخد وقت. وما ترفعهم على أي ريبو.
 
 ## 4. App content (الأجوبة الجاهزة)
 
@@ -43,28 +49,40 @@
 | App access | All functionality is available without special access |
 | Advertising ID | No |
 | News / Government / Financial / Health apps | No |
-| Data safety: collect or share any user data? | **No** |
+| Data safety: collect or share any user data? | **No** (الدفع كله عند جوجل، واللعبة ما بتبعت إشي لحدا. راجع نص الأسئلة وقت التعبئة) |
 | Target audience | **13+** (شوف الملاحظة تحت) |
 
 **Target audience:** إذا اخترت أعمار تحت 13، بتنطبق عليك سياسة Families وبتصير المراجعة أشد. اللعبة ما بتجمع بيانات، فاختيار كل الأعمار ممكن كمان، بس 13+ أبسط. وإذا جوجل سألت إذا اللعبة بتجذب الأطفال، جاوب بصدق: الشخصية لطيفة، بس الألغاز صعبة ومش معمولة للأطفال.
 
-**Content rating (استبيان IARC):** الفئة `Game`. الجواب **No** على كلشي: عنف، جنس، ألفاظ، مخدرات، مقامرة، تفاعل بين المستخدمين، مشاركة الموقع، مشتريات داخل التطبيق.
+**Content rating (استبيان IARC):** الفئة `Game`. الجواب **No** على كلشي: عنف، جنس، ألفاظ، مخدرات، مقامرة، تفاعل بين المستخدمين، مشاركة الموقع. بس **In-app purchases: Yes**.
 
 ## 5. Store listing
 
 - Category: `Games` ثم `Puzzle`
 - Contact email: **مطلوب وبيبين للناس**، فاختار إيميل ما عندك مشكلة ينعرض
-- Website: `https://github.com/DAOUDsys/cubes-paradox`
+- Website: خليه فاضي (الريبو خاص)
 - كل لغة: انسخ من `store/play/<اللغة>/`:
   - `title.txt` إلى App name
   - `short_description.txt` إلى Short description
   - `full_description.txt` إلى Full description
 - ضيف اللغات من Manage translations: `ar`, `es-ES`, `fr-FR`, `de-DE`, `pt-BR`, `tr-TR`
 
+## منتج الشراء (لازم يكون اسمه بالضبط هيك)
+
+بعد ما ترفع أول ملف AAB (جوجل ما بتسمح بإنشاء منتجات قبل هيك):
+
+1. Monetize with Play، ثم Products، ثم One-time products، ثم Create.
+2. Product ID: **`full_game`**. لازم يطابق الكود حرفياً، وما بيتغير بعدين.
+3. الاسم والوصف: `Full game` و`Unlocks worlds 7 to 14`.
+4. حدد السعر وفعّل المنتج (Activate). السعر بيطلع لحاله جوا اللعبة، فبتقدر تغيّره بدون تحديث.
+5. **جرّب الشراء:** Setup، ثم License testing، وضيف إيميلك وإيميلات المختبرين. هدول بيشتروا بدون ما ينخصم منهم إشي.
+
+**لازم تجرب الشراء قبل النشر.** هاد الجزء ما بينفحص إلا من نسخة منزّلة من جوجل بلاي مع منتج مفعّل.
+
 ## 6. الاختبار والنشر
 
 1. Testing، ثم Closed testing، ثم Create new release.
-2. ارفع `CubesParadox-1.3.1.aab`.
+2. ارفع `CubesParadox-1.4.0.aab`.
 3. Release notes: انسخ من `whats_new.txt` لكل لغة.
 4. ضيف إيميلات الـ 12 مختبر، وابعتلهم رابط الاشتراك. كل واحد لازم يضل مشترك **14 يوم ورا بعض**. خذ أكتر من 12 احتياط، لأن اللي بينسحب ممكن يخرّب العدّ.
 5. بعد 14 يوم: Dashboard، ثم Apply for production.
@@ -72,4 +90,4 @@
 
 ## التحديثات الجاية
 
-كل ملف بترفعه لازم يكون `versionCode` تبعه أكبر من اللي قبله (بملف `android/app/build.gradle`). استعمل نفس الرقم لجيت هب وجوجل بلاي.
+كل ملف بترفعه لازم يكون `versionCode` تبعه أكبر من اللي قبله (بملف `android/app/build.gradle`). 

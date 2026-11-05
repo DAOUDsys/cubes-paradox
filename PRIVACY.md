@@ -15,6 +15,7 @@ The game saves these things on your device so that it can work:
 - your progress, stars, points, achievements and daily puzzle streak
 - the level you are in the middle of, so you can come back to it
 - your settings: sound, vibration and language
+- whether you have bought the full game
 
 This data stays on your device. The developer cannot see it. Uninstalling the game or clearing its data deletes it.
 
@@ -25,11 +26,16 @@ If your device backs up its apps, Android may include the game's saved progress 
 ## Permissions
 
 - **Vibration**, for optional feedback while you play. You can turn it off in the game's settings.
-- **Internet**, which is included by the framework the game is built on. The game itself does not use it: it works fully offline and sends nothing.
+- **Internet**, which is included by the framework the game is built on. The game itself sends nothing and works offline.
+- **Billing**, so that Google Play can handle the in-app purchase.
+
+## Purchases
+
+The game offers one in-app purchase, which unlocks the full game. Google Play handles the payment under its own terms and privacy policy. The developer never sees your payment details. The game only asks Google Play whether the purchase was made.
 
 ## Third parties
 
-The game contains no third-party advertising, analytics or tracking code, and no data is shared with anyone.
+The game contains no third-party advertising, analytics or tracking code, and no data is shared with anyone. Google Play is used only for the purchase described above.
 
 ## Children
 
@@ -41,4 +47,4 @@ If this policy changes, the new version will be published at this same address w
 
 ## Contact
 
-For questions about this policy, open an issue at <https://github.com/DAOUDsys/cubes-paradox/issues>.
+For questions about this policy, open an issue at <https://github.com/DAOUDsys/cubes-paradox-privacy/issues>.

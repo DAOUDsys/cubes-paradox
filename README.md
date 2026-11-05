@@ -11,20 +11,14 @@
 </p>
 
 <p align="center">
-  <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox"><img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="60"></a>
-  &nbsp;
-  <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
-</p>
-
-<p align="center">
   <img src="store/demo.gif" width="320" alt="Pushing the green box into the purple box, then walking inside it">
 </p>
 
 ## Screenshots
 
 <p align="center">
-  <img src="store/screenshots/01-rooms-inside-rooms.png" width="200" alt="Rooms inside rooms">
-  <img src="store/screenshots/02-step-inside.png" width="200" alt="Step inside a box">
+  <img src="store/screenshots/01-rooms-inside-rooms.png" width="200" alt="Hard, made for smart players">
+  <img src="store/screenshots/02-step-inside.png" width="200" alt="Sharpen your thinking">
   <img src="store/screenshots/03-room-holds-itself.png" width="200" alt="A room that holds itself">
   <img src="store/screenshots/04-holes-cracks-colors.png" width="200" alt="Holes, cracks and colors">
 </p>
@@ -68,7 +62,8 @@ The last three levels of each world are optional challenges, and they are always
 - Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
 - 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
-- No ads, no accounts, no data collected — progress stays on the device ([privacy policy](PRIVACY.md))
+- The first 6 worlds are free; one purchase on Google Play unlocks the other 8
+- No ads, no accounts, no data collected — progress stays on the device ([privacy policy](https://daoudsys.github.io/cubes-paradox-privacy/))
 
 ## Run it
 

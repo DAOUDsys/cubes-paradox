@@ -178,6 +178,10 @@ h1, h2, p { margin: 0; }
 .sheet .btn-primary, .sheet .btn-secondary { flex: 1; height: 56px; font-size: 17px; }
 .sheet { max-height: 100%; overflow-y: auto; }
 .privacy-body { font-size: 15px; line-height: 1.6; color: var(--soft); }
+.full-note { font-size: 14px; line-height: 1.5; color: var(--amber); text-align: center; }
+.full-note:empty { display: none; }
+.sheet > .btn-primary { flex: none; }
+.btn-primary:disabled { opacity: .45; }
 .privacy-link { display: flex; align-items: center; justify-content: center; min-height: 44px; font-size: 15px; font-weight: 500; color: var(--amber); }
 .sheet > .btn-secondary { flex: none; } /* directly in the column sheet, flex: 1 would collapse its height */
 
@@ -268,6 +272,7 @@ h1, h2, p { margin: 0; }
 .ach-text { display: flex; flex-direction: column; gap: 2px; }
 .ach-text small { color: var(--muted); font-size: 13px; }
 
+.hint-opt[hidden] { display: none; }
 .hint-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 18px; border: 1px solid var(--line); background: #2E3420; color: var(--text); text-align: start; }
 .hint-opt > span:first-child { display: flex; flex-direction: column; gap: 3px; }
 .hint-opt small { color: var(--muted); font-size: 13px; }

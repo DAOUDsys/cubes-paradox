@@ -15,7 +15,6 @@
   const HINT_STEPS = 8;   // moves shown per hint
   const SKIP_COST = 50;
   const IDEA_COST = 5;      // first hint step: the level's idea in one sentence
-  const CLEAN_BONUS = 5;    // solved without a single undo
   const DAILY_REWARD = 30;
   const DAY0 = Date.UTC(2026, 10, 1);
   // stars: 3 = shortest possible, 2 = within 30% of it, 1 = solved
@@ -25,7 +24,7 @@
   const UNLOCK_SHARE = 0.75;
   const worldSize = (w) => LEVELS.filter((lv) => lv.w === w).length;
   const isChallenge = (i) => LEVELS[i].n >= worldSize(LEVELS[i].w) - CHALLENGES;
-  const reward = (i) => 10 + LEVELS[i].w + (isChallenge(i) ? 10 : 0);
+  const STAR_REWARD = { 1: 10, 2: 15, 3: 20 };
   const ROOM_INSET = 0.1;
   const ARROWS = ['↑', '→', '↓', '←'];
 
@@ -33,7 +32,7 @@
 
   const STORE = 'cubesparadox.progress.v1';
   function loadProgress() {
-    const base = { done: [], skipped: [], points: START_POINTS, lang: 'en', sound: true, vibrate: true,
+    const base = { done: [], skipped: [], points: START_POINTS, lang: 'en', sound: true, vibrate: true, fullGame: false,
       best: {}, ach: [], stats: { clean: 0, challenges: 0, hinted: {} }, daily: { last: -1, streak: 0, best: 0, done: [] }, resume: null };
     try {
       const v = JSON.parse(localStorage.getItem(STORE));
@@ -45,13 +44,20 @@
     try { localStorage.setItem(STORE, JSON.stringify(progress)); } catch (e) { /* ignore */ }
   }
   const progress = loadProgress();
+  // worlds after the sixth are a one-time purchase; anyone who had already reached them keeps them
+  const FREE_WORLDS = 6;
+  if (progress.keptWorlds === undefined) {
+    progress.keptWorlds = LEVELS.some((l) => l.w >= FREE_WORLDS && (progress.done.indexOf(l.id) !== -1 || progress.skipped.indexOf(l.id) !== -1));
+    saveProgress();
+  }
+  const paidLock = (w) => w >= FREE_WORLDS && !progress.fullGame && !progress.keptWorlds;
   const isDone = (i) => progress.done.indexOf(LEVELS[i].id) !== -1;
   const isSkipped = (i) => !isDone(i) && progress.skipped.indexOf(LEVELS[i].id) !== -1;
   const passed = (i) => isDone(i) || isSkipped(i);
   const worldLevels = (w) => LEVELS.map((_, i) => i).filter((i) => LEVELS[i].w === w);
   const passedIn = (w) => worldLevels(w).filter(passed).length;
   const unlockNeed = (w) => Math.ceil(worldSize(w) * UNLOCK_SHARE);
-  const worldOpen = (w) => w === 0 || passedIn(w - 1) >= unlockNeed(w - 1);
+  const worldOpen = (w) => w === 0 || (!paidLock(w) && passedIn(w - 1) >= unlockNeed(w - 1));
   // inside an open world levels go in order; all challenges open after the last main level
   function isOpen(i) {
     const lv = LEVELS[i];
@@ -60,6 +66,8 @@
     if (!isChallenge(i)) return passed(i - 1);
     return passed(i - (lv.n - (worldSize(lv.w) - CHALLENGES - 1)));
   }
+  // nothing left to play without buying the full game
+  const atPaywall = () => !LEVELS.some((_, i) => isOpen(i) && !passed(i)) && LEVELS.some((l) => paidLock(l.w));
   function nextLevelIndex() {
     for (let i = 0; i < LEVELS.length; i++) if (isOpen(i) && !passed(i) && !isChallenge(i)) return i;
     for (let i = 0; i < LEVELS.length; i++) if (isOpen(i) && !passed(i)) return i;
@@ -119,8 +127,10 @@
   function updatePoints() {
     for (const el of document.querySelectorAll('.coin-count')) el.textContent = num(progress.points);
     const free = G.L && G.hintLeft > 0;
-    $('hint-cost').textContent = free ? S.free : num(HINT_COST);
-    $('hint-btn').classList.toggle('poor', !free && progress.points < HINT_COST);
+    // the daily puzzle only offers the idea hint, so its price is the one to show
+    const cost = G.L && G.daily ? IDEA_COST : HINT_COST;
+    $('hint-cost').textContent = free ? S.free : G.daily && G.ideaShown ? S.free : num(cost);
+    $('hint-btn').classList.toggle('poor', !free && !(G.daily && G.ideaShown) && progress.points < cost);
     $('skip-btn').classList.toggle('poor', progress.points < SKIP_COST);
   }
 
@@ -143,8 +153,8 @@
     const n = LEVELS.filter((_, i) => isDone(i)).length;
     $('main-progress').textContent = t('progress', { n: num(n), t: num(LEVELS.length) });
     const allPassed = LEVELS.every((_, i) => passed(i));
-    $('main-play-label').textContent = allPassed ? S.again : (progress.done.length || progress.skipped.length ? S.continue : S.play);
-    $('main-play-level').textContent = progress.resume && progress.resume.i !== 'daily' && LEVELS[progress.resume.i] ? levelLabel(progress.resume.i) : levelLabel(nextLevelIndex());
+    $('main-play-label').textContent = atPaywall() ? S.fullBuy : allPassed ? S.again : (progress.done.length || progress.skipped.length ? S.continue : S.play);
+    $('main-play-level').textContent = atPaywall() ? '' : progress.resume && progress.resume.i !== 'daily' && LEVELS[progress.resume.i] ? levelLabel(progress.resume.i) : levelLabel(nextLevelIndex());
     $('main-stars').textContent = num(totalStars());
     // today's daily level
     const d = today(), solved = progress.daily.last === d;
@@ -158,7 +168,7 @@
     const list = $('level-list');
     list.textContent = '';
     const W = Math.min(list.clientWidth || 340, 480), rtl = progress.lang === 'ar';
-    const cur = LEVELS.every((_, i) => passed(i)) ? -1 : LEVELS[nextLevelIndex()].w;
+    const cur = LEVELS.every((_, i) => passed(i)) || atPaywall() ? -1 : LEVELS[nextLevelIndex()].w;
     const trail = document.createElement('div');
     trail.className = 'trail';
     let currentNode = null, y = 64;
@@ -176,7 +186,7 @@
       const solved = idx.filter(isDone).length;
       const node = document.createElement('button');
       node.className = 'map-node' + (open ? '' : ' locked') + (here ? ' current' : '');
-      node.disabled = !open;
+      node.disabled = !open && !paidLock(w);
       node.style.top = (y - r) + 'px';
       node.style.height = 2 * r + 'px';
       node.innerHTML = '<span class="map-planet"></span><span class="map-text"><b></b><small></small></span>';
@@ -191,7 +201,7 @@
       node.querySelector('b').textContent = title;
       node.querySelector('small').textContent = open
         ? num(solved) + ' / ' + num(idx.length) + '  ·  ★ ' + num(stars)
-        : t('unlockAt', { n: num(unlockNeed(w - 1)), w: num(w) });
+        : paidLock(w) ? S.fullLocked : t('unlockAt', { n: num(unlockNeed(w - 1)), w: num(w) });
       if (here) {
         const tag = document.createElement('span');
         tag.className = 'map-here';
@@ -207,6 +217,7 @@
       }
       node.setAttribute('aria-label', num(w + 1) + '. ' + title + (open ? '' : ', ' + S.locked));
       if (open) node.addEventListener('click', () => { Sfx.play('tap'); G.viewWorld = w; show('world'); });
+      else if (paidLock(w)) node.addEventListener('click', () => { Sfx.play('tap'); openPaywall(); });
       trail.appendChild(node);
       pts.push({ x, y, open });
       y += r + (w + 1 === cur ? 80 : 63);
@@ -784,15 +795,18 @@
         progress.daily.best = Math.max(progress.daily.best, progress.daily.streak);
         progress.daily.last = d;
         progress.daily.done.push(d);
-        G.earned = DAILY_REWARD + (G.undos === 0 ? CLEAN_BONUS : 0);
+        G.earned = DAILY_REWARD;
       }
     } else {
       const id = G.def.id;
       const prev = progress.best[id];
+      const wasDone = progress.done.indexOf(id) !== -1;
+      // stars pay once: solving again with more of them earns only the difference
+      const paid = wasDone && prev ? STAR_REWARD[prev.s] || STAR_REWARD[1] : 0;
+      G.earned = Math.max(0, STAR_REWARD[G.stars] - paid);
       if (!prev || G.moves < prev.m) progress.best[id] = { m: G.moves, s: G.stars };
-      if (progress.done.indexOf(id) === -1) {
+      if (!wasDone) {
         progress.done.push(id);
-        G.earned = reward(G.index) + (G.undos === 0 ? CLEAN_BONUS : 0);
         if (isChallenge(G.index)) progress.stats.challenges++;
       }
     }
@@ -867,6 +881,7 @@
     if (!G.daily) progress.stats.hinted[G.def.w] = true;
     $('hint-idea-cost').textContent = G.ideaShown ? S.free : num(IDEA_COST);
     $('hint-moves-cost').textContent = G.hintLeft > 0 ? S.free : num(HINT_COST);
+    $('hint-moves').hidden = !!G.daily;
     $('hint-sheet').hidden = false;
   }
   function askIdea() {
@@ -881,7 +896,7 @@
 
   function askHint() {
     $('hint-sheet').hidden = true;
-    if (screen !== 'play' || G.won || G.anim || G.busy) return;
+    if (screen !== 'play' || G.won || G.anim || G.busy || G.daily) return;
     if (G.hint) return;
     const free = G.hintLeft > 0;
     if (!free && progress.points < HINT_COST) { showHintText(S.noPoints); return; }
@@ -961,6 +976,7 @@
     });
   }
   $('main-play').addEventListener('click', () => {
+    if (atPaywall()) { openPaywall(); return; }
     const r = progress.resume;
     if (r && (r.i === 'daily' ? r.day === today() : LEVELS[r.i] && !isDone(r.i))) { startLevel(r.i); jump(r.path.split('').map((c) => 'URDL'.indexOf(c))); G.path = r.path; return; }
     startLevel(nextLevelIndex());
@@ -984,7 +1000,8 @@
   $('skip-btn').addEventListener('click', askSkip);
   $('win-next').addEventListener('click', () => {
     if (G.daily) show('main');
-    else if (G.index < LEVELS.length - 1 && isOpen(G.index + 1)) startLevel(G.index + 1); else show('levels');
+    else if (G.index < LEVELS.length - 1 && isOpen(G.index + 1)) startLevel(G.index + 1);
+    else { show('levels'); if (G.index < LEVELS.length - 1 && paidLock(LEVELS[G.index + 1].w)) openPaywall(); }
   });
   $('win-again').addEventListener('click', () => startLevel(G.daily ? 'daily' : G.index));
   $('win-levels').addEventListener('click', () => show('levels'));
@@ -1025,11 +1042,64 @@
   window.addEventListener('resize', resizeBoard);
   window.addEventListener('resize', () => { if (screen === 'levels') renderMap(); if (screen === 'world') renderWorld(G.viewWorld || 0); });
 
+  /* ---------- the full game: one purchase through Google Play ---------- */
+
+  const Billing = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Billing;
+  const shop = { available: false, price: '' };
+  function renderPaywall(note) {
+    const buy = $('full-buy');
+    buy.textContent = shop.price ? S.fullBuy + ' · ' + shop.price : S.fullBuy;
+    buy.disabled = !shop.available;
+    $('full-note').textContent = note || (shop.available ? '' : S.fullUnavailable);
+  }
+  function setOwned(owned) {
+    if (owned === !!progress.fullGame) return;
+    progress.fullGame = owned;
+    saveProgress();
+    if (screen === 'levels' || screen === 'main') show(screen);
+  }
+  // asks Google Play for the price and whether the game is owned; offline, the saved answer stays
+  function checkShop() {
+    if (!Billing) return Promise.resolve();
+    return Billing.check().then((r) => {
+      shop.available = !!r.available;
+      shop.price = r.price || '';
+      if (r.known) setOwned(!!r.owned);
+      return r;
+    }).catch(() => { shop.available = false; });
+  }
+  function openPaywall() {
+    const paid = LEVELS.filter((l) => l.w >= FREE_WORLDS).length;
+    $('full-body').textContent = t('fullBody', { w: num(I18N.WORLDS.length - FREE_WORLDS), n: num(paid) });
+    renderPaywall();
+    $('full-sheet').hidden = false;
+    checkShop().then((r) => {
+      if ($('full-sheet').hidden) return;
+      if (progress.fullGame) $('full-sheet').hidden = true;
+      else renderPaywall(r && r.pending ? S.fullPending : '');
+    });
+  }
+  $('full-close').addEventListener('click', () => { $('full-sheet').hidden = true; });
+  $('full-buy').addEventListener('click', () => {
+    if (!Billing || !shop.available) return;
+    Billing.buy().then((r) => {
+      if (r.owned) {
+        setOwned(true);
+        $('full-sheet').hidden = true;
+        Sfx.play('win'); haptic('win');
+        show('levels');
+      } else if (r.pending) renderPaywall(S.fullPending);
+      else if (!r.cancelled) renderPaywall(S.fullError);
+    }).catch(() => renderPaywall(S.fullError));
+  });
+  checkShop();
+
   // Android back button (Capacitor App plugin)
   const App = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App;
   if (App && App.addListener) {
     App.addListener('backButton', () => {
       if (!$('modal').hidden) $('modal').hidden = true;
+      else if (!$('full-sheet').hidden) $('full-sheet').hidden = true;
       else if (!$('privacy-sheet').hidden) $('privacy-sheet').hidden = true;
       else if (!$('hint-sheet').hidden) $('hint-sheet').hidden = true;
       else if (screen === 'play' || screen === 'win') { G.search++; G.busy = false; if (G.daily) show('main'); else { G.viewWorld = G.def.w; show('world'); } }

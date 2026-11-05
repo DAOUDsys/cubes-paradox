@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.3.1 (version code 8)
+1.4.0 (version code 9)
 
 ## Category
 Games › Puzzle
@@ -52,6 +52,9 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
 
+## What's new (1.4.0)
+The first 6 worlds are free and one purchase unlocks the other 8. Rooms in Rooms is harder. Solving a level now pays by stars: 20, 15 or 10 points. The daily puzzle offers only the idea hint.
+
 ## What's new (1.3.1)
 A privacy notice in Settings, status and navigation bars in the game's own colour, and a tidier main screen. 1.3.0 added 7 languages and removed the music.
 
@@ -62,10 +65,10 @@ Now in 7 languages: Spanish, French, German, Portuguese and Turkish join English
 puzzle, logic, box pushing, recursive, rooms in rooms, daily puzzle, brain teaser, offline, no ads
 
 ## Content rating
-Everyone. No violence, no ads, no in-app purchases, no user-generated content.
+Everyone. No violence, no ads, no user-generated content. One in-app purchase: the first 6 worlds are free, it unlocks the other 8.
 
 ## Privacy
-The game collects no personal data. Progress, points and language are saved only on the device. No analytics, no ads, no accounts.
+The game collects no personal data. The in-app purchase is handled by Google Play. Progress, points and language are saved only on the device. No analytics, no ads, no accounts.
 
 ## Files in this folder
 | File | Size | Use |
@@ -79,6 +82,6 @@ The game collects no personal data. Progress, points and language are saved only
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.3.1.apk` | — | The app to upload (or the .aab for Google Play) |
+| `../CubesParadox-1.4.0.apk` | — | The app to upload (or the .aab for Google Play) |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

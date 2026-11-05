@@ -56,7 +56,7 @@ const T = {
 };
 
 /* ---------- worlds: which idea, how hard, how many ---------- */
-// The first two worlds are easy, the next four medium, the rest hard.
+// Worlds 1-2 are easy, 3-5 medium, and from world 6 (the last free one) on, hard.
 // Every world ends with 3 challenge levels, and those are always hard.
 // `alt` lists close kinds to borrow from when a pool runs short (never an unrelated idea).
 
@@ -87,7 +87,7 @@ const WORLDS = [
   { tier: 'medium', main: 12, kinds: ['pocket'], alt: ['unpack'] },
   { tier: 'medium', main: 12, tut: 'carry', kinds: ['carry'], alt: [] },
   { tier: 'medium', main: 12, kinds: ['unpack'], alt: ['pocket'] },
-  { tier: 'medium', main: 12, tut: 'nest', kinds: ['nest2'], alt: [] },
+  { tier: 'hard', main: 12, tut: 'nest', kinds: ['nest2'], alt: [] },
   { tier: 'hard', main: 12, kinds: ['roomgoal'], alt: [] },
   { tier: 'hard', main: 10, kinds: ['deep3'], alt: [] },
   { tier: 'hard', main: 12, tut: 'loop', kinds: ['self'], alt: [] },
