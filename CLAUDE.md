@@ -24,6 +24,8 @@ Owner: Daoud. Package id stays com.daoud.matryo (so updates install over the old
 - `tools/analyze.js` — full state-space analysis: shortest solution, what it uses (depth, carry, holes…), uniqueness, freedom.
 - `tools/gen.js` — level generator per world kind (random rooms → BFS → idea check → tighten → every-box-needed check), writes pools to `tools/out2/`.
 - `tools/curate.js` — picks each world's levels from the pools by tier and difficulty band (WORLDS table), writes the idea hints, writes `levels.js` and `daily.js`.
+- `PRIVACY.md` — the privacy policy (Google Play needs its URL; the short version is in Settings, strings `privacy*`).
+- `store/play/` — Google Play: listing text per language and PLAY-CONSOLE.md (steps and form answers).
 - `store/` — store listing (LISTING.md), icon-512, feature graphic, 7 screenshots (1080×1920). Rendered from the real game by `store/src/*.html`; see store/src/README.md. App icon sources: `assets/icon-*.png`.
 - APK: `npm run apk` → `android/app/build/outputs/apk/debug/app-debug.apk`. Gradle needs Java 21: on this PC it is set in `C:/Users/daoud/.gradle/gradle.properties` (org.gradle.java.home), not in the repo.
 

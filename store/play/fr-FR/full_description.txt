@@ -1,0 +1,30 @@
+Cubes Paradox est un jeu de réflexion sur des boîtes qui contiennent des salles entières.
+
+Pousse les boîtes à leur place : facile. Mais les boîtes de couleur sont différentes, car chacune contient une salle complète. Entre dans une boîte et tu te retrouves dedans. Pousse une boîte dans une autre. Fais entrer des boîtes, ressors-les et empile des salles dans des salles dans des salles. Certaines salles se contiennent même elles-mêmes : tu en sors et tu y reviens aussitôt.
+
+14 MONDES, CHACUN AVEC SON IDÉE
+• L’atelier : l’art de pousser
+• Passages : une boîte est une porte, pousse-la ou entre dedans
+• L’entrepôt : range une boîte dans une salle, puis ressors-la
+• Le déménagement : remplis une salle, puis déplace-la tout entière
+• Le déballage : sors les boîtes ; en sortant, tu pousses ce qui est dehors
+• Salles dans des salles, La salle cible, Plongée : deux et trois niveaux plus bas
+• Galerie des glaces : une salle qui se contient elle-même
+• Trous, Sol fissuré, Couleurs, Salle de contrôle, Sens unique : de nouvelles règles, toujours avec des salles dans des salles
+
+CHAQUE NIVEAU A SA RAISON D’ÊTRE
+193 niveaux, tous vérifiés par un solveur : chacun a une solution et chaque boîte y est utile. Les premiers mondes sont doux, puis ça se corse, et les trois derniers niveaux de chaque monde sont des défis difficiles.
+
+UN NOUVEAU DÉFI DIFFICILE CHAQUE JOUR
+Résous le défi du jour et garde ta série.
+
+ÉTOILES, SUCCÈS ET INDICES
+Résous en un minimum de coups pour gagner trois étoiles et débloque 12 succès. Bloqué ? Achète l’idée en une phrase et, s’il le faut, tes prochains coups. Annule autant que tu veux, ou touche deux fois le plateau.
+
+CONÇU POUR LE TÉLÉPHONE
+• Glisse pour bouger, une seule main suffit
+• Fonctionne sur les petits écrans et en écran partagé
+• Ferme le jeu en plein niveau et reprends là où tu en étais
+• Effets sonores et vibration
+• Fonctionne hors ligne, sans publicité, sans compte et sans collecte de données
+• Français, anglais, arabe, espagnol, allemand, portugais et turc

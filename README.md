@@ -68,7 +68,7 @@ The last three levels of each world are optional challenges, and they are always
 - Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
 - 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
-- No ads, no accounts, no data collected — progress stays on the device
+- No ads, no accounts, no data collected — progress stays on the device ([privacy policy](PRIVACY.md))
 
 ## Run it
 

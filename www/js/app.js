@@ -935,6 +935,8 @@
 
   $('open-settings').addEventListener('click', () => { Sfx.play('tap'); show('settings'); });
   $('settings-back').addEventListener('click', () => show('main'));
+  $('set-privacy').addEventListener('click', () => { Sfx.play('tap'); $('privacy-sheet').hidden = false; });
+  $('privacy-close').addEventListener('click', () => { $('privacy-sheet').hidden = true; });
   $('set-sound').addEventListener('click', () => {
     progress.sound = !progress.sound;
     Sfx.setEnabled(progress.sound);
@@ -1028,6 +1030,7 @@
   if (App && App.addListener) {
     App.addListener('backButton', () => {
       if (!$('modal').hidden) $('modal').hidden = true;
+      else if (!$('privacy-sheet').hidden) $('privacy-sheet').hidden = true;
       else if (!$('hint-sheet').hidden) $('hint-sheet').hidden = true;
       else if (screen === 'play' || screen === 'win') { G.search++; G.busy = false; if (G.daily) show('main'); else { G.viewWorld = G.def.w; show('world'); } }
       else if (screen === 'world') show('levels');

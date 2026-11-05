@@ -1,0 +1,30 @@
+Cubes Paradox é um jogo de quebra-cabeça sobre caixas que guardam salas inteiras.
+
+Empurre as caixas para os lugares delas: fácil. Mas as caixas coloridas são diferentes, porque cada uma guarda uma sala completa. Entre numa caixa e você está dentro dela. Empurre uma caixa para dentro de outra. Coloque caixas, tire de volta e empilhe salas dentro de salas dentro de salas. Algumas salas até contêm a si mesmas: você sai de uma e volta para dentro dela.
+
+14 MUNDOS, CADA UM COM SUA IDEIA
+• A oficina: a arte de empurrar
+• Portas: uma caixa é uma porta, então empurre ou entre nela
+• O depósito: guarde uma caixa numa sala e depois tire de volta
+• Dia de mudança: encha uma sala e mova a sala inteira
+• Desembalar: tire as caixas; ao sair, você empurra o que está lá fora
+• Salas em salas, A sala alvo, Mergulho: dois e três níveis abaixo
+• Salão de espelhos: uma sala que contém a si mesma
+• Buracos, Chão rachado, Cores, Sala de controle, Mão única: regras novas, sempre com salas dentro de salas
+
+CADA FASE TEM SEU MOTIVO
+193 fases, todas verificadas por um resolvedor: cada uma tem solução e cada caixa é necessária. Os primeiros mundos são tranquilos, depois fica mais difícil, e as três últimas fases de cada mundo são desafios difíceis.
+
+UM NOVO DESAFIO DIFÍCIL TODO DIA
+Resolva o desafio do dia e mantenha sua sequência.
+
+ESTRELAS, CONQUISTAS E DICAS
+Resolva com o mínimo de movimentos para ganhar três estrelas e desbloqueie 12 conquistas. Travou? Compre a ideia em uma frase e, se ainda precisar, seus próximos movimentos. Desfaça quanto quiser ou toque duas vezes no tabuleiro.
+
+FEITO PARA O CELULAR
+• Deslize para se mover, uma mão basta
+• Funciona em telas pequenas e em tela dividida
+• Feche o jogo no meio da fase e volte de onde parou
+• Efeitos sonoros e vibração
+• Funciona sem internet, sem anúncios, sem contas e sem coleta de dados
+• Português, inglês, árabe, espanhol, francês, alemão e turco

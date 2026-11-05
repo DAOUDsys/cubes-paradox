@@ -65,7 +65,8 @@ h1, h2, p { margin: 0; }
 /* ---------- main ---------- */
 #main, #win { justify-content: space-between; padding-left: 24px; padding-right: 24px; }
 .main-top { display: flex; align-items: center; justify-content: space-between; height: 44px; font-size: 13px; }
-.top-end { display: flex; align-items: center; gap: 10px; }
+.top-end { display: flex; align-items: center; gap: 10px; margin-inline-start: auto; }
+.main-progress { font-size: 14px; text-align: center; }
 .pill { height: 36px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); font-size: 14px; font-weight: 500; }
 .coins { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 12px; background: var(--card); font-size: 15px; }
 .push-end { margin-inline-start: auto; }
@@ -175,6 +176,9 @@ h1, h2, p { margin: 0; }
 .sheet { width: 100%; max-width: 520px; background: var(--card); border-radius: 24px; padding: 22px; display: flex; flex-direction: column; gap: 18px; }
 .sheet p { font-size: 18px; font-weight: 500; text-align: center; line-height: 1.5; }
 .sheet .btn-primary, .sheet .btn-secondary { flex: 1; height: 56px; font-size: 17px; }
+.sheet { max-height: 100%; overflow-y: auto; }
+.privacy-body { font-size: 15px; line-height: 1.6; color: var(--soft); }
+.privacy-link { display: flex; align-items: center; justify-content: center; min-height: 44px; font-size: 15px; font-weight: 500; color: var(--amber); }
 .sheet > .btn-secondary { flex: none; } /* directly in the column sheet, flex: 1 would collapse its height */
 
 @media (max-height: 700px) {
