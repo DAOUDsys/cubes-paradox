@@ -25,6 +25,7 @@ Owner: Daoud. Package id stays com.daoud.matryo (so updates install over the old
 - `tools/gen.js` — level generator per world kind (random rooms → BFS → idea check → tighten → every-box-needed check), writes pools to `tools/out2/`.
 - `tools/curate.js` — picks each world's levels from the pools by tier and difficulty band (WORLDS table), writes the idea hints, writes `levels.js` and `daily.js`.
 - `PRIVACY.md` — the privacy policy. This repo is private, so the public copy Google Play links to is the separate public repo DAOUDsys/cubes-paradox-privacy (`index.md`, GitHub Pages: https://daoudsys.github.io/cubes-paradox-privacy/). Change both together. The short version is in Settings, strings `privacy*`.
+- `TERMS.md` — the Terms of Service (Play needs the link if the account is a trader). The public copy is `terms.md` in the same public repo (https://daoudsys.github.io/cubes-paradox-privacy/terms). Change both together.
 - Distribution: Google Play only. The Orion Store listing and public GitHub releases are dropped.
 - `android/app/src/main/java/com/daoud/matryo/BillingPlugin.java` — Google Play Billing for the one purchase.
 - `store/play/` — Google Play: listing text per language and PLAY-CONSOLE.md (steps and form answers).

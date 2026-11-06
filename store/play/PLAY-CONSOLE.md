@@ -12,6 +12,7 @@
 | Phone screenshots | `store/screenshots/` (7 صور، 1080×1920) |
 | اسم اللعبة والوصف باللغات السبعة | `store/play/<اللغة>/` |
 | Privacy policy | `https://daoudsys.github.io/cubes-paradox-privacy/` |
+| Terms of Service (للجهة التجارية) | `https://daoudsys.github.io/cubes-paradox-privacy/terms` |
 
 ## 1. الحساب
 
@@ -24,6 +25,12 @@
 - من Play Console: Setup، ثم Payments profile. أنشئ ملف دفع واربطه بحساب بنكي.
 - بحسب [جدول جوجل](https://support.google.com/googleplay/android-developer/answer/9306917?hl=en) فلسطين مدعومة لاستلام الأرباح، وعملتها الدولار. راجع الجدول حسب البلد اللي مسجل فيه.
 - **بلد الحساب ما بيتغير بعد التسجيل**، فاختاره صح من الأول.
+
+## حالة الجهة التجارية (Trader status)
+
+- اللعبة فيها شراء، فالخيار المناسب إذا بتنزلها بأوروبا وبريطانيا هو **جهة تجارية (trader)**. [شرح جوجل](https://support.google.com/googleplay/android-developer/answer/17594752?hl=en)
+- بالحساب الشخصي، عنوانك ورقم هاتفك بيبينوا للناس.
+- لازم تضيف رابط Terms of Service اللي فوق لكل تطبيق: Monitor and improve، ثم Policy and programs، ثم App content.
 
 ## 2. إنشاء التطبيق
 
@@ -84,7 +91,8 @@
 1. Testing، ثم Closed testing، ثم Create new release.
 2. ارفع `CubesParadox-1.4.0.aab`.
 3. Release notes: انسخ من `whats_new.txt` لكل لغة.
-4. ضيف إيميلات الـ 12 مختبر، وابعتلهم رابط الاشتراك. كل واحد لازم يضل مشترك **14 يوم ورا بعض**. خذ أكتر من 12 احتياط، لأن اللي بينسحب ممكن يخرّب العدّ.
+4. ضيف إيميلات الـ 12 مختبر، وابعتلهم رابط الاشتراك. كل واحد لازم يضل مشترك **14 يوم ورا بعض**. خذ أكتر من 12 احتياط، لأن اللي بينسحب وبيرجع بيبدأ عدّه من جديد، ولازم يكون في 12 مشتركين وقت ما تقدم الطلب.
+   جوجل بتسأل بالطلب عن تفاعل المختبرين وملاحظاتهم، فاطلب منهم يلعبوا فعلاً، وسجّل ملاحظاتهم.
 5. بعد 14 يوم: Dashboard، ثم Apply for production.
 6. بعد الموافقة: Production، ثم انشر.
 
