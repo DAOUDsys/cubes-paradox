@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.4.0 (version code 9)
+1.4.1 (version code 10)
 
 ## Category
 Games › Puzzle
@@ -52,6 +52,9 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
 
+## What's new (1.4.1)
+Settings can now be opened from inside a level, beside the moves, so you can change the sound and go right back to your puzzle.
+
 ## What's new (1.4.0)
 The first 6 worlds are free and one purchase unlocks the other 8. Rooms in Rooms is harder. Solving a level now pays by stars: 20, 15 or 10 points. The daily puzzle offers only the idea hint.
 
@@ -82,6 +85,6 @@ The game collects no personal data. The in-app purchase is handled by Google Pla
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.4.0.apk` | — | The app to upload (or the .aab for Google Play) |
+| `../CubesParadox-1.4.1.apk` | — | The app to upload (or the .aab for Google Play) |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

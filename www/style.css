@@ -103,10 +103,13 @@ h1, h2, p { margin: 0; }
 
 /* ---------- play ---------- */
 #play { gap: 14px; touch-action: none; }
-.topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
+.topbar { display: grid; grid-template-columns: 1fr minmax(0, auto) 1fr; align-items: center; column-gap: 8px; padding: 0 4px; }
+.topbar > .icon-btn { justify-self: start; }
+.play-end { display: flex; align-items: center; gap: 8px; justify-self: end; }
 .title { display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 0; }
+.title > span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .title .muted { font-size: 13px; }
-#play-name { font-size: 20px; font-weight: 700; white-space: nowrap; }
+#play-name { font-size: 20px; font-weight: 700; }
 .moves { width: 44px; height: 44px; border-radius: 14px; background: var(--card); display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none; }
 .moves b { font-size: 16px; line-height: 1; }
 .moves span { font-size: 10px; color: var(--muted); }

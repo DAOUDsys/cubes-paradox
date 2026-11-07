@@ -948,8 +948,24 @@
 
   /* ---------- wiring ---------- */
 
-  $('open-settings').addEventListener('click', () => { Sfx.play('tap'); show('settings'); });
-  $('settings-back').addEventListener('click', () => show('main'));
+  // Settings opens from the main screen or from inside a level, and goes back to where it came from
+  let settingsFrom = 'main';
+  function openSettings(from) {
+    settingsFrom = from;
+    Sfx.play('tap');
+    show('settings');
+  }
+  function closeSettings() {
+    if (settingsFrom !== 'play') { show('main'); return; }
+    // the language may have changed
+    fillPlayTexts();
+    show('play');
+    updateHud();
+    draw();
+  }
+  $('open-settings').addEventListener('click', () => openSettings('main'));
+  $('play-settings').addEventListener('click', () => { if (!G.anim && !G.won) openSettings('play'); });
+  $('settings-back').addEventListener('click', closeSettings);
   $('set-privacy').addEventListener('click', () => { Sfx.play('tap'); $('privacy-sheet').hidden = false; });
   $('privacy-close').addEventListener('click', () => { $('privacy-sheet').hidden = true; });
   $('set-sound').addEventListener('click', () => {
@@ -1104,7 +1120,8 @@
       else if (!$('hint-sheet').hidden) $('hint-sheet').hidden = true;
       else if (screen === 'play' || screen === 'win') { G.search++; G.busy = false; if (G.daily) show('main'); else { G.viewWorld = G.def.w; show('world'); } }
       else if (screen === 'world') show('levels');
-      else if (screen === 'levels' || screen === 'settings' || screen === 'achievements') show('main');
+      else if (screen === 'settings') closeSettings();
+      else if (screen === 'levels' || screen === 'achievements') show('main');
       else if (App.exitApp) App.exitApp();
     });
   }
