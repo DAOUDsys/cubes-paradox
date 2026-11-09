@@ -10,7 +10,8 @@
     "serve": "npx --yes http-server www -p 8080 -c-1",
     "sync": "npx cap sync android",
     "open": "npx cap open android",
-    "apk": "npx cap sync android && cd android && .\\gradlew.bat assembleDebug"
+    "apk": "npx cap sync android && cd android && .\\gradlew.bat assemblePlayDebug",
+    "release": "npx cap sync android && cd android && .\\gradlew.bat bundlePlayRelease assemblePlayRelease assembleOrionRelease"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

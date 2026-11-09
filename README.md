@@ -11,6 +11,12 @@
 </p>
 
 <p align="center">
+  <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox"><img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="60"></a>
+  &nbsp;
+  <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
+</p>
+
+<p align="center">
   <img src="store/demo.gif" width="320" alt="Pushing the green box into the purple box, then walking inside it">
 </p>
 
@@ -62,7 +68,7 @@ The last three levels of each world are optional challenges, and they are always
 - Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
 - 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
-- The first 6 worlds are free; one purchase on Google Play unlocks the other 8
+- The APK here and on Orion Store has all 14 worlds open. On Google Play the first 6 worlds are free and one purchase unlocks the other 8
 - No ads, no accounts, no data collected — progress stays on the device ([privacy policy](https://daoudsys.github.io/cubes-paradox-privacy/))
 
 ## Run it
@@ -82,7 +88,9 @@ npm install
 npm run apk
 ```
 
-The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
+The APK is written to `android/app/build/outputs/apk/play/debug/app-play-debug.apk`.
+
+The app has two builds: `play` (Google Play, worlds 7–14 are one purchase) and `orion` (Orion Store and GitHub releases, every world open). Its `src/orion` folder replaces `www/js/edition.js`. `npm run release` builds both, signed, when `android/keystore.properties` is present.
 
 ## Levels
 

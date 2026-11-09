@@ -1,6 +1,6 @@
 # Privacy Policy for Cubes Paradox
 
-**Effective date: November 5, 2026**
+**Effective date: November 9, 2026**
 
 Cubes Paradox is an Android puzzle game made by Daoud Tazaza. This policy explains what happens to your information when you play it.
 
@@ -31,7 +31,7 @@ If your device backs up its apps, Android may include the game's saved progress 
 
 ## Purchases
 
-The game offers one in-app purchase, which unlocks the full game. Google Play handles the payment under its own terms and privacy policy. The developer never sees your payment details. The game only asks Google Play whether the purchase was made.
+The copy from Google Play offers one in-app purchase, which unlocks the full game. The copy from Orion Store or GitHub has no purchase. Google Play handles the payment under its own terms and privacy policy. The developer never sees your payment details. The game only asks Google Play whether the purchase was made.
 
 ## Third parties
 

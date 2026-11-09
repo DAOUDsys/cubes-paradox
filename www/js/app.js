@@ -50,7 +50,9 @@
     progress.keptWorlds = LEVELS.some((l) => l.w >= FREE_WORLDS && (progress.done.indexOf(l.id) !== -1 || progress.skipped.indexOf(l.id) !== -1));
     saveProgress();
   }
-  const paidLock = (w) => w >= FREE_WORLDS && !progress.fullGame && !progress.keptWorlds;
+  // the Orion Store copy has no purchase: every world is open there (edition.js)
+  const ORION = window.EDITION === 'orion';
+  const paidLock = (w) => !ORION && w >= FREE_WORLDS && !progress.fullGame && !progress.keptWorlds;
   const isDone = (i) => progress.done.indexOf(LEVELS[i].id) !== -1;
   const isSkipped = (i) => !isDone(i) && progress.skipped.indexOf(LEVELS[i].id) !== -1;
   const passed = (i) => isDone(i) || isSkipped(i);
@@ -1060,7 +1062,7 @@
 
   /* ---------- the full game: one purchase through Google Play ---------- */
 
-  const Billing = window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Billing;
+  const Billing = !ORION && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Billing;
   const shop = { available: false, price: '' };
   function renderPaywall(note) {
     const buy = $('full-buy');

@@ -23,6 +23,13 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // play: Google Play, worlds 7-14 are one purchase. orion: Orion Store (GitHub releases), every world open;
+    // its src/orion/assets/public/js/edition.js replaces the one from www.
+    flavorDimensions = ["store"]
+    productFlavors {
+        play { dimension "store" }
+        orion { dimension "store" }
+    }
     signingConfigs {
         release {
             if (keystorePropertiesFile.exists()) {

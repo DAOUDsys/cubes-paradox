@@ -85,6 +85,8 @@ The game collects no personal data. The in-app purchase is handled by Google Pla
 | `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.4.1.apk` | — | The app to upload (or the .aab for Google Play) |
+| `../CubesParadox-1.4.1.aab` | — | Google Play upload |
+| `../CubesParadox-1.4.1-play.apk` | — | The Google Play build as an APK, for testing |
+| `../CubesParadox-1.4.1.apk` | — | The Orion Store build (every world open), the GitHub release asset |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.
