@@ -14,6 +14,8 @@
   <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox"><img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="60"></a>
   &nbsp;
   <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
+  <br>
+  <a href="https://github.com/DAOUDsys/cubes-paradox/releases"><img src="https://img.shields.io/github/downloads/DAOUDsys/cubes-paradox/total?label=downloads&color=88994E" alt="Total downloads"></a>
 </p>
 
 <p align="center">
