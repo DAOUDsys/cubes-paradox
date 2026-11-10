@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.5.0 (version code 11)
+1.5.1 (version code 12)
 
 ## Category
 Games › Puzzle
@@ -52,6 +52,9 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
 
+## What's new (1.5.1)
+Share a win from the win screen. The sprout is bigger in the app icon.
+
 ## What's new (1.5.0)
 A new look with our own pattern and lettering. Levels are re-picked by how much thinking they take, not how many steps: world 2 is medium, every world after it is hard, and each level builds on the one before. Squares beside the level number show how hard it is.
 
@@ -88,8 +91,8 @@ The game collects no personal data. The in-app purchase is handled by Google Pla
 | `screenshots/05-two-step-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-worlds-and-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-seven-languages.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.5.0.aab` | — | Google Play upload |
-| `../CubesParadox-1.5.0-play.apk` | — | The Google Play build as an APK, for testing |
-| `../CubesParadox-1.5.0.apk` | — | The Orion Store build (every world open), the GitHub release asset |
+| `../CubesParadox-1.5.1.aab` | — | Google Play upload |
+| `../CubesParadox-1.5.1-play.apk` | — | The Google Play build as an APK, for testing |
+| `../CubesParadox-1.5.1.apk` | — | The Orion Store build (every world open), the GitHub release asset |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

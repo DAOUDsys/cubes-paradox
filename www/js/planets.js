@@ -61,7 +61,7 @@
     // the app icon: the sprout standing in a doorway in an olive wall
     logo: () => '<svg viewBox="0 0 1024 1024" aria-hidden="true"><defs><linearGradient id="logo-sheen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFEB" stop-opacity=".3"/><stop offset=".5" stop-color="#FFFFEB" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>' +
       '<rect width="1024" height="1024" fill="#88994E"/><rect width="1024" height="1024" fill="url(#logo-sheen)"/>' +
-      '<path d="M232 1024V400a140 140 0 0 1 140-140H652a140 140 0 0 1 140 140V1024Z" fill="#30361F"/>' +
-      `<g transform="translate(302 410) scale(4.2)">${HERO}</g></svg>`
+      '<path d="M208 1024V390a150 150 0 0 1 150-150H666a150 150 0 0 1 150 150V1024Z" fill="#30361F"/>' +
+      `<g transform="translate(257 364) scale(5.1)">${HERO}</g></svg>`
   };
 })();

@@ -67,6 +67,7 @@ A world is a ladder. Its first level shows the idea, and each level after it ask
 
 - Every level checked by a solver: every one can be solved, every box in it is needed, and its shortest solution really uses its world's idea
 - Stars for solving in the fewest moves, 12 achievements, and a daily puzzle with a streak
+- Share a win from the win screen
 - Two-step hints: first the idea in one sentence, then your next moves — from wherever you are
 - Unlimited undo (or double-tap the board) and instant restart; come back to a level right where you left it
 - Sound effects made on the fly, vibration on Android

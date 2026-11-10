@@ -1037,6 +1037,22 @@
   $('win-again').addEventListener('click', () => startLevel(G.daily ? 'daily' : G.index));
   $('win-levels').addEventListener('click', () => show('levels'));
 
+  // Share a win: Android's share sheet (Capacitor Share), the browser's own where there is one, or the clipboard.
+  // The link goes to where this copy of the game came from.
+  const SHARE_URL = ORION ? 'https://github.com/DAOUDsys/cubes-paradox/releases/latest' : 'https://play.google.com/store/apps/details?id=com.daoud.matryo';
+  function shareText() {
+    const stars = '★'.repeat(G.stars) + '☆'.repeat(3 - G.stars);
+    return G.daily ? t('shareDaily', { m: num(G.moves), stars }) : t('shareText', { level: levelLabel(G.index), m: num(G.moves), stars });
+  }
+  $('win-share').addEventListener('click', () => {
+    const text = shareText();
+    const Cap = window.Capacitor, Share = Cap && Cap.Plugins && Cap.Plugins.Share;
+    Sfx.play('tap');
+    if (Share && Cap.isNativePlatform && Cap.isNativePlatform()) { Share.share({ text, url: SHARE_URL, dialogTitle: S.share }).catch(() => {}); return; }
+    if (navigator.share) { navigator.share({ text, url: SHARE_URL }).catch(() => {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(text + ' ' + SHARE_URL).then(() => note(S.share, S.shareCopied)).catch(() => {});
+  });
+
   const KEYS = { ArrowUp: 0, KeyW: 0, ArrowRight: 1, KeyD: 1, ArrowDown: 2, KeyS: 2, ArrowLeft: 3, KeyA: 3 };
   window.addEventListener('keydown', (e) => {
     if (!$('modal').hidden) { if (e.code === 'Escape') $('modal').hidden = true; return; }
@@ -1204,10 +1220,12 @@
     }
   }
   let toastTimer = null;
-  function toast(id) {
+  function toast(id) { note(S.achUnlocked, S.ach[id][0]); }
+  // a short message at the top of the screen
+  function note(head, text) {
     const el = $('toast');
-    el.querySelector('b').textContent = S.achUnlocked;
-    el.querySelector('span').textContent = S.ach[id][0];
+    el.querySelector('b').textContent = head;
+    el.querySelector('span').textContent = text;
     el.hidden = false;
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => { el.hidden = true; }, 2600);
