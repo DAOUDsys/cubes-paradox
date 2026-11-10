@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.4.1 (version code 10)
+1.5.0 (version code 11)
 
 ## Category
 Games › Puzzle
@@ -36,7 +36,7 @@ After the first world, everything is built on rooms inside rooms, often two or t
 • Holes, Cracked Floor, Colors, Control Room, One-Way Doors — new rules, all about rooms in rooms
 
 **Every level earns its place**
-Every level was checked by a solver: it can always be solved, every box in it is needed, and the harder ones have no square to spare and usually only one way through. The first two worlds are gentle, the next four step up, and the rest are hard — the last three levels of every world are hard challenges.
+Every level was checked by a solver: it can always be solved, every box in it is needed, and the hard ones have only one way through. Hard means hard to work out, not long: levels are picked by the choices and traps on the way to the solution, not by the number of steps. The first world is gentle, the second steps up, and every world after it is hard. Each level builds on the one before, and the last three levels of every world are its hardest challenges.
 
 **A new hard puzzle every day**
 The daily puzzle is always challenge-level. Keep a streak going.
@@ -51,6 +51,9 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Close the app mid-level and come back right where you were
 • Works fully offline — no ads, no accounts, no data collected
 • 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
+
+## What's new (1.5.0)
+A new look with our own pattern and lettering. Levels are re-picked by how much thinking they take, not how many steps: world 2 is medium, every world after it is hard, and each level builds on the one before. Squares beside the level number show how hard it is.
 
 ## What's new (1.4.1)
 Settings can now be opened from inside a level, beside the moves, so you can change the sound and go right back to your puzzle.
@@ -78,15 +81,15 @@ The game collects no personal data. The in-app purchase is handled by Google Pla
 |---|---|---|
 | `icon-512.png` | 512×512 | Store icon |
 | `feature-graphic-1024x500.png` | 1024×500 | Banner / feature graphic |
-| `screenshots/01-rooms-inside-rooms.png` | 1080×1920 | Screenshot 1 |
-| `screenshots/02-step-inside.png` | 1080×1920 | Screenshot 2 |
-| `screenshots/03-room-holds-itself.png` | 1080×1920 | Screenshot 3 |
-| `screenshots/04-holes-cracks-colors.png` | 1080×1920 | Screenshot 4 |
-| `screenshots/05-hints.png` | 1080×1920 | Screenshot 5 |
-| `screenshots/06-14-worlds-daily.png` | 1080×1920 | Screenshot 6 |
-| `screenshots/07-english-arabic.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.4.1.aab` | — | Google Play upload |
-| `../CubesParadox-1.4.1-play.apk` | — | The Google Play build as an APK, for testing |
-| `../CubesParadox-1.4.1.apk` | — | The Orion Store build (every world open), the GitHub release asset |
+| `screenshots/01-smart-players.png` | 1080×1920 | Screenshot 1 |
+| `screenshots/02-sharpen-thinking.png` | 1080×1920 | Screenshot 2 |
+| `screenshots/03-holds-itself.png` | 1080×1920 | Screenshot 3 |
+| `screenshots/04-new-rules.png` | 1080×1920 | Screenshot 4 |
+| `screenshots/05-two-step-hints.png` | 1080×1920 | Screenshot 5 |
+| `screenshots/06-worlds-and-daily.png` | 1080×1920 | Screenshot 6 |
+| `screenshots/07-seven-languages.png` | 1080×1920 | Screenshot 7 |
+| `../CubesParadox-1.5.0.aab` | — | Google Play upload |
+| `../CubesParadox-1.5.0-play.apk` | — | The Google Play build as an APK, for testing |
+| `../CubesParadox-1.5.0.apk` | — | The Orion Store build (every world open), the GitHub release asset |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

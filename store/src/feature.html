@@ -7,24 +7,27 @@
 <style>
   /* 1024×500 store banner */
   html, body { margin: 0; width: 1024px; height: 500px; overflow: hidden; background: #1C1F12; font-family: Rubik, system-ui, sans-serif; color: #ECF0DC; }
-  .wrap { position: relative; width: 1024px; height: 500px; overflow: hidden; display: flex; align-items: center; gap: 56px; padding: 0 72px; box-sizing: border-box; }
-  .icon { width: 280px; height: 280px; border-radius: 64px; flex: none; box-shadow: 0 24px 48px rgba(0,0,0,.45); }
+  body { background: radial-gradient(90% 120% at 22% 50%, rgba(28,31,18,0) 0%, rgba(28,31,18,.65) 60%, #1C1F12 100%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='none' stroke='%2388994E' stroke-width='1.5'%3E%3Crect x='9' y='9' width='66' height='66' rx='17' stroke-opacity='.10'/%3E%3Crect x='23' y='23' width='38' height='38' rx='10' stroke-opacity='.13'/%3E%3Crect x='35' y='35' width='14' height='14' rx='4' stroke-opacity='.17'/%3E%3C/g%3E%3C/svg%3E") center; }
+  .wrap { position: relative; width: 1024px; height: 500px; overflow: hidden; display: flex; align-items: center; gap: 96px; padding: 0 72px; box-sizing: border-box; }
+  .iconbox { position: relative; flex: none; width: 260px; height: 260px; margin-left: 24px; }
+  .icon { position: relative; display: block; width: 260px; height: 260px; border-radius: 62px; box-shadow: 0 12px 0 #4E5A26, 0 30px 54px rgba(0,0,0,.45); }
+  .iconbox::before, .iconbox::after { content: ''; position: absolute; }
+  .iconbox::before { inset: -30px; border-radius: 88px; border: 3px solid rgba(136,153,78,.4); }
+  .iconbox::after { inset: -62px; border-radius: 116px; border: 3px solid rgba(136,153,78,.2); }
   .text { display: flex; flex-direction: column; gap: 14px; }
-  h1 { margin: 0; font-size: 76px; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
+  h1 { margin: 0; font-family: Changa, Rubik, sans-serif; font-size: 82px; font-weight: 800; line-height: .98; text-transform: uppercase; }
   h1 span { color: #F5B83D; }
   p { margin: 0; font-size: 28px; color: #B9BFA0; line-height: 1.35; }
   .chips { display: flex; gap: 10px; margin-top: 10px; }
-  .chip { padding: 9px 16px; border-radius: 14px; background: #272B1A; font-size: 19px; font-weight: 500; }
+  .chip { padding: 8px 16px; border-radius: 14px; background: #272B1A; box-shadow: inset 0 0 0 1px #3A4027, 0 3px 0 #12140B; font-family: Changa, Rubik, sans-serif; font-size: 20px; font-weight: 600; }
   .deco { position: absolute; border-radius: 22px; opacity: .5; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="deco" style="width:120px;height:120px;right:-30px;top:-34px;background:#4FB9A0;transform:rotate(12deg)"></div>
-  <div class="deco" style="width:86px;height:86px;right:80px;bottom:-30px;background:#9B8CFF;transform:rotate(-10deg)"></div>
-  <img class="icon" src="../../assets/icon-only.png" alt="">
+  <div class="iconbox"><img class="icon" src="../../assets/icon-only.png" alt=""></div>
   <div class="text">
-    <h1>Cubes <span>Paradox</span></h1>
+    <h1>Cubes<br><span>Paradox</span></h1>
     <p>A hard puzzle game for smart players.<br>Sharpen your thinking.</p>
     <div class="chips"><span class="chip">193 levels</span><span class="chip">14 worlds</span><span class="chip">Daily puzzle</span></div>
   </div>

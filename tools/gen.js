@@ -17,21 +17,21 @@ const KINDS = {
   push:     { root: [6, 8], boxes: [2, 3], density: [0.15, 0.4], pgoal: 0.25, need: {} },
   doorway:  { root: [6, 7], kids: 1, boxes: [0, 2], density: [0.15, 0.35], kidGoals: true, need: { doorway: true } },
   // park a box inside a room to clear the way, then take it back out
-  pocket:   { root: [6, 8], kids: 1, boxes: [1, 2], density: [0.15, 0.35], wallKids: true, kidDoors: 2, extraNest: 0.25, need: { pocket: true } },
-  carry:    { root: [6, 8], kids: 1, boxes: [1, 2], density: [0.1, 0.3], kidBoxGoals: true, roomGoal: true, extraNest: 0.25, need: { carryMove: true } },
-  unpack:   { root: [6, 8], kids: 1, boxes: [1, 2], density: [0.1, 0.3], kidBoxes: true, extraNest: 0.25, need: { unpack: true } },
-  nest2:    { root: [6, 8], kids: 2, boxes: [0, 1], density: [0.1, 0.3], kidGoals: true, nestGoal: true, need: { nested: true, depth: 2 } },
-  roomgoal: { root: [6, 8], kids: [1, 2], boxes: [0, 1], density: [0.1, 0.3], kidGoals: true, roomGoal: true, extraNest: 0.4, need: { roomGoal: true } },
+  pocket:   { root: [6, 8], kids: 1, boxes: [1, 3], density: [0.15, 0.35], wallKids: true, kidDoors: 2, extraNest: 0.25, need: { pocket: true } },
+  carry:    { root: [6, 8], kids: [1, 2], boxes: [1, 3], density: [0.1, 0.3], kidBoxGoals: true, roomGoal: true, extraNest: 0.25, need: { carryMove: true } },
+  unpack:   { root: [6, 8], kids: [1, 2], boxes: [1, 3], density: [0.1, 0.3], kidBoxes: true, extraNest: 0.25, need: { unpack: true } },
+  nest2:    { root: [6, 8], kids: 2, boxes: [0, 2], density: [0.1, 0.3], kidGoals: true, nestGoal: true, need: { nested: true, depth: 2 } },
+  roomgoal: { root: [6, 8], kids: [1, 2], boxes: [0, 2], density: [0.1, 0.3], kidGoals: true, roomGoal: true, extraNest: 0.4, need: { roomGoal: true } },
   // Deep Dive: a box has to travel through the levels, down to the deepest room or up out of it
   deep3:    { root: [6, 7], kids: 3, chain: true, wallKids: true, faceDoor: true, boxes: [1, 2], density: [0.1, 0.3], dive: true, need: { depth: 3, boxDive: 2 } },
-  self:     { root: [7, 7], self: true, kids: [0, 1], boxes: [1, 2], density: [0.1, 0.3], pgoal: 0.5, need: { exits: 1 } },
-  holes:    { root: [7, 8], kids: 1, boxes: [1, 2], density: [0.05, 0.25], holes: [0, 1], holeLine: true, kidBoxes: 0.5, extraNest: 0.4, need: { drops: 1, enters: 1 } },
-  crumble:  { root: [7, 8], kids: 1, boxes: [0, 2], density: [0.05, 0.25], cracks: [1, 4], crackLine: true, kidGoals: true, extraNest: 0.4, need: { broken: 2, enters: 1 } },
-  colors:   { root: [6, 8], kids: 2, colorBoxes: [2, 2], boxes: [0, 1], density: [0.1, 0.25], wallKids: true, kidDoors: 3, need: { colors: 2 } },
-  remote:   { root: [7, 8], kids: 1, gates: true, plates: [1, 1], plateInKid: 1, boxes: [1, 2], density: [0.05, 0.2], extraNest: 0.4, need: { remote: true } },
+  self:     { root: [7, 7], self: true, kids: [0, 1], boxes: [1, 3], density: [0.1, 0.3], pgoal: 0.5, need: { exits: 1 } },
+  holes:    { root: [7, 8], kids: [1, 2], boxes: [1, 3], density: [0.05, 0.25], holes: [0, 2], holeLine: true, kidBoxes: 0.5, extraNest: 0.4, need: { drops: 1, enters: 1 } },
+  crumble:  { root: [7, 8], kids: [1, 2], boxes: [0, 2], density: [0.05, 0.25], cracks: [1, 4], crackLine: true, kidGoals: true, extraNest: 0.4, need: { broken: 2, enters: 1 } },
+  colors:   { root: [6, 8], kids: 2, colorBoxes: [2, 2], boxes: [0, 2], density: [0.1, 0.25], wallKids: true, kidDoors: 3, need: { colors: 2 } },
+  remote:   { root: [7, 8], kids: [1, 2], gates: true, plates: [1, 1], plateInKid: 1, boxes: [1, 3], density: [0.05, 0.2], extraNest: 0.4, need: { remote: true } },
   oneway:   { root: [6, 8], kids: [1, 2], doorArrows: true, boxes: [0, 2], density: [0.1, 0.3], kidGoals: true, extraNest: 0.4, need: { doorArrow: true, enters: 1 } },
   // the daily level: anything goes, always hard
-  daily:    { root: [7, 8], kids: [1, 2], chain: 0.4, self: 0.2, boxes: [1, 2], density: [0.1, 0.25], kidGoals: true, kidBoxGoals: true, newMix: true, need: { enters: 1 } }
+  daily:    { root: [7, 8], kids: [1, 2], chain: 0.4, self: 0.2, boxes: [1, 3], density: [0.1, 0.25], kidGoals: true, kidBoxGoals: true, newMix: true, need: { enters: 1 } }
 };
 
 const PALETTES = ['teal', 'violet', 'pink'];
@@ -368,9 +368,15 @@ function boxesNeeded(def, cap) {
   return true;
 }
 
+// How hard a level is to work out. Steps and pushes do not count: a long walk or a long straight
+// push is no harder than a short one. What counts is how much the player has to decide:
+//   bits       how many real options there are at each choice along the solution (analyze.js)
+//   trapSteps  how many of those choices have an option that quietly loses the level
+//   switches   leaving one thing to move another, and coming back to it
+//   reversals  pushing a thing back the way it came (parking it and fetching it)
+//   goalDrops  taking something off its goal again
 function score(a) {
-  return a.pushes * 1.0 + a.pushRuns * 1.5 + Math.log2(a.seenAtWin) * 2.5 + a.deadRatio * 12 +
-    (a.enters + a.exits) * 0.8 + a.slides * 0.6 + a.maxDepth * 2 + a.drops * 2 + (a.unique ? 3 : 0);
+  return a.bits + 1.2 * a.trapSteps + 0.6 * a.switches + 1.2 * a.reversals + 1.5 * a.goalDrops;
 }
 
 // Floor that nothing can ever reach becomes wall, and a plain main room shrinks to what is used.
@@ -455,13 +461,17 @@ function metrics(b) {
   return {
     moves: b.moves, pushes: b.pushes, pushRuns: b.pushRuns, states: b.states, seenAtWin: b.seenAtWin,
     deadRatio: +b.deadRatio.toFixed(3), enters: b.enters, exits: b.exits, slides: b.slides, maxDepth: b.maxDepth,
-    drops: b.drops, broken: b.broken, boxDive: b.boxDive, unique: b.unique, freedom: +b.freedom.toFixed(2), score: +score(b).toFixed(2)
+    drops: b.drops, broken: b.broken, boxDive: b.boxDive, unique: b.unique, freedom: +b.freedom.toFixed(2), score: +score(b).toFixed(2),
+    macro: b.macro, choices: b.choices, hardSteps: b.hardSteps, bits: +b.bits.toFixed(2), traps: b.traps, trapSteps: b.trapSteps,
+    places: b.places, placesAlive: b.placesAlive, switches: b.switches, goalDrops: b.goalDrops, reversals: b.reversals, uses: b.uses,
+    pistons: b.pistons, pocket: b.pocket, carryMove: b.carryMove, unpacked: b.unpacked, nested: b.nested, roomGoal: b.roomGoal,
+    gateUsed: b.gateUsed, arrowUsed: b.arrowUsed, colorBoxes: b.colorBoxes, moved: b.movedIds.size, entered: b.enteredRooms.size
   };
 }
 
 /* ---------- worker / main ---------- */
 
-if (!isMainThread) {
+if (!isMainThread && workerData && workerData.gen) {
   const { kind, seed, until, cap } = workerData;
   const rng = mulberry32(seed);
   let tries = 0;
@@ -477,7 +487,7 @@ if (!isMainThread) {
     let b = analyze(def, cap);
     if (!b || !meets(kind, b)) continue;
     // medium and hard levels: no square to spare
-    if (score(b) >= 40 && (b.states < 80000 || kind === 'deep3')) {
+    if (score(b) >= 10 && (b.states < 80000 || kind === 'deep3')) {
       def = trim(tighten(kind, def, cap), cap);
       b = analyze(def, cap);
       if (!b || !meets(kind, b)) continue;
@@ -505,7 +515,7 @@ if (!isMainThread) {
   for (let i = 0; i < nWorkers; i++) {
     const kind = kinds[i % kinds.length];
     alive++;
-    const w = new Worker(__filename, { workerData: { kind, seed: (Date.now() ^ (i * 7919)) >>> 0, until, cap: 200000 } });
+    const w = new Worker(__filename, { workerData: { gen: true, kind, seed: (Date.now() ^ (i * 7919)) >>> 0, until, cap: 200000 } });
     w.on('message', (msg) => {
       if (msg.done) { tries += msg.tries; return; }
       const sig = JSON.stringify(msg.def.rooms);
@@ -531,4 +541,4 @@ if (!isMainThread) {
   }
 }
 
-module.exports = { KINDS, build, meets, score, trim, tighten, boxesNeeded, mulberry32 };
+module.exports = { KINDS, build, meets, score, metrics, trim, tighten, boxesNeeded, mulberry32 };

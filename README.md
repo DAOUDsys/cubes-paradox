@@ -25,15 +25,15 @@
 ## Screenshots
 
 <p align="center">
-  <img src="store/screenshots/01-rooms-inside-rooms.png" width="200" alt="Hard, made for smart players">
-  <img src="store/screenshots/02-step-inside.png" width="200" alt="Sharpen your thinking">
-  <img src="store/screenshots/03-room-holds-itself.png" width="200" alt="A room that holds itself">
-  <img src="store/screenshots/04-holes-cracks-colors.png" width="200" alt="Holes, cracks and colors">
+  <img src="store/screenshots/01-smart-players.png" width="200" alt="Hard, made for smart players">
+  <img src="store/screenshots/02-sharpen-thinking.png" width="200" alt="Sharpen your thinking">
+  <img src="store/screenshots/03-holds-itself.png" width="200" alt="A room that holds itself">
+  <img src="store/screenshots/04-new-rules.png" width="200" alt="Holes, cracks and colors">
 </p>
 <p align="center">
-  <img src="store/screenshots/05-hints.png" width="200" alt="Two-step hints">
-  <img src="store/screenshots/06-14-worlds-daily.png" width="200" alt="14 worlds and a daily puzzle">
-  <img src="store/screenshots/07-english-arabic.png" width="200" alt="Seven languages">
+  <img src="store/screenshots/05-two-step-hints.png" width="200" alt="Two-step hints">
+  <img src="store/screenshots/06-worlds-and-daily.png" width="200" alt="14 worlds and a daily puzzle">
+  <img src="store/screenshots/07-seven-languages.png" width="200" alt="Seven languages">
 </p>
 
 ## The game
@@ -45,11 +45,11 @@ Every world after the first is built around rooms inside rooms, often two or thr
 | # | World | Idea | Difficulty |
 |---|---|---|---|
 | 1 | Workshop | Push boxes onto their spots | Easy |
-| 2 | Doorways | A colored box is a door: push it, or walk right in | Easy |
-| 3 | Storage | Park a box inside a room, then take it back out | Medium |
-| 4 | Moving Day | Pack boxes into a room, then move the whole room | Medium |
-| 5 | Unpacking | Get boxes out of rooms; walking out pushes what is outside | Medium |
-| 6 | Rooms in Rooms | A room inside a room, two levels deep | Medium |
+| 2 | Doorways | A colored box is a door: push it, or walk right in | Medium |
+| 3 | Storage | Park a box inside a room, then take it back out | Hard |
+| 4 | Moving Day | Pack boxes into a room, then move the whole room | Hard |
+| 5 | Unpacking | Get boxes out of rooms; walking out pushes what is outside | Hard |
+| 6 | Rooms in Rooms | A room inside a room, two levels deep | Hard |
 | 7 | The Goal Room | The room itself must reach the goal, with you inside | Hard |
 | 8 | Deep Dive | Three rooms down and back up | Hard |
 | 9 | Mirror Hall | A room that holds itself | Hard |
@@ -59,11 +59,13 @@ Every world after the first is built around rooms inside rooms, often two or thr
 | 13 | Control Room | A plate inside one room opens a gate in another | Hard |
 | 14 | One-Way Doors | Arrows on room doors: in one way, out another | Hard |
 
-The last three levels of each world are optional challenges, and they are always hard. A new hard **daily puzzle** waits every day.
+A world is a ladder. Its first level shows the idea, and each level after it asks for more than the one before: harder to work out, and using the idea at least as much. The last three levels of each world are optional challenges, the hardest of its idea. A new hard **daily puzzle** waits every day.
+
+**Hard means hard to work out, not long.** A level's difficulty is measured by the choices on the way to its solution: how many real options there are at each one, how many of them quietly lose the level, and how often you have to leave one thing to move another or push something back. Steps do not count, so a long walk down a corridor is not a hard level. Every hard level has a single solution and several places where the wrong choice is a trap. In the game, one to three squares beside the level number show how hard it is.
 
 ## Features
 
-- Every level checked by a solver: every one can be solved, every box in it is needed, and the harder ones have no square to spare
+- Every level checked by a solver: every one can be solved, every box in it is needed, and its shortest solution really uses its world's idea
 - Stars for solving in the fewest moves, 12 achievements, and a daily puzzle with a streak
 - Two-step hints: first the idea in one sentence, then your next moves — from wherever you are
 - Unlimited undo (or double-tap the board) and instant restart; come back to a level right where you left it
@@ -98,8 +100,9 @@ The app has two builds: `play` (Google Play, worlds 7–14 are one purchase) and
 
 Levels are generated, solved and picked by scripts in `tools/`:
 
-- `npm run gen` — generates candidate levels for 5 minutes into `tools/out/`
-- `npm run curate` — picks the levels by world and difficulty and writes `www/js/levels.js` and `www/js/daily.js`
+- `npm run gen` — generates candidate levels for 5 minutes into `tools/out2/`
+- `npm run harden` — makes pool levels harder by small edits (open a wall, move a box, add a box), keeping only edits that add choices and traps
+- `npm run curate` — picks each world's ladder and the daily puzzles, and writes `www/js/levels.js` and `www/js/daily.js`
 - `npm run solve` — checks that every level can be won and that its stored solution (used by hints) works
 
 ## Project layout
@@ -113,7 +116,7 @@ Levels are generated, solved and picked by scripts in `tools/`:
 | `www/js/i18n.js` | English and Arabic text, world names |
 | `www/js/i18n-langs.js` | Spanish, French, German, Portuguese and Turkish |
 | `www/js/levels.js`, `daily.js` | The 193 world levels and 90 daily puzzles |
-| `tools/` | Level generator, picker and solver |
+| `tools/` | Level generator, hardener, picker and solver |
 | `store/` | Store listing text, icon, banner and screenshots |
 | `android/` | Capacitor Android project |
 

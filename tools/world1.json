@@ -1,0 +1,176 @@
+[
+ {
+  "id": 1,
+  "w": 0,
+  "n": 0,
+  "name": {
+   "en": "First Push",
+   "ar": "أول دفعة"
+  },
+  "tip": {
+   "en": "Push the yellow boxes onto the dotted squares",
+   "ar": "ادفع الصناديق الصفرا لحد المربعات المنقّطة"
+  },
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "#######",
+     "#.....#",
+     "#.P.b.#",
+     "#.....#",
+     "#.b...#",
+     "#._._.#",
+     "#######"
+    ]
+   }
+  },
+  "sol": "URRDDDULLD"
+ },
+ {
+  "id": 2,
+  "w": 0,
+  "n": 1,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "######",
+     "#..b_#",
+     "#.b###",
+     "#._..#",
+     "###.P#",
+     "######"
+    ]
+   }
+  },
+  "sol": "ULLLUURRLD"
+ },
+ {
+  "id": 3,
+  "w": 0,
+  "n": 2,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "######",
+     "###..#",
+     "#_#b.#",
+     "#b...#",
+     "#P._.#",
+     "######"
+    ]
+   }
+  },
+  "sol": "URRRUULDD"
+ },
+ {
+  "id": 4,
+  "w": 0,
+  "n": 3,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "######",
+     "#..._#",
+     "#...##",
+     "#.bP##",
+     "#_b.##",
+     "######"
+    ]
+   }
+  },
+  "sol": "DLUULURR"
+ },
+ {
+  "id": 5,
+  "w": 0,
+  "n": 4,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "######",
+     "##...#",
+     "#Pb..#",
+     "#.b###",
+     "#..__#",
+     "######"
+    ]
+   }
+  },
+  "sol": "RDLDRUUURRDLULDDLDR"
+ },
+ {
+  "id": 6,
+  "w": 0,
+  "n": 5,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "#######",
+     "####P_#",
+     "###._.#",
+     "###b..#",
+     "#...b.#",
+     "#._.b.#",
+     "#######"
+    ]
+   }
+  },
+  "sol": "RDDDDLULLDRURRUULLDRDRUUDDLLDLLURRURRDDLLRUU"
+ },
+ {
+  "id": 7,
+  "w": 0,
+  "n": 6,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "########",
+     "#####_##",
+     "#####.##",
+     "##.._P##",
+     "#..b#..#",
+     "#..b.#.#",
+     "#...b_.#",
+     "########"
+    ]
+   }
+  },
+  "sol": "DRDDLLULULURRLDDRDRRUULUUDLLDLLDRDRRLUULUR"
+ },
+ {
+  "id": 8,
+  "w": 0,
+  "n": 7,
+  "root": "R",
+  "rooms": {
+   "R": {
+    "palette": "navy",
+    "map": [
+     "########",
+     "#_..b..#",
+     "#_...._#",
+     "#.b..###",
+     "#......#",
+     "#.#.#b.#",
+     "#P=....#",
+     "########"
+    ]
+   }
+  },
+  "sol": "RRRRURULLRDDLLUUULURRRULLLDDDLUDDDR"
+ }
+]

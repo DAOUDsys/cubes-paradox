@@ -7,12 +7,14 @@
 <style>
   /* Rendered at 540×960 CSS px with device scale 2 → 1080×1920 PNG */
   html, body { margin: 0; width: 540px; height: 960px; overflow: hidden; background: #1C1F12; font-family: Rubik, system-ui, sans-serif; color: #ECF0DC; }
-  .stage { position: relative; width: 540px; height: 960px; overflow: hidden; }
-  .blob { position: absolute; border-radius: 64px; transform: rotate(-9deg); }
-  .blob.a { width: 420px; height: 420px; left: -110px; top: 420px; }
-  .blob.b { width: 260px; height: 260px; right: -90px; top: 230px; transform: rotate(12deg); border-radius: 48px; }
-  .cap { position: absolute; left: 0; right: 0; top: 54px; padding: 0 36px; text-align: center; }
-  .cap h1 { margin: 0; font-size: 40px; line-height: 1.12; font-weight: 800; letter-spacing: -0.01em; }
+  /* the Nested look: our pattern behind everything, and the phone standing inside squares in squares */
+  .stage { position: relative; width: 540px; height: 960px; overflow: hidden; background: radial-gradient(120% 60% at 50% 0%, rgba(28,31,18,0) 0%, rgba(28,31,18,.6) 60%, #1C1F12 100%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84'%3E%3Cg fill='none' stroke='%2388994E' stroke-width='1.5'%3E%3Crect x='9' y='9' width='66' height='66' rx='17' stroke-opacity='.10'/%3E%3Crect x='23' y='23' width='38' height='38' rx='10' stroke-opacity='.13'/%3E%3Crect x='35' y='35' width='14' height='14' rx='4' stroke-opacity='.17'/%3E%3C/g%3E%3C/svg%3E") center -12px; }
+  .blob { position: absolute; left: 50%; top: 566px; box-sizing: border-box; border: 3px solid; background: none !important; transform: translate(-50%, -50%); }
+  /* the squares fade in below the caption, so no line crosses the words */
+  .blob.a { width: 620px; height: 880px; border-radius: 120px; -webkit-mask-image: linear-gradient(to bottom, transparent 90px, #000 170px); }
+  .blob.b { width: 470px; height: 810px; border-radius: 84px; -webkit-mask-image: linear-gradient(to bottom, transparent 50px, #000 130px); }
+  .cap { position: absolute; left: 0; right: 0; top: 50px; padding: 0 32px; text-align: center; }
+  .cap h1 { margin: 0; font-family: Changa, Rubik, sans-serif; font-size: 42px; line-height: 1.1; font-weight: 800; }
   .cap h1 em { font-style: normal; }
   .cap p { margin: 12px 0 0; font-size: 18px; line-height: 1.45; color: #B9BFA0; }
   .phone { position: absolute; left: 50%; top: 196px; width: 346px; height: 740px; transform: translateX(-50%); border-radius: 46px; background: #30361F; box-shadow: 0 30px 60px rgba(0,0,0,.5); padding: 8px; box-sizing: border-box; }
@@ -31,7 +33,7 @@
 <script src="../../www/js/levels.js"></script>
 <script>
   const SHOTS = {
-    1: { title: 'Hard. Made for <em style="color:#F5B83D">smart players</em>.', sub: 'No luck and no timers. Only your logic can solve these.', a: '#88994E', b: '#F5B83D', world: 13, n: 7, moves: 0 },
+    1: { title: 'Hard. Made for <em style="color:#F5B83D">smart players</em>.', sub: 'No luck and no timers. Only your logic can solve these.', a: '#88994E', b: '#F5B83D', world: 6, n: 9, moves: 0 },
     2: { title: '<em style="color:#4FB9A0">Sharpen</em> your thinking', sub: 'Plan ahead and think in layers: every box holds a whole room.', a: '#88994E', b: '#4FB9A0', world: 7, n: 2, moves: 29 },
     3: { title: 'A room that <em style="color:#9B8CFF">holds itself</em>', sub: 'Walk out of the room… and you walk back into it.', a: '#9B8CFF', b: '#FF7A59', world: 8, n: 5, moves: 0 },
     4: { title: 'Holes, cracks <em style="color:#F0C24B">&amp; colors</em>', sub: 'New rules in every world, always about rooms in rooms.', a: '#5A6630', b: '#F0C24B', world: 9, n: 6, moves: 0 },
@@ -39,13 +41,18 @@
     6: { title: '<em style="color:#4FB9A0">14</em> worlds · a <em style="color:#F0C24B">daily</em> puzzle', sub: 'Stars, achievements, and a new hard puzzle every day.', a: '#88994E', b: '#4FB9A0', levels: true },
     7: { title: 'Play in <em style="color:#F5B83D">7 languages</em>', sub: 'English, Arabic, Spanish, French, German, Portuguese and Turkish.', a: '#5A6630', b: '#FF7A59', world: 11, n: 4, moves: 2, lang: 'ar' }
   };
-  const S = SHOTS[new URLSearchParams(location.search).get('shot') || '1'];
+  const Q = new URLSearchParams(location.search);
+  const S = SHOTS[Q.get('shot') || '1'];
+  // try another level without editing the table: &w=5&n=4&m=12
+  if (Q.get('w')) { S.world = +Q.get('w'); S.n = +Q.get('n'); S.moves = +(Q.get('m') || 0); }
+  // look at another screen or language: &show=main|settings|achievements|world, &lang=ar
+  if (Q.get('lang')) S.lang = Q.get('lang');
   document.getElementById('title').innerHTML = S.title;
   document.getElementById('sub').textContent = S.sub;
-  document.getElementById('blobA').style.background = S.a;
-  document.getElementById('blobA').style.opacity = 0.55;
-  document.getElementById('blobB').style.background = S.b;
-  document.getElementById('blobB').style.opacity = 0.35;
+  document.getElementById('blobA').style.borderColor = S.a;
+  document.getElementById('blobA').style.opacity = 0.3;
+  document.getElementById('blobB').style.borderColor = S.b;
+  document.getElementById('blobB').style.opacity = 0.55;
 
   const indexOf = (w, n) => LEVELS.findIndex((l) => l.w === w && l.n === n);
   // a level that shows all three new tiles together, if one exists
@@ -74,6 +81,7 @@
     // the screen fade can stall in a headless render and leave the picture dim
     W.document.head.appendChild(Object.assign(W.document.createElement('style'), { textContent: '*{animation:none!important;transition:none!important}' }));
     await wait(300);
+    if (Q.get('show')) { M.G.viewWorld = 3; M.show(Q.get('show')); await wait(400); document.title = 'ready'; return; }
     if (S.levels) {
       M.show('levels');
       await wait(400);

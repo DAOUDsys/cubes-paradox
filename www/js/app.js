@@ -44,6 +44,9 @@
     try { localStorage.setItem(STORE, JSON.stringify(progress)); } catch (e) { /* ignore */ }
   }
   const progress = loadProgress();
+  // a half-played level is kept as its moves, so it is dropped when an update changes the levels
+  const LEVELS_KEY = String(LEVELS.reduce((h, l) => (h * 31 + l.sol.length * 7 + l.sol.charCodeAt(0)) % 1000003, LEVELS.length));
+  if (progress.levelsKey !== LEVELS_KEY) { progress.resume = null; progress.levelsKey = LEVELS_KEY; saveProgress(); }
   // worlds after the sixth are a one-time purchase; anyone who had already reached them keeps them
   const FREE_WORLDS = 6;
   if (progress.keptWorlds === undefined) {
@@ -154,6 +157,7 @@
   function renderMain() {
     const n = LEVELS.filter((_, i) => isDone(i)).length;
     $('main-progress').textContent = t('progress', { n: num(n), t: num(LEVELS.length) });
+    $('main-bar').style.width = (100 * n / LEVELS.length) + '%';
     const allPassed = LEVELS.every((_, i) => passed(i));
     $('main-play-label').textContent = atPaywall() ? S.fullBuy : allPassed ? S.again : (progress.done.length || progress.skipped.length ? S.continue : S.play);
     $('main-play-level').textContent = atPaywall() ? '' : progress.resume && progress.resume.i !== 'daily' && LEVELS[progress.resume.i] ? levelLabel(progress.resume.i) : levelLabel(nextLevelIndex());
@@ -377,8 +381,14 @@
   }
 
   function fillPlayTexts() {
-    $('play-sub').textContent = curLabel() + (!G.daily && curChallenge() ? ' · ' + S.challenge : '');
+    // a challenge says so in place of its world (the name under it has the world); the number comes first, so it survives if the line is cut
+    $('play-sub').textContent = !G.daily && curChallenge() ? t('level', { n: num(LEVELS[G.index].n + 1) }) + ' · ' + S.challenge : curLabel();
     $('play-name').textContent = curName();
+    // how hard the level is, as squares: 1 easy, 2 medium, 3 hard (levels.js `d`); the daily puzzle is always hard
+    const pips = $('play-pips'), d = G.daily ? 3 : G.def.d || 0;
+    pips.textContent = '';
+    pips.className = 'pips d' + d;
+    for (let k = 1; d && k <= 3; k++) { const i = document.createElement('i'); if (k <= d) i.className = 'on'; pips.appendChild(i); }
     $('skip-btn').disabled = !!G.daily;
     buildLegend();
     showHintText();
@@ -823,7 +833,10 @@
   function showWin() {
     $('win-sub').textContent = curLabel() + ' · ' + curName();
     const ws = $('win-stars');
-    ws.textContent = '★'.repeat(G.stars) + '☆'.repeat(3 - G.stars);
+    // one star at a time
+    ws.textContent = '';
+    ws.setAttribute('aria-label', num(G.stars) + ' / ' + num(3));
+    for (let k = 0; k < 3; k++) { const sp = document.createElement('span'); sp.textContent = '★'; if (k >= G.stars) sp.className = 'off'; ws.appendChild(sp); }
     ws.setAttribute('aria-label', t('starsOf', { n: num(G.stars) }));
     $('win-par').textContent = G.stars < 3 ? t('par', { n: num((G.def.sol || '').length) }) : S.perfect;
     const e = $('win-earned');

@@ -1,24 +1,17 @@
-// Picks the final levels from the generator pools (tools/out) and writes www/js/levels.js.
+// Picks the final levels from the pools (tools/out2) and writes www/js/levels.js and www/js/daily.js.
 // Run: node tools/curate.js
+//
+// How hard a level is comes from gen.js `score`: the choices and traps on the way to the solution,
+// not the number of steps. A world is a ladder: each level asks for more than the one before it,
+// in how hard it is and in how much it uses the world's idea, and no rung repeats another.
 const path = require('path');
 const fs = require('fs');
 const { analyze, verify } = require('./analyze.js');
+const { score } = require('./gen.js');
 
-const OUT = path.join(__dirname, 'out');
-const pool = (k) => {
-  const f = path.join(OUT, 'pool-' + k + '.json');
-  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : [];
-};
-
-/* ---------- the five hand-made tutorial levels ---------- */
+/* ---------- the hand-made tutorial levels ---------- */
 
 const T = {
-  first: {
-    name: { en: 'First Push', ar: 'أول دفعة' },
-    tip: { en: 'Push the yellow boxes onto the dotted squares', ar: 'ادفع الصناديق الصفرا لحد المربعات المنقّطة' },
-    root: 'R',
-    rooms: { R: { palette: 'navy', map: ['#######', '#.....#', '#.P.b.#', '#.....#', '#.b...#', '#._._.#', '#######'] } }
-  },
   enter: {
     name: { en: 'First Step In', ar: 'الدخلة الأولى' },
     tip: { en: 'If the green box can’t move, you walk into it', ar: 'الصندوق الأخضر إذا ما قدر يتحرك، بتفوت جوّاه' },
@@ -55,12 +48,7 @@ const T = {
   }
 };
 
-/* ---------- worlds: which idea, how hard, how many ---------- */
-// Worlds 1-2 are easy, 3-5 medium, and from world 6 (the last free one) on, hard.
-// Every world ends with 3 challenge levels, and those are always hard.
-// `alt` lists close kinds to borrow from when a pool runs short (never an unrelated idea).
-
-// Doorways levels 3–6: one clear idea each, designed by hand (doors on the left and top of the room).
+// Doorways: one clear idea each, designed by hand (doors on the left and top of the room).
 const LEFT_TOP_DOORS = ['##.##', '#...#', '....#', '#...#', '#####'];
 const DOORWAYS_HAND = [
   { idea: { en: 'Walk in one door and out the other', ar: 'فوت من باب واطلع من الباب التاني' }, root: 'R', rooms: {
@@ -77,62 +65,92 @@ const DOORWAYS_HAND = [
     A: { palette: 'teal', map: ['#####', '#...#', '....#', '#.=.#', '#####'] } } }
 ];
 
-const BANDS = { easy: [22, 46], medium: [38, 64], hard: [55, 92] };
-const CHALLENGE_BAND = [72, 140];
+/* ---------- worlds ---------- */
+// World 1 is easy and stays exactly as it is (tools/world1.json). World 2 is medium. Every world after it is
+// hard: its first level shows the idea, and from the second level on every level is hard.
+// Every world ends with 3 challenge levels, the hardest of its idea.
+// `main` counts the levels before the challenges. `uses` says how much a solution uses the world's idea.
+const MEDIUM = [10, 21];      // score band of a medium level
+const HARD_MIN = 22;          // a hard level scores at least this, has one solution, and has real traps
 const CHALLENGES = 3;
 
+const U = (m) => m.uses || {};
 const WORLDS = [
-  { tier: 'easy', main: 5, tut: 'first', kinds: ['push'], alt: [] },
-  { tier: 'easy', main: 12, tut: 'enter', kinds: ['doorway'], alt: [], hand: { at: 2, levels: DOORWAYS_HAND } },
-  { tier: 'medium', main: 12, kinds: ['pocket'], alt: ['unpack'] },
-  { tier: 'medium', main: 12, tut: 'carry', kinds: ['carry'], alt: [] },
-  { tier: 'medium', main: 12, kinds: ['unpack'], alt: ['pocket'] },
-  { tier: 'hard', main: 12, tut: 'nest', kinds: ['nest2'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['roomgoal'], alt: [] },
-  { tier: 'hard', main: 10, kinds: ['deep3'], alt: [] },
-  { tier: 'hard', main: 12, tut: 'loop', kinds: ['self'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['holes'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['crumble'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['colors'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['remote'], alt: [] },
-  { tier: 'hard', main: 12, kinds: ['oneway'], alt: [] }
+  { tier: 'easy', frozen: 'world1.json' },
+  { tier: 'medium', main: 12, tut: 'enter', hand: DOORWAYS_HAND, kind: 'doorway', uses: (m) => m.enters + m.exits + (U(m).roomPush ? 1 : 0) },
+  { tier: 'hard', main: 12, kind: 'pocket', uses: (m) => 2 * (U(m).pocket || 0) + (U(m).boxIn || 0) },
+  { tier: 'hard', main: 12, tut: 'carry', kind: 'carry', uses: (m) => Math.ceil((U(m).carry || 0) / 2) + (U(m).boxIn || 0) },
+  { tier: 'hard', main: 12, kind: 'unpack', uses: (m) => 2 * (U(m).unpack || 0) + (m.pistons || 0) },
+  { tier: 'hard', main: 12, tut: 'nest', kind: 'nest2', uses: (m) => 2 * (U(m).roomIn || 0) + m.maxDepth },
+  { tier: 'hard', main: 12, kind: 'roomgoal', uses: (m) => Math.ceil((U(m).roomPush || 0) / 2) + m.enters },
+  { tier: 'hard', main: 10, kind: 'deep3', uses: (m) => 2 * m.boxDive + m.maxDepth + (U(m).boxIn || 0) + (U(m).unpack || 0) },
+  { tier: 'hard', main: 12, tut: 'loop', kind: 'self', uses: (m) => m.exits + m.enters },
+  { tier: 'hard', main: 12, kind: 'holes', uses: (m) => 3 * m.drops + m.enters },
+  { tier: 'hard', main: 9, kind: 'crumble', uses: (m) => m.broken },
+  { tier: 'hard', main: 10, kind: 'colors', uses: (m) => 2 * (U(m).boxIn || 0) + m.enters },
+  { tier: 'hard', main: 12, kind: 'remote', uses: (m) => (U(m).gate || 0) + m.enters },
+  { tier: 'hard', main: 9, kind: 'oneway', uses: (m) => (U(m).arrow || 0) }
 ];
 
+/* ---------- pools ---------- */
+
 const OUT2 = path.join(__dirname, 'out2');
-const pool2 = (k) => {
-  const f = path.join(OUT2, 'pool-' + k + '.json');
-  return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : [];
-};
-const KINDS = [...new Set(WORLDS.flatMap(w => w.kinds.concat(w.alt)).concat('daily'))];
-const pools = {};
-for (const k of KINDS) pools[k] = pool2(k).filter(c => c.m.moves >= 6 && c.m.moves <= 95).sort((a, b) => a.m.score - b.m.score);
-
-const used = new Set();
+const read = (f) => (fs.existsSync(path.join(OUT2, f)) ? JSON.parse(fs.readFileSync(path.join(OUT2, f), 'utf8')) : []);
 const sigOf = (c) => JSON.stringify(c.def.rooms);
-const floorCount = (def) => Object.values(def.rooms).reduce((n, r) => n + r.map.join('').replace(/#/g, '').length, 0);
-// a rough fingerprint of what the solution does, to keep two levels of one world from being the same idea twice
-const shape = (c) => [c.m.pushes, c.m.enters, c.m.exits, c.m.maxDepth, c.m.drops, c.m.broken, Object.keys(c.def.rooms).length].join('/');
-function tooClose(c, picked) {
-  return picked.some(p => shape(p) === shape(c) && Math.abs(p.m.moves - c.m.moves) <= 3);
+// a level made harder by tools/harden.js and the level it was made from look alike: one family, used once
+const family = (c) => c.from || sigOf(c);
+const KINDS = [...new Set(WORLDS.filter(w => w.kind).map(w => w.kind).concat('daily'))];
+const pools = {};
+for (const k of KINDS) {
+  pools[k] = read('pool-' + k + '.json').concat(read('hard-' + k + '.json'))
+    .filter(c => c.m.moves >= 6 && c.m.moves <= 95)
+    .map(c => Object.assign(c, { kind: k }));
 }
+const usedFamilies = new Set();
+const free = (c) => !usedFamilies.has(family(c));
+const take = (c) => { usedFamilies.add(family(c)); return Object.assign({}, c); };
 
-// n candidates spread over the band; hard ones should have a single solution and little slack
-function pickSpread(list, n, band, hard, picked) {
-  const out = [];
-  for (let i = 0; i < n; i++) {
-    const target = band[0] + (band[1] - band[0]) * (n === 1 ? 0.5 : i / (n - 1));
-    const cost = (c) => Math.abs(c.m.score - target) + 0.05 * floorCount(c.def) +
-      (c.m.deadRatio < 0.3 ? 3 : 0) + (hard && !c.m.unique ? 10 : 0) + (hard ? Math.max(0, c.m.freedom - 4) : 0);
-    let best = null;
-    for (const c of list) {
-      if (used.has(sigOf(c)) || tooClose(c, picked.concat(out))) continue;
-      if (!best || cost(c) < cost(best)) best = c;
-    }
-    if (!best) break;
-    used.add(sigOf(best));
-    out.push(Object.assign({}, best));
+// truly hard: scores high, has one solution, and has several places where a wrong choice loses
+const isHard = (c) => c.m.score >= HARD_MIN && c.m.unique && c.m.trapSteps >= 3 && c.m.choices >= 6;
+// a rough fingerprint of what the solution does, to keep two levels of one world from being the same thing twice
+const shape = (c) => [c.m.pushes, c.m.enters, c.m.exits, c.m.maxDepth, c.m.drops, c.m.broken, Object.keys(c.def.rooms).length].join('/');
+const tooClose = (c, picked) => picked.some(p => shape(p) === shape(c) && Math.abs(p.m.moves - c.m.moves) <= 3);
+// when two do the same job, the shorter one is the better puzzle
+const better = (a, b) => (b.m.score - a.m.score) || (a.m.moves - b.m.moves);
+
+// one per family and one per fingerprint: the best of each
+function distinct(list) {
+  const out = [], fams = new Set();
+  for (const c of list.slice().sort(better)) {
+    if (fams.has(family(c)) || tooClose(c, out)) continue;
+    fams.add(family(c));
+    out.push(c);
   }
   return out;
+}
+
+// The ladder: n levels, each harder than the one before (by at least `gap`) and using the idea at least
+// as much. Finds the longest such chain, then takes n rungs spread evenly along it. When the pool cannot
+// give a chain that long, the idea is allowed to dip by `slack` between two rungs, as little as it takes.
+function ladder(list, n, uses, gap) {
+  const c = list.slice().sort((a, b) => a.m.score - b.m.score);
+  if (!c.length || n <= 0) return { rungs: [], slack: 0 };
+  for (const slack of [0, 1, 2, 3, 5, 8, Infinity]) {
+    const len = c.map(() => 1), prev = c.map(() => -1);
+    for (let i = 0; i < c.length; i++) for (let j = 0; j < i; j++) {
+      if (c[i].m.score - c[j].m.score < gap || uses(c[i].m) < uses(c[j].m) - slack) continue;
+      if (len[j] + 1 > len[i]) { len[i] = len[j] + 1; prev[i] = j; }
+    }
+    let end = 0;
+    for (let i = 1; i < c.length; i++) if (len[i] >= len[end]) end = i;
+    const chain = [];
+    for (let k = end; k >= 0; k = prev[k]) chain.push(c[k]);
+    chain.reverse();
+    if (chain.length < n && slack !== Infinity) continue;
+    const m = Math.min(n, chain.length), rungs = [];
+    for (let i = 0; i < m; i++) rungs.push(chain[m === 1 ? 0 : Math.round(i * (chain.length - 1) / (m - 1))]);
+    return { rungs, slack };
+  }
 }
 
 /* ---------- the "idea" hint: one sentence about the key move ---------- */
@@ -181,81 +199,125 @@ function ideaFor(def) {
     enter: () => [`The way forward starts inside the ${room(a, 'en')}`, `الطريق بيبلش من جوّا ${room(a, 'ar')}`],
     pushRoom: () => [`The ${room(a, 'en')} has to move before anything else`, `${room(a, 'ar')} لازم يتحرك قبل أي إشي`]
   };
-  const T = MAKE[type]();
-  return { en: T[0], ar: T[1] };
+  const T2 = MAKE[type]();
+  return { en: T2[0], ar: T2[1] };
 }
 
 /* ---------- pick the levels ---------- */
 
+// A main room that is not a box itself can sit anywhere in its square: put what is in it in the middle.
+// Nothing about the puzzle changes, it only looks balanced on the board.
+function centerRoot(def) {
+  const R = def.rooms[def.root];
+  if (Object.values(def.rooms).some(r => r.map.some(row => row.indexOf(def.root) !== -1))) return def;
+  const n = R.map.length;
+  let x0 = n, y0 = n, x1 = -1, y1 = -1;
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (R.map[y][x] !== '#') { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+  if (x1 < 0 || x0 === 0 || y0 === 0 || x1 === n - 1 || y1 === n - 1) return def;
+  const dx = Math.floor((n - (x1 - x0 + 1)) / 2) - x0, dy = Math.floor((n - (y1 - y0 + 1)) / 2) - y0;
+  if (!dx && !dy) return def;
+  const shift = (rows, fill) => rows.map((_, y) => {
+    let out = '';
+    for (let x = 0; x < n; x++) { const sx = x - dx, sy = y - dy; out += sx >= 0 && sy >= 0 && sx < n && sy < n ? rows[sy][sx] : fill; }
+    return out;
+  });
+  R.map = shift(R.map, '#');
+  if (R.terrain) R.terrain = shift(R.terrain, '.');
+  return def;
+}
+
+const handLevel = (src, kind) => {
+  const def = JSON.parse(JSON.stringify(src));
+  const a = analyze(def);
+  return { def: Object.assign(def, { sol: a.sol }), m: { moves: a.moves, score: score(a), unique: a.unique }, kind };
+};
+
 const levels = [];
+const report = [];
 let short = 0;
 WORLDS.forEach((W, w) => {
-  const picked = [];
-  // the main levels, spread over the world's band
-  const mainCount = W.main - (W.tut ? 1 : 0);
-  for (const kind of W.kinds) {
-    let got = pickSpread(pools[kind], mainCount, BANDS[W.tier], W.tier === 'hard', picked).map(x => Object.assign(x, { kind }));
-    for (const alt of W.alt) {
-      if (got.length >= mainCount) break;
-      got = got.concat(pickSpread(pools[alt], mainCount - got.length, BANDS[W.tier], W.tier === 'hard', picked.concat(got)).map(x => Object.assign(x, { kind: alt })));
+  const list = []; // { def, m, kind, d } in order; d = 1 easy, 2 medium, 3 hard
+  if (W.frozen) {
+    // exactly as they are; only the difficulty squares are new
+    const frozen = JSON.parse(fs.readFileSync(path.join(__dirname, W.frozen), 'utf8'));
+    frozen.forEach((def, n) => {
+      const d = JSON.parse(JSON.stringify(def));
+      delete d.id; delete d.w; delete d.n; delete d.d;
+      const a = analyze(d);
+      list.push({ def: d, m: { moves: a.moves, score: score(a), unique: a.unique }, kind: 'frozen', d: n >= frozen.length - CHALLENGES ? 3 : 1, keep: true });
+    });
+  } else {
+    const pool = pools[W.kind].filter(free);
+    const hardOnes = distinct(pool.filter(isHard));
+    // the challenges: the hardest of the world's idea
+    const challenges = hardOnes.slice(0, CHALLENGES).sort((a, b) => a.m.score - b.m.score);
+    const ceiling = challenges.length ? challenges[0].m.score : Infinity;
+    const intro = [];
+    if (W.tut) intro.push(Object.assign(handLevel(T[W.tut], 'tutorial'), { d: 1 }));
+    for (const h of W.hand || []) intro.push(Object.assign(handLevel(h, 'hand'), { d: 1 }));
+    let body, slack;
+    if (W.tier === 'medium') {
+      const mediums = distinct(pool.filter(c => c.m.score >= MEDIUM[0] && c.m.score < MEDIUM[1] && c.m.trapSteps >= 1 && challenges.indexOf(c) === -1));
+      ({ rungs: body, slack } = ladder(mediums, W.main - intro.length, W.uses, 0.8));
+      body.forEach(c => { c.d = 2; });
+    } else {
+      // a world without a hand-made first level starts with the gentlest level of its idea
+      if (!intro.length) {
+        const gentle = pool.filter(c => c.m.score >= 7 && c.m.score < 16 && c.m.unique && W.uses(c.m) > 0 && c.m.moves <= 30)
+          .sort((a, b) => (a.m.macro - b.m.macro) || (a.m.moves - b.m.moves))[0];
+        if (gentle) intro.push(Object.assign(take(gentle), { d: 2 }));
+      }
+      const rest = hardOnes.filter(c => challenges.indexOf(c) === -1 && c.m.score < ceiling && free(c));
+      ({ rungs: body, slack } = ladder(rest, W.main - intro.length, W.uses, 1));
+      body.forEach(c => { c.d = 3; });
     }
-    picked.push(...got);
-  }
-  picked.sort((a, b) => a.m.score - b.m.score);
-  // the challenges: always hard, always from the world's own idea
-  const top = pools[W.kinds[0]].filter(c => !used.has(sigOf(c))).sort((a, b) => b.m.score - a.m.score);
-  const challenges = [];
-  for (const c of top) {
-    if (challenges.length >= CHALLENGES) break;
-    if (tooClose(c, picked.concat(challenges))) continue;
-    if (c.m.score < Math.min(CHALLENGE_BAND[0], (picked[picked.length - 1] || c).m.score)) break;
-    used.add(sigOf(c));
-    challenges.push(Object.assign({}, c, { kind: W.kinds[0] }));
-  }
-  challenges.sort((a, b) => a.m.score - b.m.score);
-  const missing = mainCount - picked.length + CHALLENGES - challenges.length;
-  if (missing > 0) { short += missing; console.log(`world ${w + 1}: ${missing} short`); }
-
-  const list = [];
-  if (W.tut) {
-    const tdef = JSON.parse(JSON.stringify(T[W.tut]));
-    const a = analyze(tdef);
-    list.push({ def: Object.assign(tdef, { sol: a.sol }), m: { moves: a.moves, score: 0 }, kind: 'tutorial' });
-  }
-  for (const p of picked) list.push(p);
-  for (const c of challenges) list.push(Object.assign(c, { challenge: true }));
-  // hand-made levels take fixed places in the world
-  if (W.hand) {
-    list.splice(W.hand.at, W.hand.levels.length, ...W.hand.levels.map((h) => {
-      const def = JSON.parse(JSON.stringify(h));
-      const a = analyze(def);
-      return { def: Object.assign(def, { sol: a.sol }), m: { moves: a.moves, score: 0, unique: a.unique }, kind: 'hand' };
-    }));
+    for (const c of intro) list.push(c);
+    for (const c of body) list.push(Object.assign(take(c), { d: c.d }));
+    for (const c of challenges) list.push(Object.assign(take(c), { d: 3, challenge: true }));
+    const missing = W.main + CHALLENGES - list.length;
+    if (missing > 0) { short += missing; console.log(`world ${w + 1}: ${missing} short`); }
+    const us = body.map(c => W.uses(c.m));
+    report.push({ w, slack, uses: us.join(' '), pool: pool.length, hard: hardOnes.length });
   }
   list.forEach((x, n) => {
     const d = x.def;
-    if (n > 0) { delete d.name; delete d.tip; }
-    d.idea = d.idea || ideaFor(d);
+    if (!x.keep) {
+      if (n > 0) { delete d.name; delete d.tip; }
+      d.idea = d.idea || ideaFor(d);
+      if (x.kind !== 'tutorial' && x.kind !== 'hand') centerRoot(d);
+    }
     levels.push(Object.assign(x, { w, n }));
   });
 });
 
-// daily puzzles: hard ones nobody meets in the worlds
-const dailyPool = pools.daily.concat(...KINDS.filter(k => k !== 'daily').map(k => pools[k].filter(c => c.m.score >= 68)))
-  .filter(c => !used.has(sigOf(c)) && c.m.score >= 62 && c.m.unique)
-  .sort((a, b) => sigOf(a) < sigOf(b) ? -1 : 1);
+// daily puzzles: hard ones nobody meets in the worlds, a different idea each day
+const dailyPool = distinct([].concat(...KINDS.map(k => pools[k])).filter(c => free(c) && isHard(c) && c.m.score >= HARD_MIN + 2))
+  .sort((a, b) => (sigOf(a) < sigOf(b) ? -1 : 1));
 const daily = [];
-for (const c of dailyPool) {
-  if (daily.length >= 90) break;
-  if (used.has(sigOf(c))) continue;
-  used.add(sigOf(c));
-  const d = JSON.parse(JSON.stringify(c.def));
-  d.id = 'd' + (daily.length + 1);
-  d.idea = ideaFor(d);
-  daily.push({ def: d, m: c.m });
+{
+  // take turns between the ideas, so two days in a row are not the same kind
+  const byKind = {};
+  for (const c of dailyPool) (byKind[c.kind] || (byKind[c.kind] = [])).push(c);
+  const order = Object.keys(byKind).sort();
+  for (let r = 0; daily.length < 90 && order.some(k => byKind[k][r]); r++) {
+    for (const k of order) {
+      const c = byKind[k][r];
+      if (!c || daily.length >= 90 || !free(c)) continue;
+      const x = take(c);
+      const d = centerRoot(JSON.parse(JSON.stringify(x.def)));
+      d.idea = ideaFor(d);
+      daily.push({ def: d, m: x.m, kind: k });
+    }
+  }
+  // shuffle deterministically, then spread the kinds again
+  for (let i = daily.length - 1, s = 7; i > 0; i--) { s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); [daily[i], daily[j]] = [daily[j], daily[i]]; }
+  for (let i = 1; i < daily.length; i++) {
+    if (daily[i].kind !== daily[i - 1].kind) continue;
+    const j = daily.findIndex((x, k) => k > i && x.kind !== daily[i - 1].kind && (k + 1 >= daily.length || daily[k + 1].kind !== daily[i].kind));
+    if (j > 0) [daily[i], daily[j]] = [daily[j], daily[i]];
+  }
+  daily.forEach((x, i) => { x.def.id = 'd' + (i + 1); });
 }
-// shuffle deterministically so hard kinds alternate
-for (let i = daily.length - 1, s = 7; i > 0; i--) { s = (s * 1103515245 + 12345) % 2147483648; const j = s % (i + 1); [daily[i], daily[j]] = [daily[j], daily[i]]; }
 
 // final check: every stored solution replays to a win
 let bad = 0;
@@ -293,7 +355,7 @@ const wrap = (name, what, body) => `/* Cubes Paradox ${what} (written by tools/c
    Symbols: # wall  . floor  P player  b box  t teal box  u purple box  _ box goal  = player goal
    Any other capital letter is a box that holds the room with that key. Rooms must be square.
    terrain (optional, same size): ~ ice  o plate  | gate  ^ > v < one-way arrows  O hole  x crumbling floor
-   sol = a known solution (U R D L), used for hints; idea = the first hint step. */
+   sol = a known solution (U R D L), used for hints; idea = the first hint step; d = how hard (1 easy, 2 medium, 3 hard). */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
   else root.${name} = factory();
@@ -305,14 +367,16 @@ ${body}
 });
 `;
 fs.writeFileSync(path.join(__dirname, '../www/js/levels.js'),
-  wrap('LEVELS', 'levels', levels.map(x => emit(x.def, `id: ${x.def.id}, w: ${x.w}, n: ${x.n},`)).join(',\n')));
+  wrap('LEVELS', 'levels', levels.map(x => emit(x.def, `id: ${x.def.id}, w: ${x.w}, n: ${x.n}, d: ${x.d},`)).join(',\n')));
 fs.writeFileSync(path.join(__dirname, '../www/js/daily.js'),
   wrap('DAILY', 'daily puzzles', daily.map(x => emit(x.def, `id: '${x.def.id}',`)).join(',\n')));
 
 console.log(`wrote ${levels.length} levels and ${daily.length} daily puzzles, ${bad} bad, ${short} short`);
 WORLDS.forEach((W, w) => {
   const ls = levels.filter(x => x.w === w);
-  const sc = ls.filter(x => x.kind !== 'tutorial').map(x => Math.round(x.m.score));
-  const uq = ls.filter(x => x.m.unique).length;
-  console.log(`world ${String(w + 1).padStart(2)} ${W.tier.padEnd(6)} ${String(ls.length).padStart(2)} levels  score ${sc[0]}→${sc[sc.length - 1]}  moves ${Math.min(...ls.map(x => x.m.moves))}–${Math.max(...ls.map(x => x.m.moves))}  unique ${uq}  kinds ${[...new Set(ls.map(x => x.kind))].join(',')}`);
+  const r = report.find(x => x.w === w);
+  console.log(`world ${String(w + 1).padStart(2)} ${W.tier.padEnd(6)} ${String(ls.length).padStart(2)} levels  score ${ls.map(x => Math.round(x.m.score)).join(' ')}  | moves ${ls.map(x => x.m.moves).join(' ')}` +
+    (r ? `  | uses ${r.uses}  ${r.slack ? 'ladder, idea dips by up to ' + r.slack : 'ladder'}  (${r.hard} hard of ${r.pool})` : ''));
 });
+const ds = daily.map(x => x.m.score).sort((a, b) => a - b);
+console.log(`daily: score ${Math.round(ds[0])}–${Math.round(ds[ds.length - 1])}, kinds ${[...new Set(daily.map(x => x.kind))].length}`);

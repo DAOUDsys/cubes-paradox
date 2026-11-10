@@ -6,6 +6,7 @@
   "scripts": {
     "solve": "node tools/solve.js",
     "gen": "node tools/gen.js 300",
+    "harden": "node tools/harden.js 600",
     "curate": "node tools/curate.js",
     "serve": "npx --yes http-server www -p 8080 -c-1",
     "sync": "npx cap sync android",
