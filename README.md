@@ -11,11 +11,17 @@
 </p>
 
 <p align="center">
-  <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox"><img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="60"></a>
-  &nbsp;
-  <a href="https://github.com/DAOUDsys/cubes-paradox/releases/latest"><b>or download the APK</b></a>
-  <br>
-  <a href="https://github.com/DAOUDsys/cubes-paradox/releases"><img src="https://img.shields.io/github/downloads/DAOUDsys/cubes-paradox/total?label=downloads&color=88994E" alt="Total downloads"></a>
+  <a href="https://rookieenough.github.io/Orion-Data/app/?id=cubes-paradox">
+    <img src="https://raw.githubusercontent.com/RookieEnough/Orion-Store/refs/heads/main/assets/orion-badge.png" alt="Get it on Orion Store" height="56">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/DAOUDsys/cubes-paradox/releases/tag/v1.4.1">
+    <img width="212" height="56" src="https://github.com/user-attachments/assets/872b8130-d148-4b1b-9385-c52796976b5d" alt="Download APK">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/DAOUDsys/cubes-paradox/releases">
+ <img width="212" height="56" alt="Gemini_Generated_Image_f0kvvof0kvvof0kv-removebg-preview" src="https://github.com/user-attachments/assets/14fe90b9-d572-440d-b2cb-2636bcefac32" />
+  </a>
 </p>
 
 <p align="center">
