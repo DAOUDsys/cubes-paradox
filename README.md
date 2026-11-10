@@ -20,7 +20,7 @@
   </a>
   &nbsp;&nbsp;
   <a href="https://github.com/DAOUDsys/cubes-paradox/releases">
- <img width="212" height="56" alt="Gemini_Generated_Image_f0kvvof0kvvof0kv-removebg-preview" src="https://github.com/user-attachments/assets/14fe90b9-d572-440d-b2cb-2636bcefac32" />
+ <img width="212" height="56" src="https://github.com/user-attachments/assets/14fe90b9-d572-440d-b2cb-2636bcefac32" />
   </a>
 </p>
 
