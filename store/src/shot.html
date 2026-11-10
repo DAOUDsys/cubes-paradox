@@ -84,8 +84,13 @@
     if (Q.get('show')) { M.G.viewWorld = 3; M.show(Q.get('show')); await wait(400); document.title = 'ready'; return; }
     if (S.levels) {
       M.show('levels');
-      await wait(400);
-      W.document.getElementById('level-list').scrollTop = 0;
+      await wait(600);
+      // the map lays itself out from the size of its box; show it again once the frame has its size, or it can come out empty
+      M.show('levels');
+      await wait(500);
+      // the map scrolls itself to the world you are in; go back to the top after it has
+      for (let k = 0; k < 3; k++) { W.document.getElementById('level-list').scrollTop = 0; await wait(250); }
+      if (!W.document.querySelector('#level-list .map-node')) { document.title = 'empty map'; return; }
       document.title = 'ready';
       return;
     }
