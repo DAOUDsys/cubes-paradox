@@ -49,6 +49,7 @@
       hintChoose: '¿Cuánta ayuda?', hintIdea: 'La idea', hintIdeaSub: 'Una frase sobre la clave del nivel',
       hintMoves: 'Los movimientos', hintMovesSub: 'Tus próximos 8 movimientos, en el tablero', ideaNone: 'Busca lo único que tiene que pasar primero',
       legendHole: 'Agujero: una caja lo tapa', legendCrack: 'Agrietado: se rompe al salir', legendTealBox: 'Caja verde: a una sala verde', legendVioletBox: 'Caja morada: a una sala morada',
+      legendWind: 'Viento: empuja un paso', legendPad: 'Plataforma de salto', legendTwin: 'Caja gemela: misma sala', legendMirror: 'Sala espejo', legendHungry: 'Sala hambrienta: traga', legendSprout2: 'Segundo brote',
       ach: {
         first: ['Primeros pasos', 'Resuelve tu primer nivel'], world1: ['Calentando', 'Termina el primer mundo'],
         half: ['A mitad de camino', 'Resuelve la mitad de los niveles'], all: ['Maestro de cubos', 'Resuelve todos los niveles'],
@@ -103,6 +104,7 @@
       hintChoose: 'Combien d’aide ?', hintIdea: 'L’idée', hintIdeaSub: 'Une phrase sur la clé du niveau',
       hintMoves: 'Les coups', hintMovesSub: 'Tes 8 prochains coups, sur le plateau', ideaNone: 'Cherche la seule chose qui doit arriver en premier',
       legendHole: 'Trou : une boîte le comble', legendCrack: 'Fissuré : casse quand tu pars', legendTealBox: 'Boîte verte : dans une salle verte', legendVioletBox: 'Boîte violette : dans une salle violette',
+      legendWind: 'Vent : pousse d’un pas', legendPad: 'Case de saut', legendTwin: 'Jumelle : même salle', legendMirror: 'Salle miroir', legendHungry: 'Salle affamée : avale', legendSprout2: 'Deuxième pousse',
       ach: {
         first: ['Premiers pas', 'Résous ton premier niveau'], world1: ['Échauffé', 'Termine le premier monde'],
         half: ['À mi-chemin', 'Résous la moitié des niveaux'], all: ['Maître des cubes', 'Résous tous les niveaux'],
@@ -157,6 +159,7 @@
       hintChoose: 'Wie viel Hilfe?', hintIdea: 'Die Idee', hintIdeaSub: 'Ein Satz zum Schlüssel dieses Levels',
       hintMoves: 'Die Züge', hintMovesSub: 'Deine nächsten 8 Züge, auf dem Spielfeld', ideaNone: 'Such das eine, was zuerst passieren muss',
       legendHole: 'Loch: eine Kiste füllt es', legendCrack: 'Rissig: bricht, wenn du gehst', legendTealBox: 'Grüne Kiste: in einen grünen Raum', legendVioletBox: 'Lila Kiste: in einen lila Raum',
+      legendWind: 'Wind: weht ein Feld', legendPad: 'Sprungfeld', legendTwin: 'Zwilling: gleicher Raum', legendMirror: 'Spiegelraum', legendHungry: 'Hungriger Raum: schluckt', legendSprout2: 'Zweiter Spross',
       ach: {
         first: ['Erste Schritte', 'Löse dein erstes Level'], world1: ['Aufgewärmt', 'Schließe die erste Welt ab'],
         half: ['Halbzeit', 'Löse die Hälfte aller Level'], all: ['Kistenmeister', 'Löse jedes Level'],
@@ -211,6 +214,7 @@
       hintChoose: 'Quanta ajuda?', hintIdea: 'A ideia', hintIdeaSub: 'Uma frase sobre a chave da fase',
       hintMoves: 'Os movimentos', hintMovesSub: 'Seus próximos 8 movimentos, no tabuleiro', ideaNone: 'Procure a única coisa que tem que acontecer primeiro',
       legendHole: 'Buraco: uma caixa o preenche', legendCrack: 'Rachado: quebra quando você sai', legendTealBox: 'Caixa verde: numa sala verde', legendVioletBox: 'Caixa roxa: numa sala roxa',
+      legendWind: 'Vento: empurra um passo', legendPad: 'Plataforma de salto', legendTwin: 'Caixa gêmea: mesma sala', legendMirror: 'Sala espelho', legendHungry: 'Sala faminta: engole', legendSprout2: 'Segundo broto',
       ach: {
         first: ['Primeiros passos', 'Resolva sua primeira fase'], world1: ['Aquecido', 'Termine o primeiro mundo'],
         half: ['Meio caminho', 'Resolva metade das fases'], all: ['Mestre dos cubos', 'Resolva todas as fases'],
@@ -265,6 +269,7 @@
       hintChoose: 'Ne kadar yardım?', hintIdea: 'Fikir', hintIdeaSub: 'Bölümün anahtarı hakkında tek cümle',
       hintMoves: 'Hamleler', hintMovesSub: 'Sonraki 8 hamlen, oyun alanında', ideaNone: 'Önce olması gereken tek şeyi ara',
       legendHole: 'Çukur: bir kutu doldurur', legendCrack: 'Çatlak: sen çıkınca kırılır', legendTealBox: 'Yeşil kutu: yeşil odaya', legendVioletBox: 'Mor kutu: mor odaya',
+      legendWind: 'Rüzgar: bir adım iter', legendPad: 'Atlama karesi', legendTwin: 'İkiz kutu: aynı oda', legendMirror: 'Ayna odası', legendHungry: 'Aç oda: yutar', legendSprout2: 'İkinci filiz',
       ach: {
         first: ['İlk adımlar', 'İlk bölümünü çöz'], world1: ['Isındın', 'İlk dünyayı bitir'],
         half: ['Yolun yarısı', 'Bölümlerin yarısını çöz'], all: ['Küp ustası', 'Tüm bölümleri çöz'],
@@ -293,7 +298,14 @@
       ['Suelo agrietado', 'El suelo agrietado se rompe al salir de él. Planea un solo camino.'],
       ['Colores', 'Cada caja de color va dentro de la sala de su color.'],
       ['Sala de control', 'Una placa en una sala abre una puerta en otra.'],
-      ['Sentido único', 'Flechas en las puertas: entras por una y sales por otra.']
+      ['Sentido único', 'Flechas en las puertas: entras por una y sales por otra.'],
+      ['Suelo helado', 'Sobre el hielo, lo que se mueve sigue deslizándose hasta que algo lo para.'],
+      ['Túneles de viento', 'Una casilla de viento empuja un paso lo que hay encima, después de cada movimiento.'],
+      ['Plataformas de salto', 'Pisa una plataforma y sales por su gemela. Las cajas también.'],
+      ['Salas hambrientas', 'Empuja una sala hambrienta contra una caja atascada y la sala se la traga.'],
+      ['Salas gemelas', 'Dos cajas, una sala: entra por cualquiera, pero siempre sales por la primera.'],
+      ['Salas espejo', 'Dentro de una sala espejo, izquierda y derecha se invierten: entras por la izquierda y apareces a la derecha.'],
+      ['Dos brotes', 'Los dos brotes se mueven a la vez. Usa las paredes para separarlos.']
     ],
     fr: [
       ['L’atelier', 'Pousse les boîtes à leur place.'],
@@ -309,7 +321,14 @@
       ['Sol fissuré', 'Le sol fissuré casse quand tu le quittes. Prévois un seul chemin.'],
       ['Couleurs', 'Chaque boîte de couleur va dans la salle de sa couleur.'],
       ['Salle de contrôle', 'Une dalle dans une salle ouvre une grille dans une autre.'],
-      ['Sens unique', 'Des flèches sur les portes : on entre par l’une, on sort par l’autre.']
+      ['Sens unique', 'Des flèches sur les portes : on entre par l’une, on sort par l’autre.'],
+      ['Sol gelé', 'Sur la glace, ce qui bouge glisse jusqu’à ce que quelque chose l’arrête.'],
+      ['Couloirs de vent', 'Une case de vent pousse ce qui est dessus d’un pas, après chaque coup.'],
+      ['Cases de saut', 'Marche sur une case de saut et tu ressors par sa jumelle. Les boîtes aussi.'],
+      ['Salles affamées', 'Pousse une salle affamée sur une boîte bloquée et la salle l’avale.'],
+      ['Salles jumelles', 'Deux boîtes, une salle : entre par l’une ou l’autre, mais tu ressors toujours par la première.'],
+      ['Salles miroirs', 'Dans une salle miroir, gauche et droite sont inversées : entre par la gauche, tu arrives à droite.'],
+      ['Deux pousses', 'Les deux pousses bougent ensemble. Sers-toi des murs pour les séparer.']
     ],
     de: [
       ['Die Werkstatt', 'Schieb die Kisten auf ihre Plätze.'],
@@ -325,7 +344,14 @@
       ['Rissiger Boden', 'Rissiger Boden bricht, wenn du ihn verlässt. Plane einen sauberen Weg.'],
       ['Farben', 'Jede farbige Kiste gehört in den Raum ihrer Farbe.'],
       ['Kontrollraum', 'Eine Platte in einem Raum öffnet ein Tor in einem anderen.'],
-      ['Einbahntüren', 'Pfeile an den Türen: durch eine hinein, durch eine andere hinaus.']
+      ['Einbahntüren', 'Pfeile an den Türen: durch eine hinein, durch eine andere hinaus.'],
+      ['Gefrorener Boden', 'Auf Eis rutscht alles weiter, bis etwas es aufhält.'],
+      ['Windkanäle', 'Ein Windfeld schiebt, was darauf steht, nach jedem Zug ein Feld weiter.'],
+      ['Sprungfelder', 'Tritt auf ein Sprungfeld und du kommst aus seinem Zwilling heraus. Kisten auch.'],
+      ['Hungrige Räume', 'Schieb einen hungrigen Raum gegen eine festsitzende Kiste, und er verschluckt sie.'],
+      ['Zwillingsräume', 'Zwei Kisten, ein Raum: Geh durch eine von beiden hinein, du kommst aber immer aus der ersten heraus.'],
+      ['Spiegelräume', 'In einem Spiegelraum sind links und rechts vertauscht: Von links hinein, und du stehst rechts.'],
+      ['Zwei Sprosse', 'Beide Sprosse bewegen sich zusammen. Nutze Wände, um sie zu trennen.']
     ],
     pt: [
       ['A oficina', 'Empurre as caixas para os lugares delas.'],
@@ -341,7 +367,14 @@
       ['Chão rachado', 'O chão rachado quebra quando você sai dele. Planeje um caminho só.'],
       ['Cores', 'Cada caixa colorida vai dentro da sala da sua cor.'],
       ['Sala de controle', 'Uma placa numa sala abre um portão em outra.'],
-      ['Mão única', 'Setas nas portas: entra por uma e sai por outra.']
+      ['Mão única', 'Setas nas portas: entra por uma e sai por outra.'],
+      ['Chão congelado', 'No gelo, o que se move continua deslizando até algo o parar.'],
+      ['Túneis de vento', 'Um quadrado de vento empurra o que está nele um passo, depois de cada movimento.'],
+      ['Plataformas de salto', 'Pise numa plataforma e você sai pela gêmea dela. As caixas também.'],
+      ['Salas famintas', 'Empurre uma sala faminta contra uma caixa presa e a sala engole a caixa.'],
+      ['Salas gêmeas', 'Duas caixas, uma sala: entre por qualquer uma, mas você sempre sai pela primeira.'],
+      ['Salas espelho', 'Dentro de uma sala espelho, esquerda e direita se invertem: entre pela esquerda e você aparece à direita.'],
+      ['Dois brotos', 'Os dois brotos se movem juntos. Use as paredes para separá-los.']
     ],
     tr: [
       ['Atölye', 'Kutuları yerlerine it.'],
@@ -357,7 +390,14 @@
       ['Çatlak zemin', 'Çatlak zemin üstünden çıkınca kırılır. Tek bir temiz yol planla.'],
       ['Renkler', 'Her renkli kutu kendi rengindeki odaya girer.'],
       ['Kontrol odası', 'Bir odadaki düğme başka bir odadaki kapıyı açar.'],
-      ['Tek yönlü kapılar', 'Kapılarda oklar: birinden girer, diğerinden çıkarsın.']
+      ['Tek yönlü kapılar', 'Kapılarda oklar: birinden girer, diğerinden çıkarsın.'],
+      ['Donmuş zemin', 'Buzda hareket eden her şey, bir şey durdurana kadar kayar.'],
+      ['Rüzgar tünelleri', 'Rüzgar karesi, üstündekini her hamleden sonra bir adım iter.'],
+      ['Atlama kareleri', 'Bir atlama karesine bas, ikizinden çıkarsın. Kutular da.'],
+      ['Aç odalar', 'Aç bir odayı sıkışmış bir kutuya it, oda kutuyu yutar.'],
+      ['İkiz odalar', 'İki kutu, tek oda: hangisinden girersen gir, hep ilkinden çıkarsın.'],
+      ['Ayna odaları', 'Ayna odasında sağ ve sol yer değiştirir: soldan girersen sağda çıkarsın.'],
+      ['İki filiz', 'İki filiz birlikte hareket eder. Onları ayırmak için duvarları kullan.']
     ]
   };
   for (const lang of Object.keys(WORLDS)) WORLDS[lang].forEach((pair, i) => { I.WORLDS[i][lang] = pair; });
@@ -395,7 +435,29 @@
     'The main room has to move before anything else': ['La sala principal tiene que moverse antes que nada', 'La salle principale doit bouger avant tout le reste', 'Der Hauptraum muss sich vor allem anderen bewegen', 'A sala principal tem que se mover antes de tudo', 'Her şeyden önce ana oda hareket etmeli'],
     'A box has to fill a hole before you can cross': ['Una caja tiene que tapar un agujero antes de que puedas cruzar', 'Une boîte doit combler un trou avant que tu puisses traverser', 'Eine Kiste muss ein Loch füllen, bevor du hinüber kannst', 'Uma caixa tem que preencher um buraco antes de você atravessar', 'Geçebilmen için önce bir kutu çukuru doldurmalı'],
     'Cracked floor breaks behind you: plan one clean path': ['El suelo agrietado se rompe detrás de ti: planea un solo camino', 'Le sol fissuré casse derrière toi : prévois un seul chemin', 'Rissiger Boden bricht hinter dir: plane einen sauberen Weg', 'O chão rachado quebra atrás de você: planeje um caminho só', 'Çatlak zemin arkanda kırılır: tek temiz bir yol planla'],
-    'Something has to stay on the plate while you pass': ['Algo tiene que quedarse en la placa mientras pasas', 'Quelque chose doit rester sur la dalle pendant que tu passes', 'Etwas muss auf der Platte bleiben, während du durchgehst', 'Algo tem que ficar na placa enquanto você passa', 'Sen geçerken düğmenin üstünde bir şey kalmalı']
+    'Something has to stay on the plate while you pass': ['Algo tiene que quedarse en la placa mientras pasas', 'Quelque chose doit rester sur la dalle pendant que tu passes', 'Etwas muss auf der Platte bleiben, während du durchgehst', 'Algo tem que ficar na placa enquanto você passa', 'Sen geçerken düğmenin üstünde bir şey kalmalı'],
+    // the seven worlds of 1.6: first-level names and tips, then idea hints
+    'First Slide': ['Primer resbalón', 'Première glissade', 'Erste Rutschpartie', 'Primeiro deslize', 'İlk kayış'],
+    'Tailwind': ['Viento a favor', 'Vent dans le dos', 'Rückenwind', 'Vento a favor', 'Arkadan rüzgar'],
+    'First Jump': ['Primer salto', 'Premier saut', 'Erster Sprung', 'Primeiro salto', 'İlk atlayış'],
+    'Open Wide': ['Abre bien', 'Ouvre grand', 'Mund auf', 'Abra bem', 'Aç ağzını'],
+    'Seeing Double': ['Veo doble', 'Je vois double', 'Doppelt sehen', 'Vendo dobrado', 'Çift görüyorum'],
+    'Wrong Side': ['Lado equivocado', 'Mauvais côté', 'Falsche Seite', 'Lado errado', 'Yanlış taraf'],
+    'Together': ['Juntos', 'Ensemble', 'Zusammen', 'Juntos', 'Birlikte'],
+    'On ice you keep sliding until something stops you': ['Sobre el hielo sigues deslizándote hasta que algo te para', 'Sur la glace, tu glisses jusqu’à ce que quelque chose t’arrête', 'Auf Eis rutschst du weiter, bis dich etwas aufhält', 'No gelo você continua deslizando até algo te parar', 'Buzda bir şey seni durdurana kadar kayarsın'],
+    'A wind tile blows whatever stands on it one step after every move': ['Una casilla de viento empuja un paso lo que hay encima tras cada movimiento', 'Une case de vent pousse ce qui est dessus d’un pas après chaque coup', 'Ein Windfeld schiebt, was darauf steht, nach jedem Zug ein Feld weiter', 'Um quadrado de vento empurra o que está nele um passo depois de cada movimento', 'Rüzgar karesi, üstündekini her hamleden sonra bir adım iter'],
+    'Step on a pad and you come out of the pad of the same color': ['Pisa una plataforma y sales por la del mismo color', 'Marche sur une case de saut et tu ressors par celle de la même couleur', 'Tritt auf ein Sprungfeld und du kommst aus dem Feld mit derselben Farbe heraus', 'Pise numa plataforma e você sai pela da mesma cor', 'Bir atlama karesine bas, aynı renkteki kareden çıkarsın'],
+    'Push the hungry room onto a box that can’t move, and the room swallows it': ['Empuja la sala hambrienta contra una caja que no se puede mover y la sala se la traga', 'Pousse la salle affamée sur une boîte qui ne peut pas bouger, et la salle l’avale', 'Schieb den hungrigen Raum gegen eine Kiste, die sich nicht bewegen kann, und er verschluckt sie', 'Empurre a sala faminta contra uma caixa que não pode se mover, e a sala engole a caixa', 'Aç odayı kıpırdayamayan bir kutuya it, oda kutuyu yutar'],
+    'Both boxes lead to the same room, but you always come out of the solid one': ['Las dos cajas llevan a la misma sala, pero siempre sales por la de borde continuo', 'Les deux boîtes mènent à la même salle, mais tu ressors toujours par celle au bord plein', 'Beide Kisten führen in denselben Raum, aber du kommst immer aus der mit durchgehendem Rand heraus', 'As duas caixas levam à mesma sala, mas você sempre sai pela de borda contínua', 'İki kutu da aynı odaya açılır, ama hep kenarı düz olandan çıkarsın'],
+    'Inside a mirror room left and right are swapped': ['Dentro de una sala espejo, izquierda y derecha se invierten', 'Dans une salle miroir, gauche et droite sont inversées', 'In einem Spiegelraum sind links und rechts vertauscht', 'Dentro de uma sala espelho, esquerda e direita se invertem', 'Ayna odasında sağ ve sol yer değiştirir'],
+    'Both sprouts move together. A wall can hold one of them back': ['Los dos brotes se mueven a la vez. Una pared puede frenar a uno', 'Les deux pousses bougent ensemble. Un mur peut en retenir une', 'Beide Sprosse bewegen sich zusammen. Eine Wand kann einen aufhalten', 'Os dois brotos se movem juntos. Uma parede pode segurar um deles', 'İki filiz birlikte hareket eder. Bir duvar birini durdurabilir'],
+    'Let the ice carry it: aim before you push': ['Deja que el hielo la lleve: apunta antes de empujar', 'Laisse la glace l’emporter : vise avant de pousser', 'Lass das Eis sie tragen: Ziel, bevor du schiebst', 'Deixe o gelo levar: mire antes de empurrar', 'Bırak buz taşısın: itmeden önce nişan al'],
+    'Let the wind do the last step for you': ['Deja que el viento dé el último paso por ti', 'Laisse le vent faire le dernier pas pour toi', 'Lass den Wind den letzten Schritt für dich machen', 'Deixe o vento dar o último passo por você', 'Son adımı rüzgar senin yerine atsın'],
+    'Something has to go through a jump pad': ['Algo tiene que pasar por una plataforma de salto', 'Quelque chose doit passer par une case de saut', 'Etwas muss durch ein Sprungfeld', 'Algo tem que passar por uma plataforma de salto', 'Bir şeyin atlama karesinden geçmesi gerek'],
+    'The hungry room has to swallow a box': ['La sala hambrienta tiene que tragarse una caja', 'La salle affamée doit avaler une boîte', 'Der hungrige Raum muss eine Kiste verschlucken', 'A sala faminta tem que engolir uma caixa', 'Aç oda bir kutuyu yutmalı'],
+    'Go in through the twin, come out of the first box': ['Entra por la gemela y sal por la primera caja', 'Entre par la jumelle, ressors par la première boîte', 'Geh durch den Zwilling hinein und komm aus der ersten Kiste heraus', 'Entre pela gêmea e saia pela primeira caixa', 'İkizden gir, ilk kutudan çık'],
+    'Use the mirror room to come out on the other side': ['Usa la sala espejo para salir por el otro lado', 'Utilise la salle miroir pour ressortir de l’autre côté', 'Nutze den Spiegelraum, um auf der anderen Seite herauszukommen', 'Use a sala espelho para sair do outro lado', 'Öbür taraftan çıkmak için ayna odasını kullan'],
+    'Use a wall to move one sprout without the other': ['Usa una pared para mover un brote sin el otro', 'Sers-toi d’un mur pour bouger une pousse sans l’autre', 'Nutze eine Wand, um einen Spross ohne den anderen zu bewegen', 'Use uma parede para mover um broto sem o outro', 'Bir filizi öbürü olmadan oynatmak için bir duvar kullan']
   };
   const ORDER = ['es', 'fr', 'de', 'pt', 'tr'];
   I.LEVEL_TEXT = {};

@@ -31,8 +31,26 @@ const KINDS = {
   remote:   { root: [7, 8], kids: [1, 2], gates: true, plates: [1, 1], plateInKid: 1, boxes: [1, 3], density: [0.05, 0.2], extraNest: 0.4, need: { remote: true } },
   oneway:   { root: [6, 8], kids: [1, 2], doorArrows: true, boxes: [0, 2], density: [0.1, 0.3], kidGoals: true, extraNest: 0.4, need: { doorArrow: true, enters: 1 } },
   // the daily level: anything goes, always hard
-  daily:    { root: [7, 8], kids: [1, 2], chain: 0.4, self: 0.2, boxes: [1, 3], density: [0.1, 0.25], kidGoals: true, kidBoxGoals: true, newMix: true, need: { enters: 1 } }
+  daily:    { root: [7, 8], kids: [1, 2], chain: 0.4, self: 0.2, boxes: [1, 3], density: [0.1, 0.25], kidGoals: true, kidBoxGoals: true, newMix: true, need: { enters: 1 } },
+  // the 1.6 worlds. fresh: the stricter "nothing decorative" check (ice, holes, cracks must be used too).
+  // mix: chance of one extra thing from another idea (MIX), never the kind's own idea.
+  // ice: ice patches in the main room [min, max], kidIce: chance of a patch in each room-box
+  ice:      { fresh: true, idea: 'ice', root: [6, 7], kids: [1, 2], boxes: [1, 2], density: [0.05, 0.25], ice: [1, 3], kidIce: 0.6, kidGoals: true, kidBoxGoals: true, extraNest: 0.3, mix: 0.33, need: { slides: 2, enters: 1 } },
+  // wind: wind tiles [min, max], kidWind: chance a tile goes into a room-box
+  wind:     { fresh: true, idea: 'wind', root: [6, 7], kids: [1, 2], boxes: [1, 2], density: [0.1, 0.3], wind: [2, 4], kidWind: 0.4, kidGoals: true, kidBoxGoals: true, extraNest: 0.3, mix: 0.33, need: { wind: 2 } },
+  // pads: pad pairs [min, max]; the first pair joins the main room and a room-box
+  pads:     { fresh: true, idea: 'pad', root: [6, 7], kids: [1, 2], boxes: [1, 2], density: [0.1, 0.3], pads: [1, 2], kidGoals: true, kidBoxGoals: true, extraNest: 0.3, mix: 0.33, need: { pad: 2 } },
+  hungry:   { fresh: true, idea: 'hungry', root: [6, 7], kids: [1, 2], boxes: [1, 2], density: [0.1, 0.3], eats: true, kidDoors: 4, cornerBox: 0.8, kidBoxGoals: true, kidGoals: true, extraNest: 0.25, mix: 0.33, need: { eat: 1 } },
+  twins:    { fresh: true, idea: 'twin', root: [6, 7], kids: [1, 2], boxes: [0, 2], density: [0.1, 0.3], twin: true, kidDoors: 2, kidGoals: true, kidBoxGoals: true, extraNest: 0.25, mix: 0.33, need: { twin: 1 } },
+  mirror:   { fresh: true, idea: 'mirror', root: [6, 7], kids: [1, 2], boxes: [1, 2], density: [0.1, 0.3], flip: true, kidDoors: 2, kidGoals: true, kidBoxGoals: true, extraNest: 0.3, mix: 0.33, need: { flip: 2 } },
+  // two sprouts square the state space: small rooms, few boxes
+  sprouts:  { fresh: true, idea: 'sprout', root: [5, 6], kids: 1, boxes: [0, 1], density: [0.1, 0.3], sprout2: true, kidDoors: 2, small: true, extraNest: 0.2, mix: 0.33, need: { split: 2, pushes: 1 } }
 };
+
+// the extra things a 1.6 level can carry from another idea
+const MIX = ['ice', 'hole', 'crack', 'wind', 'pad', 'mirror', 'hungry'];
+// twin box symbols, by the room they lead to
+const TWIN_CH = { A: '1', B: '2', C: '3' };
 
 const PALETTES = ['teal', 'violet', 'pink'];
 const KEYS = ['A', 'B', 'C'];
@@ -166,6 +184,14 @@ function build(kind, rng) {
   if (K.newMix) {
     useIce = rng() < 0.3; useArrows = rng() < 0.3; useGates = rng() < 0.25; useHoles = rng() < 0.3; useCracks = rng() < 0.3;
   }
+  let extra = null;
+  if (K.mix && rng() < K.mix) {
+    const opts = MIX.filter(x => x !== K.idea);
+    extra = opts[Math.floor(rng() * opts.length)];
+    if (extra === 'ice') useIce = true;
+    if (extra === 'hole') useHoles = true;
+    if (extra === 'crack') useCracks = true;
+  }
   let line = null;
   if (useGates) line = addLine(rng, root, rint(rng, [1, 2]));
   else if (K.holeLine) line = addLine(rng, root, rint(rng, [1, 2]), 'O');
@@ -181,7 +207,7 @@ function build(kind, rng) {
     const big = chain ? i < nk - 1 : rng() < 0.4;
     // a tunnel box needs two facing doors
     const s = K.wallLine && i === 0 ? (line.horiz ? [0, 2] : [1, 3]) : sides(K.kidDoors || (chain ? 2 : 1));
-    const r = makeRoom(rng, big ? 7 : 5, rng() * 0.2, s);
+    const r = makeRoom(rng, big && !K.small ? 7 : 5, rng() * 0.2, s);
     r.palette = K.colorBoxes ? ['teal', 'violet'][i % 2] : PALETTES[i % 3];
     rooms[key] = r;
     kidKeys.push(key);
@@ -199,13 +225,40 @@ function build(kind, rng) {
   const deepest = () => rooms[kidKeys[kidKeys.length - 1]];
 
   if (useIce) addIce(rng, root, rint(rng, [1, 2]));
+  if (K.ice) {
+    addIce(rng, root, rint(rng, K.ice));
+    for (const k of kidKeys) if (rng() < K.kidIce) addIce(rng, rooms[k], rint(rng, [1, 2]));
+  }
+  // mirror and hungry rooms: a property of a room-box's room
+  if (K.flip || extra === 'mirror') {
+    if (!kidKeys.length) return null;
+    rooms[K.flip ? kidKeys[0] : kidKeys[Math.floor(rng() * kidKeys.length)]].flip = true;
+  }
+  if (K.eats || extra === 'hungry') {
+    if (!kidKeys.length) return null;
+    rooms[K.eats ? kidKeys[0] : kidKeys[Math.floor(rng() * kidKeys.length)]].eats = true;
+  }
+  // wind tiles, in the main room or a room-box
+  const nWind = K.wind ? rint(rng, K.wind) : extra === 'wind' ? 1 : 0;
+  for (let i = 0; i < nWind; i++) {
+    const room = kidKeys.length && rng() < (K.kidWind || 0.3) ? anyKid() : root;
+    if (!pickTerrain(rng, room, 'URDL'[Math.floor(rng() * 4)])) return null;
+  }
+  // jump pads, always in pairs; the first pair joins the main room and a room-box when there is one
+  const nPads = K.pads ? rint(rng, K.pads) : extra === 'pad' ? 1 : 0;
+  for (let i = 0; i < nPads; i++) {
+    const ch = String(i + 1);
+    const a = i === 0 || !kidKeys.length || rng() < 0.5 ? root : anyKid();
+    const b = i === 0 && kidKeys.length ? anyKid() : kidKeys.length && rng() < 0.5 ? anyKid() : root;
+    if (!pickTerrain(rng, a, ch) || !pickTerrain(rng, b, ch)) return null;
+  }
   if (useArrows) for (let i = 0; i < rint(rng, [1, 3]); i++) pickTerrain(rng, root, '^>v<'[Math.floor(rng() * 4)]);
   if (useHoles) {
     const nh = rint(rng, K.holes || [1, 1]);
     for (let i = 0; i < nh; i++) pickTerrain(rng, kidKeys.length && rng() < 0.6 ? anyKid() : root, 'O');
   }
   if (useCracks) {
-    const nc = rint(rng, K.cracks || [2, 5]);
+    const nc = rint(rng, K.cracks || (extra === 'crack' ? [1, 3] : [2, 5]));
     for (let i = 0; i < nc; i++) pickTerrain(rng, kidKeys.length && rng() < 0.5 ? anyKid() : root, 'x');
   }
   // one-way arrows on room-box doors (pointing in or out)
@@ -268,11 +321,25 @@ function build(kind, rng) {
     if (!pick(rng, holder, k, holder === root ? near : null)) throw new Error('no room');
   });
   if (self && !pick(rng, root, rootKey)) return null;
+  if (K.sprout2 && !pick(rng, kidKeys.length && rng() < 0.3 ? anyKid() : root, 'p')) return null;
+  if (K.twin) {
+    // a twin of A (or of B), in the main room or in another room-box, never in its own room
+    const ref = kidKeys.length > 1 && rng() < 0.3 ? kidKeys[1] : kidKeys[0];
+    const others = kidKeys.filter(k => k !== ref && rooms[k].inside !== ref);
+    const holder = others.length && rng() < 0.3 ? rooms[others[Math.floor(rng() * others.length)]] : root;
+    if (!pick(rng, holder, TWIN_CH[ref], holder === root ? near : null)) return null;
+  }
   const nb = rint(rng, K.boxes);
   // Deep Dive: carry boxes down to the deepest room, or bring them up to the main room
   const diveUp = K.dive && rng() < 0.35;
   for (let i = 0; i < nb; i++) {
     const room = diveUp ? deepest() : K.kidBoxes && kidKeys.length && rng() < (K.kidBoxes === true ? 1 : K.kidBoxes) ? anyKid() : root;
+    // a box stuck in a corner: only a hungry room can get it out
+    if (K.cornerBox && room === root && rng() < K.cornerBox) {
+      const rg = root.g;
+      const corner = (x, y) => (rg[y - 1][x] === '#' || rg[y + 1][x] === '#') && (rg[y][x - 1] === '#' || rg[y][x + 1] === '#');
+      if (pick(rng, root, 'b', (x, y) => corner(x, y) && (!near || near(x, y)))) continue;
+    }
     if (!pick(rng, room, 'b', room === root ? near : null)) return null;
   }
   const nc = rint(rng, K.colorBoxes || 0);
@@ -293,7 +360,11 @@ function build(kind, rng) {
   }
   for (let i = 0; i < boxGoals; i++) if (!pick(rng, root, '_', far)) return null;
   if (K.roomGoal && kidKeys.length && !pick(rng, root, '_', far)) return null;
-  if (K.farGoal && far) {
+  if (K.sprout2) {
+    // one goal per sprout: in the main room, or one of them in a room-box
+    if (!pick(rng, root, '=')) return null;
+    if (!pick(rng, kidKeys.length && rng() < 0.5 ? anyKid() : root, '=')) return null;
+  } else if (K.farGoal && far) {
     if (!pick(rng, root, '=', far)) return null;
   } else if (K.deepGoal && kidKeys.length) {
     if (!pick(rng, deepest(), '=')) return null;
@@ -316,6 +387,8 @@ function toDef(rootKey, rooms) {
   for (const k of Object.keys(rooms)) {
     const r = rooms[k];
     def.rooms[k] = { palette: r.palette, map: r.g.map(row => row.join('')) };
+    if (r.flip) def.rooms[k].flip = true;
+    if (r.eats) def.rooms[k].eats = true;
     const terr = r.t.map(row => row.join(''));
     if (terr.some(row => /[^.]/.test(row))) def.rooms[k].terrain = terr;
   }
@@ -341,15 +414,53 @@ function meets(kind, a) {
   if (need.colors && a.colorBoxes < need.colors) return false;
   if (need.remote && !a.remoteGate) return false;
   if (need.doorArrow && !a.doorArrowUsed) return false;
+  const u = a.uses || {};
+  if (need.slides && a.slides < need.slides) return false;
+  if (need.wind && u.wind < need.wind) return false;
+  if (need.pad && u.pad < need.pad) return false;
+  if (need.eat && u.eat < need.eat) return false;
+  if (need.twin && u.twin < need.twin) return false;
+  if (need.flip && u.flip < need.flip) return false;
+  if (need.split && u.split < need.split) return false;
+  // nothing decorative, the 1.6 things: a mirror room, a hungry room, a twin, wind or a pad pair
+  // the shortest solution never uses makes the level fail (none of these exist in older levels)
+  const L = a.level, rs = Object.values(L.rooms);
+  if (rs.some(r => r.flip) && !u.flip) return false;
+  if (rs.some(r => r.eats) && !u.eat) return false;
+  if (a.init.objects.some(o => o.twin) && !u.twin) return false;
+  if (L.hasWind && !u.wind) return false;
+  if (L.hasPads && !padPairsUsed(a)) return false;
+  // the 1.6 worlds also use the ice, holes and cracked floor they carry
+  if (KINDS[kind].fresh) {
+    if (rs.some(r => r.ice.some(row => row.some(Boolean))) && !a.slides) return false;
+    if (rs.some(r => r.hole.some(row => row.some(Boolean))) && !a.drops) return false;
+    if (rs.some(r => r.crack.some(row => row.some(Boolean))) && !a.broken) return false;
+  }
   // nothing decorative: every box moves, every room-box moves or gets entered
   for (const o of a.init.objects) {
     if (o.kind === 'box' && !a.movedIds.has(o.id)) return false;
     // a room-box is used if it moves, you walk into it, or something gets put inside it
     if (o.kind === 'room' && o.ref !== a.level.root && !a.movedIds.has(o.id) && !a.enteredRooms.has(o.ref) && !a.receivedRooms.has(o.ref)) return false;
   }
-  if (a.pushes < 2) return false;
+  if (a.pushes < (need.pushes || 2)) return false;
   if (a.moves > 140) return false;
   return true;
+}
+
+// true if the solution jumps through every pad pair at least once
+function padPairsUsed(a) {
+  const Engine = require('../www/js/engine.js');
+  const L = a.level, left = new Set(Object.keys(L.pads));
+  let st = a.init;
+  for (const ch of a.sol) {
+    const res = Engine.move(st, L, 'URDL'.indexOf(ch));
+    for (const id of res.info.jumped) {
+      const o = Engine.byId(res.state, id);
+      if (o) left.delete(L.rooms[o.room].pad[o.y][o.x]);
+    }
+    st = res.state;
+  }
+  return left.size === 0;
 }
 
 // Every box must be needed: take any one box away and the level must become unwinnable.
@@ -398,16 +509,22 @@ function trim(def, cap) {
     }
   }
   const rooms = {};
+  const gone = new Set(); // pad digits walled off on one side: the other side stops being a pad
   for (const k of Object.keys(def.rooms)) {
     const src = def.rooms[k];
     const g = src.map.map(row => row.split(''));
     const t = (src.terrain || src.map.map(row => '.'.repeat(row.length))).map(row => row.split(''));
     for (let y = 0; y < g.length; y++) for (let x = 0; x < g.length; x++) {
       // holes and crumbling floor are never stood on before they matter, so keep them
-      if (g[y][x] === '.' && !used.has(k + ':' + x + ',' + y) && t[y][x] !== 'O' && t[y][x] !== 'x') { g[y][x] = '#'; t[y][x] = '.'; }
+      if (g[y][x] === '.' && !used.has(k + ':' + x + ',' + y) && t[y][x] !== 'O' && t[y][x] !== 'x') {
+        if (t[y][x] >= '1' && t[y][x] <= '4') gone.add(t[y][x]);
+        g[y][x] = '#'; t[y][x] = '.';
+      }
     }
-    rooms[k] = { palette: src.palette, g, t };
+    rooms[k] = { palette: src.palette, g, t, flip: src.flip, eats: src.eats };
   }
+  // nothing ever stood on that pad, so nothing ever jumped from its twin either: dropping both changes nothing
+  if (gone.size) for (const k of Object.keys(rooms)) for (const row of rooms[k].t) for (let x = 0; x < row.length; x++) if (gone.has(row[x])) row[x] = '.';
   shrinkRoot(def.root, rooms);
   return toDef(def.root, rooms);
 }
@@ -541,4 +658,4 @@ if (!isMainThread && workerData && workerData.gen) {
   }
 }
 
-module.exports = { KINDS, build, meets, score, metrics, trim, tighten, boxesNeeded, mulberry32 };
+module.exports = { KINDS, MIX, build, meets, score, metrics, trim, tighten, boxesNeeded, mulberry32, toDef };

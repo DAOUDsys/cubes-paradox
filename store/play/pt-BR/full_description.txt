@@ -2,7 +2,7 @@ Cubes Paradox é um jogo de quebra-cabeça sobre caixas que guardam salas inteir
 
 Empurre as caixas para os lugares delas: fácil. Mas as caixas coloridas são diferentes, porque cada uma guarda uma sala completa. Entre numa caixa e você está dentro dela. Empurre uma caixa para dentro de outra. Coloque caixas, tire de volta e empilhe salas dentro de salas dentro de salas. Algumas salas até contêm a si mesmas: você sai de uma e volta para dentro dela.
 
-14 MUNDOS, CADA UM COM SUA IDEIA
+21 MUNDOS, CADA UM COM SUA IDEIA
 • A oficina: a arte de empurrar
 • Portas: uma caixa é uma porta, então empurre ou entre nela
 • O depósito: guarde uma caixa numa sala e depois tire de volta
@@ -11,9 +11,10 @@ Empurre as caixas para os lugares delas: fácil. Mas as caixas coloridas são di
 • Salas em salas, A sala alvo, Mergulho: dois e três níveis abaixo
 • Salão de espelhos: uma sala que contém a si mesma
 • Buracos, Chão rachado, Cores, Sala de controle, Mão única: regras novas, sempre com salas dentro de salas
+• Chão congelado, Túneis de vento, Plataformas de salto, Salas famintas, Salas gêmeas, Salas espelho, Dois brotos: sete mundos de truques novos, e fases que os misturam
 
 CADA FASE TEM SEU MOTIVO
-193 fases, todas verificadas por um resolvedor: cada uma tem solução e cada caixa é necessária. Os primeiros mundos são tranquilos, depois fica mais difícil, e as três últimas fases de cada mundo são desafios difíceis.
+298 fases, todas verificadas por um resolvedor: cada uma tem solução e cada caixa é necessária. Os primeiros mundos são tranquilos, depois fica mais difícil, e as três últimas fases de cada mundo são desafios difíceis.
 
 UM NOVO DESAFIO DIFÍCIL TODO DIA
 Resolva o desafio do dia e mantenha sua sequência.
@@ -21,7 +22,7 @@ Resolva o desafio do dia e mantenha sua sequência.
 ESTRELAS, CONQUISTAS E DICAS
 Resolva com o mínimo de movimentos para ganhar três estrelas e desbloqueie 12 conquistas. Travou? Compre a ideia em uma frase e, se ainda precisar, seus próximos movimentos. Desfaça quanto quiser ou toque duas vezes no tabuleiro.
 
-Os 6 primeiros mundos são grátis. Uma compra no app desbloqueia os outros 8 mundos e 110 fases. O desafio do dia continua grátis.
+Os 6 primeiros mundos são grátis. Uma compra no app desbloqueia os outros 15 mundos e 215 fases. O desafio do dia continua grátis.
 
 FEITO PARA O CELULAR
 • Deslize para se mover, uma mão basta

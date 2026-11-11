@@ -83,9 +83,10 @@
   const levelLabel = (i) => t('worldLevel', { w: num(LEVELS[i].w + 1), n: num(LEVELS[i].n + 1) });
   const today = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000 - DAY0) / 86400000);
   const dailyDef = (day) => DAILY[((day % DAILY.length) + DAILY.length) % DAILY.length];
-  const curLabel = () => (G.daily ? S.daily : levelLabel(G.index));
-  const curName = () => (G.daily ? dailyDate() : levelName(G.index));
-  const curChallenge = () => G.daily || isChallenge(G.index);
+  // G.custom: a level started from its definition (playDef, for tests and screenshots); it keeps no progress
+  const curLabel = () => (G.daily ? S.daily : G.custom ? loc(G.def.name) || G.def.id || '' : levelLabel(G.index));
+  const curName = () => (G.daily ? dailyDate() : G.custom ? loc(G.def.name) : levelName(G.index));
+  const curChallenge = () => G.daily || (!G.custom && isChallenge(G.index));
   const totalStars = () => Object.values(progress.best).reduce((n, b) => n + (b.s || 0), 0);
   function dailyDate() {
     try { return new Date().toLocaleDateString(progress.lang, { day: 'numeric', month: 'long' }); } catch (e) { return ''; }
@@ -150,7 +151,7 @@
     if (name === 'world') renderWorld(G.viewWorld || 0);
     if (name === 'achievements') renderAchievements();
     if (name === 'settings') renderSettings();
-    if (name === 'play') requestAnimationFrame(resizeBoard);
+    if (name === 'play') { requestAnimationFrame(resizeBoard); startWind(); }
     updatePoints();
   }
 
@@ -349,17 +350,18 @@
   // the sprout on the player's head sways for a moment after each step
   const SWAY_MS = 800;
 
-  function startLevel(i) {
+  function startLevel(i, def) {
     G.daily = i === 'daily';
-    G.def = G.daily ? dailyDef(today()) : LEVELS[i];
+    G.custom = !!def;
+    G.def = def || (G.daily ? dailyDef(today()) : LEVELS[i]);
     const parsed = Engine.parseLevel(G.def);
-    G.index = G.daily ? -1 : i;
+    G.index = G.daily || G.custom ? -1 : i;
     G.path = '';
     G.L = parsed.level;
     G.init = parsed.state;
     G.st = Engine.cloneState(parsed.state);
     G.history = [];
-    G.moves = 0; G.undos = 0; G.depth = 0; G.maxDepth = 0;
+    G.moves = 0; G.undos = 0; G.depth = depthNow(G.st); G.maxDepth = G.depth;
     G.anim = null; G.queue = []; G.won = false; G.look = 1; G.stepAt = -1e9;
     G.focus = Engine.player(G.st).room;
     G.hint = null; G.hintLeft = 0; G.ideaShown = false; G.search = (G.search || 0) + 1;
@@ -389,7 +391,7 @@
     pips.textContent = '';
     pips.className = 'pips d' + d;
     for (let k = 1; d && k <= 3; k++) { const i = document.createElement('i'); if (k <= d) i.className = 'on'; pips.appendChild(i); }
-    $('skip-btn').disabled = !!G.daily;
+    $('skip-btn').disabled = !!(G.daily || G.custom);
     buildLegend();
     showHintText();
   }
@@ -398,6 +400,7 @@
     const lv = G.def;
     if (G.daily) return S.dailyTip;
     if (lv.tip) return loc(lv.tip);
+    if (G.custom) return S.swipe;
     // a world's first level explains the world's idea
     if (lv.n === 0) return (I18N.WORLDS[lv.w][progress.lang] || I18N.WORLDS[lv.w].en)[1];
     return S.swipe;
@@ -446,6 +449,13 @@
     if (rooms.some((r) => r.crack.some((row) => row.indexOf(true) !== -1))) items.push(['k-crack', S.legendCrack]);
     if (objs.some((o) => o.color === 'teal')) items.push(['k-tealbox', S.legendTealBox]);
     if (objs.some((o) => o.color === 'violet')) items.push(['k-violetbox', S.legendVioletBox]);
+    // the new rules (each only when the level has it)
+    if (rooms.some((r) => r.wind && r.wind.some((row) => row.some((v) => v >= 0)))) items.push(['k-wind', S.legendWind]);
+    if (G.L.hasPads) items.push(['k-pad', S.legendPad]);
+    if (objs.some((o) => o.twin)) items.push(['k-twin', S.legendTwin]);
+    if (rooms.some((r) => r.flip)) items.push(['k-mirror', S.legendMirror]);
+    if (rooms.some((r) => r.eats)) items.push(['k-hungry', S.legendHungry]);
+    if (objs.some((o) => o.second)) items.push(['k-sprout2', S.legendSprout2]);
     const el = $('legend');
     el.textContent = '';
     for (const [cls, label] of items) {
@@ -464,7 +474,7 @@
 
     // where am I
     const room = L.rooms[G.focus];
-    $('here-dot').style.background = Render.PAL[room.palette].wall;
+    $('here-dot').style.background = (Render.PAL[room.palette] || Render.PAL.olive).wall;
     $('here-name').textContent = roomName(L, G.focus);
     const depthEl = $('depth');
     depthEl.hidden = G.depth <= 0;
@@ -477,7 +487,7 @@
     $('legend').hidden = inside || loop;
     $('inside').hidden = !(inside || loop);
     if (inside || loop) {
-      Render.drawMini($('mini'), st, L, ro.room, G.focus);
+      Render.drawMini($('mini'), st, L, ro.room, G.focus, room.flip);
       if (loop) {
         $('inside-title').textContent = S.selfTitle;
         $('inside-msg').textContent = S.selfMsg;
@@ -505,11 +515,33 @@
   function draw(opts) {
     if (!renderer.size || !G.L) return;
     const R = boardRect(G.st, G.focus);
-    renderer.render(G.st, G.L, G.focus, R, Object.assign({ look: G.look, doors: exitsRoom(), hole: R, peek: true, face: face(), sway: sway() }, opts || {}));
+    renderer.render(G.st, G.L, G.focus, R, Object.assign({ look: G.look, doors: exitsRoom(), hole: R, peek: true, face: face(), sway: sway(), windT: windT() }, opts || {}));
     if (G.hint && G.hint.length && !G.anim) {
       const p = Engine.player(G.st);
       renderer.drawHint(Render.cellRect(G.L, G.focus, R, p.x, p.y), G.hint[0]);
     }
+  }
+
+  // Wind tiles drift slowly: a redraw about 8 times a second, only while a level with wind is on screen.
+  let windTimer = 0;
+  function startWind() {
+    if (windTimer || screen !== 'play' || !G.L || !G.L.hasWind) return;
+    windTimer = setInterval(() => {
+      if (screen !== 'play' || !G.L || !G.L.hasWind) { clearInterval(windTimer); windTimer = 0; return; }
+      if (!G.anim && !G.swaying) draw();
+    }, 125);
+  }
+  const windT = () => performance.now() / 1000;
+
+  // how many rooms deep the primary sprout is (jumps and twins make counting enters and exits wrong)
+  function depthNow(st) { return Engine.depthOf(st, G.L, Engine.player(st).room); }
+  // Depth after a move. A room that is inside itself has no bottom, so there every walk in counts one
+  // deeper and every walk out one back, as it always did; everywhere else depth is read off the state.
+  function depthAfter(res, prev) {
+    if (!Engine.roomObject(G.init, G.L.root)) return depthNow(res.state);
+    let d = prev;
+    for (const ev of res.events) d += ev.type === 'enter' ? 1 : ev.type === 'exit' ? -1 : 0;
+    return Math.max(0, d);
   }
 
   // the player's face: blinking now and then, surprised just after walking into a box, happy on a win
@@ -531,47 +563,78 @@
   }
 
   // Rect of the room the player ends in, measured in the frame where the start room fills R.
-  function cameraTarget(st, L, events, R) {
+  // Leaving always goes to the room's own box; going in may be through a twin, so the camera
+  // flies into the box next to where the player was.
+  function cameraTarget(st, L, events, R, room, at) {
     let q = R;
     for (const ev of events) {
-      const ro = Engine.roomObject(st, ev.type === 'exit' ? ev.from : ev.into);
+      let ro;
+      if (ev.type === 'exit') ro = Engine.roomObject(st, ev.from);
+      else {
+        const boxes = st.objects.filter((o) => o.kind === 'room' && o.ref === ev.into && o.room === room);
+        const dist = (o) => Math.abs(o.x - at.x) + Math.abs(o.y - at.y);
+        ro = boxes.length > 1 ? boxes.sort((u, v) => dist(u) - dist(v))[0] : boxes[0] || Engine.roomObject(st, ev.into);
+      }
       if (!ro) return R;
       q = ev.type === 'exit' ? Render.parentRect(L, q, ro) : Render.childRect(L, q, ro);
+      if (ev.type === 'exit') { room = ro.room; at = ro; } else { room = ev.into; at = { x: L.rooms[room].w >> 1, y: L.rooms[room].h >> 1 }; }
     }
     return q;
   }
 
   function lerpRect(a, b, t) { return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t, s: a.s + (b.s - a.s) * t }; }
+  // a rect shrunk to `k` of its size about its middle (keeps f, so a mirrored room stays mirrored)
+  function scaleRect(r, k) { return { x: r.x + r.s * (1 - k) / 2, y: r.y + r.s * (1 - k) / 2, s: r.s * k, f: r.f }; }
+  // the other cell of a jump pad's pair
+  function twinPad(L, room, x, y) {
+    const d = L.rooms[room].pad && L.rooms[room].pad[y][x];
+    const pr = d && L.pads[d];
+    if (!pr) return null;
+    return pr[0].room === room && pr[0].x === x && pr[0].y === y ? pr[1] : pr[0];
+  }
+  const sameCell = (a, b) => a.room === b.room && a.x === b.x && a.y === b.y;
 
-  // Build an animation from one state to another. `events` are the player's room changes.
-  function transition(from, to, events, speed) {
+  // Build an animation from one state to another. `events` are the primary sprout's room changes
+  // (a jump between rooms is split off before, see buildAnim). `jumped`: ids that went through a
+  // pad; `back`: undo, so they come out of the pad they stand on instead of going into one.
+  function transition(from, to, events, speed, jumped, back) {
     const L = G.L;
-    const anchor = Engine.player(from).room;
-    const R = boardRect(from, anchor), End = boardRect(to, Engine.player(to).room);
-    const zoom = events.length > 0;
-    const Q = zoom ? cameraTarget(to, L, events, R) : R;
+    const pf = Engine.player(from), prim = pf.id;
+    const anchor = pf.room, toRoom = Engine.player(to).room;
+    const R = boardRect(from, anchor), End = boardRect(to, toRoom);
+    const cam = events.filter((e) => e.type !== 'jump');
+    const zoom = cam.length > 0;
+    const Q = zoom ? cameraTarget(to, L, cam, R, anchor, pf) : R;
     const k = End.s / Q.s;
     const Rp = { x: End.x + (R.x - Q.x) * k, y: End.y + (R.y - Q.y) * k, s: R.s * k };
 
     const slide = new Map(), skip = new Set(), movers = [];
     let layFrom = null, layTo = null, far = 1;
+    const lay = (st) => (st === from ? (layFrom = layFrom || Render.layoutRooms(from, L, anchor, R)) : (layTo = layTo || Render.layoutRooms(to, L, anchor, R)));
+    // where a room is: the start room is R, the room the camera ends in is Q
+    const roomR = (key, st) => (st === from && key === anchor ? R : st === to && key === toRoom && (zoom || key === anchor) ? Q : lay(st).get(key));
+    const cellR = (c, st) => { const rr = roomR(c.room, st); if (!rr) return null; const r = Render.cellRect(L, c.room, rr, c.x, c.y); r.f = rr.f; return r; };
     for (const o of to.objects) {
       const p = Engine.byId(from, o.id);
+      if (jumped && jumped.has(o.id)) {
+        // through a pad: (walk to it,) sink into it, rise out of its twin (, walk on)
+        const inp = back ? p : twinPad(L, o.room, o.x, o.y), outp = back ? twinPad(L, p.room, p.x, p.y) : o;
+        const m = inp && outp && { obj: o, mode: 'jump', from: cellR(p, from), inp: cellR(inp, from), outp: cellR(outp, to), to: cellR(o, to), slideIn: !sameCell(p, inp), slideOut: !sameCell(outp, o) };
+        if (m && m.from && m.inp && m.outp && m.to) { skip.add(o.id); movers.push(m); far = Math.max(far, 2.6); continue; }
+      }
       if (p.room === o.room && p.x === o.x && p.y === o.y) continue;
       const dist = Math.abs(p.x - o.x) + Math.abs(p.y - o.y);
       if (p.room === o.room && (dist === 1 || !zoom)) { slide.set(o.id, { fx: p.x, fy: p.y }); far = Math.max(far, dist); continue; }
       skip.add(o.id);
-      if (o.kind === 'player') {
-        movers.push({ obj: o, from: Render.cellRect(L, p.room, R, p.x, p.y), to: Render.cellRect(L, o.room, Q, o.x, o.y), mode: 'move' });
+      if (o.id === prim) {
+        movers.push({ obj: o, from: Render.cellRect(L, p.room, R, p.x, p.y), to: Render.cellRect(L, o.room, Q, o.x, o.y), mode: 'move', f: Q.f });
         continue;
       }
-      layFrom = layFrom || Render.layoutRooms(from, L, anchor, R);
-      layTo = layTo || Render.layoutRooms(to, L, anchor, R);
-      const ra = layFrom.get(p.room), rb = layTo.get(o.room);
+      const ra = lay(from).get(p.room), rb = lay(to).get(o.room);
       const fromRect = ra ? Render.cellRect(L, p.room, ra, p.x, p.y) : null;
       const toRect = rb ? Render.cellRect(L, o.room, rb, o.x, o.y) : null;
-      if (fromRect && toRect && p.room !== o.room) movers.push({ obj: o, from: fromRect, to: toRect, mode: 'move' });
-      else movers.push({ obj: o, from: fromRect, to: toRect, mode: 'fade', dir: G.lastDir });
+      if (fromRect && toRect && p.room !== o.room) movers.push({ obj: o, from: fromRect, to: toRect, mode: 'move', f: rb.f });
+      else movers.push({ obj: o, from: fromRect, to: toRect, mode: 'fade', dir: G.lastDir, ff: ra && ra.f, f: rb && rb.f });
     }
     // boxes that dropped into a hole this move
     for (const p of from.objects) {
@@ -579,9 +642,7 @@
       const hole = (to.filled || []).find((k) => (from.filled || []).indexOf(k) === -1);
       if (!hole) continue;
       const [room, xy] = hole.split(':'), [hx, hy] = xy.split(',').map(Number);
-      layFrom = layFrom || Render.layoutRooms(from, L, anchor, R);
-      layTo = layTo || Render.layoutRooms(to, L, anchor, R);
-      const ra = layFrom.get(p.room), rb = layTo.get(room);
+      const ra = lay(from).get(p.room), rb = lay(to).get(room);
       if (ra && rb) movers.push({ obj: p, from: Render.cellRect(L, p.room, ra, p.x, p.y), to: Render.cellRect(L, room, rb, hx, hy), mode: 'drop' });
       far = Math.max(far, 2);
     }
@@ -591,7 +652,70 @@
     };
   }
 
+  // A move as steps to animate: the step itself, then what the wind blew. (The calm state is the
+  // same move played with the wind off, which is exactly the state before the wind step.)
+  function movePhases(from, res, dir) {
+    const L = G.L, all = { from, to: res.state, events: res.events, jumped: new Set(res.info.jumped) };
+    if (!L.hasWind || !res.info.blown.length) return [all];
+    const calm = Engine.move(from, Object.assign({}, L, { hasWind: false }), dir);
+    if (!calm) return [all];
+    const n = calm.events.length, j = calm.info.jumped.length;
+    return [
+      { from, to: calm.state, events: calm.events, jumped: new Set(calm.info.jumped) },
+      { from: calm.state, to: res.state, events: res.events.slice(n), jumped: new Set(res.info.jumped.slice(j)), wind: true }
+    ];
+  }
+  // the same steps played backwards (undo)
+  function undoPhases(phs) {
+    const turn = (ev) => (ev.type === 'enter' ? { type: 'exit', from: ev.into } : ev.type === 'exit' ? { type: 'enter', into: ev.from } : { type: 'jump', from: ev.into, into: ev.from });
+    return phs.slice().reverse().map((ph) => ({ from: ph.to, to: ph.from, events: ph.events.slice().reverse().map(turn), jumped: ph.jumped }));
+  }
+
+  // The primary sprout put on another cell of a state (for the halves of a jump between rooms).
+  function withPrimary(st, c) {
+    const out = Engine.cloneState(st), p = Engine.player(out);
+    p.room = c.room; p.x = c.x; p.y = c.y;
+    return out;
+  }
+
+  // Chains the animations for a list of steps. When the primary sprout jumps to a pad in another
+  // room the camera does not zoom: it cuts to that room with a quick fade.
+  function buildAnim(phs, speed, back) {
+    const anims = [];
+    for (const ph of phs) {
+      const k = ph.events.findIndex((e) => e.type === 'jump' && e.from !== e.into);
+      if (k < 0) { anims.push(Object.assign(transition(ph.from, ph.to, ph.events, speed, ph.jumped, back), { wind: ph.wind })); continue; }
+      const before = ph.events.slice(0, k), after = ph.events.slice(k + 1);
+      const pf = Engine.player(ph.from), pt = Engine.player(ph.to);
+      let inp, outp;
+      // forward the sprout ends on the pad it came out of; undone, it starts on the pad it goes back into
+      if (!back) { outp = { room: pt.room, x: pt.x, y: pt.y }; inp = twinPad(G.L, pt.room, pt.x, pt.y); }
+      else { inp = { room: pf.room, x: pf.x, y: pf.y }; outp = twinPad(G.L, pf.room, pf.x, pf.y); }
+      if (!inp || !outp) { anims.push({ kind: 'cut', A: ph.from, B: ph.to, dur: 360 * (speed || 1), wind: ph.wind }); continue; }
+      const others = new Set([...ph.jumped].filter((id) => id !== pf.id));
+      const A = withPrimary(ph.to, inp), B = withPrimary(ph.to, outp);
+      if (before.length || Engine.key(A) !== Engine.key(ph.from)) anims.push(Object.assign(transition(ph.from, A, before, speed, others, back), { wind: ph.wind }));
+      anims.push({ kind: 'cut', A, B, dur: 360 * (speed || 1) });
+      if (after.length || !sameCell(outp, pt)) anims.push(transition(B, ph.to, after, speed, null, back));
+    }
+    for (let i = 0; i + 1 < anims.length; i++) anims[i].next = anims[i + 1];
+    return anims[0];
+  }
+
+  // An animation bug must never leave the game stuck mid-move: on an error the move ends at once
+  // in its final state (the state itself is already right; only the picture is skipped).
   function frame(now) {
+    try { frameStep(now); } catch (e) {
+      const a = G.anim;
+      window.__animError = { message: String(e && e.message), kind: a && a.kind, level: G.def && G.def.id, moves: G.moves };
+      if (window.console) console.error('animation skipped:', e && e.message);
+      G.anim = null;
+      draw();
+      if (a && a.after) a.after();
+      if (!G.anim) pump();
+    }
+  }
+  function frameStep(now) {
     const a = G.anim;
     if (!a) return;
     const t = Math.min(1, (now - a.t0) / a.dur);
@@ -602,6 +726,15 @@
     } else if (a.kind === 'glow') {
       const hop = Math.abs(Math.sin(Math.PI * 2 * Math.min(1, t * 1.2))) * 0.28;
       draw({ glow: Math.sin(Math.PI * Math.min(1, t * 1.6)) * 0.9 + 0.1, bump: { id: Engine.player(G.st).id, dx: 0, dy: -hop } });
+    } else if (a.kind === 'cut') {
+      // a jump to another room: the sprout sinks into the pad, the board fades, it rises from the twin pad
+      const st = t < 0.5 ? a.A : a.B, p = Engine.player(st), R = boardRect(st, p.room);
+      const sc = Math.max(0.04, t < 0.5 ? 1 - 2 * t : 2 * t - 1);
+      const cell = Render.cellRect(G.L, p.room, R, p.x, p.y);
+      renderer.render(st, G.L, p.room, R, {
+        look: G.look, hole: R, peek: true, skip: new Set([p.id]), overlay: [{ obj: p, rect: scaleRect(cell, sc) }],
+        fade: 1 - Math.abs(2 * t - 1), face: 'surprise', windT: windT()
+      });
     } else {
       const e = ease(t);
       let cur = a.R;
@@ -612,11 +745,18 @@
         cur = { x: a.R.x + (a.Rp.x - a.R.x) * u, y: a.R.y + (a.Rp.y - a.R.y) * u, s };
       }
       const f = cur.s / a.R.s;
-      const toCur = (r) => ({ x: cur.x + (r.x - a.R.x) * f, y: cur.y + (r.y - a.R.y) * f, s: r.s * f });
+      const toCur = (r) => ({ x: cur.x + (r.x - a.R.x) * f, y: cur.y + (r.y - a.R.y) * f, s: r.s * f, f: r.f });
       const overlay = [];
       for (const m of a.movers) {
         if (m.mode === 'move') {
-          overlay.push({ obj: m.obj, rect: toCur(lerpRect(m.from, m.to, a.zoom ? e : easeOut(t))) });
+          overlay.push({ obj: m.obj, rect: toCur(Object.assign(lerpRect(m.from, m.to, a.zoom ? e : easeOut(t)), { f: m.f })) });
+        } else if (m.mode === 'jump') {
+          // walk onto the pad, sink into it, rise out of the twin pad, walk off it
+          const a1 = m.slideIn ? 0.35 : 0, b1 = m.slideOut ? 0.65 : 1, mid = (a1 + b1) / 2;
+          let r, sc = 1;
+          if (t < a1) r = lerpRect(m.from, m.inp, easeOut(t / a1));
+          else if (t < mid) { r = m.inp; sc = 1 - (t - a1) / (mid - a1); } else if (t < b1 || !m.slideOut) { r = m.outp; sc = Math.min(1, (t - mid) / (b1 - mid)); } else r = lerpRect(m.outp, m.to, easeOut((t - b1) / (1 - b1)));
+          overlay.push({ obj: m.obj, rect: toCur(scaleRect(Object.assign({}, r, { f: t < mid ? m.inp.f : m.to.f }), Math.max(0.04, sc))) });
         } else if (m.mode === 'drop') {
           // slide onto the hole, then sink into it
           const r = lerpRect(m.from, m.to, Math.min(1, easeOut(t) * 1.6));
@@ -625,22 +765,39 @@
         } else {
           if (m.from) {
             const d = Engine.DIRS[m.dir || 0];
-            const ghost = { x: m.from.x + d[0] * m.from.s * easeOut(t), y: m.from.y + d[1] * m.from.s * easeOut(t), s: m.from.s };
+            const ghost = { x: m.from.x + d[0] * m.from.s * easeOut(t), y: m.from.y + d[1] * m.from.s * easeOut(t), s: m.from.s, f: m.ff };
             overlay.push({ obj: m.obj, rect: toCur(ghost), alpha: 1 - t });
           }
           if (m.to) {
             const sc = 0.55 + 0.45 * easeOut(t);
-            const c = { x: m.to.x + m.to.s * (1 - sc) / 2, y: m.to.y + m.to.s * (1 - sc) / 2, s: m.to.s * sc };
+            const c = { x: m.to.x + m.to.s * (1 - sc) / 2, y: m.to.y + m.to.s * (1 - sc) / 2, s: m.to.s * sc, f: m.f };
             overlay.push({ obj: m.obj, rect: toCur(c), alpha: t });
           }
         }
       }
+      // into or out of a mirror room, the room you end in shows mirrored at first:
+      // the whole scene turns over like a card about that room's middle, halfway through the zoom
+      let flipX = null;
+      if (a.zoom && a.Q.f) {
+        const q = toCur(a.Q), w = 0.2;
+        const sx = e < 0.5 - w ? 1 : e < 0.5 ? (0.5 - e) / w : e < 0.5 + w ? -(e - 0.5) / w : -1;
+        flipX = { c: q.x + q.s / 2, s: Math.abs(sx) < 0.02 ? (e < 0.5 ? 0.02 : -0.02) : sx };
+      }
       renderer.render(a.to, G.L, a.anchor, cur, {
         look: G.look, slide: a.slide, slideT: easeOut(t), skip: a.skip, overlay, hole: lerpRect(cur, toCur(a.Q), e), peek: !a.zoom, sway: sway(),
-        doors: a.zoom ? null : exitsRoom(), face: face()
+        doors: a.zoom ? null : exitsRoom(), face: face(), flipX, windT: windT()
       });
     }
     if (t < 1) { requestAnimationFrame(frame); return; }
+    if (a.next) {
+      // the next step of the same move starts at once, so the end state never shows early
+      G.anim = a.next;
+      a.next.after = a.after;
+      a.next.t0 = now;
+      if (a.next.wind && !a.next.back) Sfx.play('wind');
+      frame(now);
+      return;
+    }
     const done = a.after;
     G.anim = null;
     draw();
@@ -668,6 +825,7 @@
 
   function run(anim, after) {
     anim.after = after;
+    anim.t0 = performance.now();
     G.anim = anim;
     requestAnimationFrame(frame);
   }
@@ -687,10 +845,11 @@
     pump();
   }
 
-  function moveSound(before, res) {
-    const after = res.state;
-    if (res.events.some((e) => e.type === 'enter')) Sfx.play('enter');
-    else if (res.events.length) Sfx.play('exit');
+  // the sounds of a move's step; the wind's own sound plays when its slide starts
+  function moveSound(before, res, step) {
+    const after = step.to, rooms = step.events.filter((e) => e.type !== 'jump');
+    if (rooms.some((e) => e.type === 'enter')) Sfx.play('enter');
+    else if (rooms.length) Sfx.play('exit');
     else {
       let pushed = false, slid = false;
       for (const o of after.objects) {
@@ -703,7 +862,9 @@
       Sfx.play(slid ? 'slide' : pushed ? 'push' : 'step');
     }
     if (G.L.plates.length && !Engine.gatesOpen(before, G.L) && Engine.gatesOpen(after, G.L)) Sfx.play('gate');
-    else if (Engine.goalStatus(after, G.L).done > Engine.goalStatus(before, G.L).done) Sfx.play('goal');
+    else if (Engine.goalStatus(res.state, G.L).done > Engine.goalStatus(before, G.L).done) Sfx.play('goal');
+    if (res.info.jumped.length) Sfx.play('jump');
+    if (res.info.eaten.length) Sfx.play('eat');
   }
 
   /* ---------- settings ---------- */
@@ -734,8 +895,9 @@
       run({ kind: 'bump', dir, t0: performance.now(), dur: 140 });
       return;
     }
-    moveSound(G.st, res);
-    if (res.events.some((e) => e.type === 'enter')) G.surpriseUntil = performance.now() + 700;
+    const phs = movePhases(G.st, res, dir);
+    moveSound(G.st, res, phs[0]);
+    if (res.events.some((e) => e.type === 'enter' || (e.type === 'jump' && e.from !== e.into))) G.surpriseUntil = performance.now() + 700;
     if (Engine.goalStatus(res.state, G.L).done > Engine.goalStatus(G.st, G.L).done) haptic('goal');
     G.path += 'URDL'[dir];
     saveResume();
@@ -747,11 +909,10 @@
     }
     const from = G.st;
     G.history.push({ st: from, depth: G.depth, events: res.events, dir });
-    for (const ev of res.events) G.depth += ev.type === 'enter' ? 1 : -1;
-    if (G.depth < 0) G.depth = 0;
+    G.depth = depthAfter(res, G.depth);
     G.maxDepth = Math.max(G.maxDepth, G.depth);
     G.moves++;
-    const anim = transition(from, res.state, res.events);
+    const anim = buildAnim(phs);
     startSway(res.events, dir);
     G.st = res.state;
     G.focus = Engine.player(G.st).room;
@@ -762,9 +923,11 @@
   function doUndo() {
     const h = G.history.pop();
     if (!h) return;
-    const back = h.events.slice().reverse().map((ev) => ev.type === 'enter' ? { type: 'exit', from: ev.into } : { type: 'enter', into: ev.from });
     G.lastDir = (h.dir + 2) % 4;
-    const anim = transition(G.st, h.st, back, UNDO_SPEED);
+    // the move is played again from the state before it, to get its steps, then run backwards
+    const res = Engine.move(h.st, G.L, h.dir);
+    const phs = res && Engine.key(res.state) === Engine.key(G.st) ? movePhases(h.st, res, h.dir) : [{ from: h.st, to: G.st, events: h.events, jumped: new Set() }];
+    const anim = buildAnim(undoPhases(phs), UNDO_SPEED, true);
     Sfx.play('undo');
     G.st = h.st;
     G.depth = h.depth;
@@ -783,7 +946,7 @@
     G.queue = [];
     G.anim = null;
     G.st = Engine.cloneState(G.init);
-    G.history = []; G.moves = 0; G.depth = 0; G.won = false; G.look = 1;
+    G.history = []; G.moves = 0; G.depth = depthNow(G.st); G.won = false; G.look = 1;
     G.focus = Engine.player(G.st).room;
     G.hint = null; G.search++;
     G.path = ''; saveResume();
@@ -799,6 +962,12 @@
     G.hint = null;
     G.earned = 0;
     G.stars = starsFor(G.def, G.moves);
+    if (G.custom) {
+      G.newAch = [];
+      Sfx.play('win'); haptic('win');
+      run({ kind: 'glow', t0: performance.now(), dur: 650 }, () => setTimeout(showWin, 120));
+      return;
+    }
     progress.resume = null;
     if (G.daily) {
       const d = today();
@@ -845,8 +1014,8 @@
     $('win-moves').textContent = num(G.moves);
     $('win-undos').textContent = num(G.undos);
     $('win-depth').textContent = num(G.maxDepth);
-    const last = G.daily || G.index >= LEVELS.length - 1 || !isOpen(G.index + 1);
-    $('win-next').textContent = G.daily ? S.home : last ? S.levels : S.next;
+    const last = G.daily || G.custom || G.index >= LEVELS.length - 1 || !isOpen(G.index + 1);
+    $('win-next').textContent = G.daily || G.custom ? S.home : last ? S.levels : S.next;
     show('win');
     for (const a of G.newAch) toast(a);
   }
@@ -893,7 +1062,7 @@
   // first step: the idea in one sentence (cheap); second step: the next moves
   function openHints() {
     if (screen !== 'play' || G.won || G.anim || G.busy || G.hint) return;
-    if (!G.daily) progress.stats.hinted[G.def.w] = true;
+    if (!G.daily && !G.custom) progress.stats.hinted[G.def.w] = true;
     $('hint-idea-cost').textContent = G.ideaShown ? S.free : num(IDEA_COST);
     $('hint-moves-cost').textContent = G.hintLeft > 0 ? S.free : num(HINT_COST);
     $('hint-moves').hidden = !!G.daily;
@@ -948,7 +1117,7 @@
   }
 
   function askSkip() {
-    if (screen !== 'play' || G.won || G.daily) return;
+    if (screen !== 'play' || G.won || G.daily || G.custom) return;
     if (progress.points < SKIP_COST) { showHintText(S.noPoints); return; }
     confirmBox(t('skipAsk', { c: num(SKIP_COST) }), S.skipYes, () => {
       progress.points -= SKIP_COST;
@@ -1024,17 +1193,17 @@
   });
   $('main-levels').addEventListener('click', () => show('levels'));
   $('levels-back').addEventListener('click', () => show('main'));
-  $('play-back').addEventListener('click', () => { G.search++; G.busy = false; if (G.daily) show('main'); else { G.viewWorld = G.def.w; show('world'); } });
+  $('play-back').addEventListener('click', () => { G.search++; G.busy = false; if (G.daily || G.custom) show('main'); else { G.viewWorld = G.def.w; show('world'); } });
   $('undo').addEventListener('click', () => input('undo'));
   $('restart').addEventListener('click', restart);
   $('hint-btn').addEventListener('click', openHints);
   $('skip-btn').addEventListener('click', askSkip);
   $('win-next').addEventListener('click', () => {
-    if (G.daily) show('main');
+    if (G.daily || G.custom) show('main');
     else if (G.index < LEVELS.length - 1 && isOpen(G.index + 1)) startLevel(G.index + 1);
     else { show('levels'); if (G.index < LEVELS.length - 1 && paidLock(LEVELS[G.index + 1].w)) openPaywall(); }
   });
-  $('win-again').addEventListener('click', () => startLevel(G.daily ? 'daily' : G.index));
+  $('win-again').addEventListener('click', () => (G.custom ? startLevel(-1, G.def) : startLevel(G.daily ? 'daily' : G.index)));
   $('win-levels').addEventListener('click', () => show('levels'));
 
   // Share a win: Android's share sheet (Capacitor Share), the browser's own where there is one, or the clipboard.
@@ -1042,7 +1211,7 @@
   const SHARE_URL = ORION ? 'https://github.com/DAOUDsys/cubes-paradox/releases/latest' : 'https://play.google.com/store/apps/details?id=com.daoud.matryo';
   function shareText() {
     const stars = '★'.repeat(G.stars) + '☆'.repeat(3 - G.stars);
-    return G.daily ? t('shareDaily', { m: num(G.moves), stars }) : t('shareText', { level: levelLabel(G.index), m: num(G.moves), stars });
+    return G.daily ? t('shareDaily', { m: num(G.moves), stars }) : t('shareText', { level: G.custom ? curLabel() : levelLabel(G.index), m: num(G.moves), stars });
   }
   $('win-share').addEventListener('click', () => {
     const text = shareText();
@@ -1149,7 +1318,7 @@
       else if (!$('full-sheet').hidden) $('full-sheet').hidden = true;
       else if (!$('privacy-sheet').hidden) $('privacy-sheet').hidden = true;
       else if (!$('hint-sheet').hidden) $('hint-sheet').hidden = true;
-      else if (screen === 'play' || screen === 'win') { G.search++; G.busy = false; if (G.daily) show('main'); else { G.viewWorld = G.def.w; show('world'); } }
+      else if (screen === 'play' || screen === 'win') { G.search++; G.busy = false; if (G.daily || G.custom) show('main'); else { G.viewWorld = G.def.w; show('world'); } }
       else if (screen === 'world') show('levels');
       else if (screen === 'settings') closeSettings();
       else if (screen === 'levels' || screen === 'achievements') show('main');
@@ -1163,8 +1332,7 @@
       const res = Engine.move(G.st, G.L, d);
       if (!res) continue;
       G.history.push({ st: G.st, depth: G.depth, events: res.events, dir: d });
-      for (const ev of res.events) G.depth += ev.type === 'enter' ? 1 : -1;
-      if (G.depth < 0) G.depth = 0;
+      G.depth = depthAfter(res, G.depth);
       G.maxDepth = Math.max(G.maxDepth, G.depth);
       G.moves++; G.look = d; G.st = res.state;
     }
@@ -1177,6 +1345,7 @@
   /* ---------- resume, achievements, toasts ---------- */
 
   function saveResume() {
+    if (G.custom) return;
     progress.resume = G.won ? null : { i: G.daily ? 'daily' : G.index, day: today(), path: G.path };
     saveProgress();
   }
@@ -1233,7 +1402,9 @@
 
   // hook for automated browser tests
   document.querySelector('.logo').innerHTML = Planets.logo();
-  window.__matryo = { G, startLevel, input, show, restart, askHint, progress, jump, today };
+  // playDef(def): start a level straight from its definition (screenshots and tests)
+  const playDef = (def) => startLevel(-1, def);
+  window.__matryo = { G, startLevel, input, show, restart, askHint, progress, jump, today, playDef };
 
   Sfx.setEnabled(progress.sound);
   applyLang();

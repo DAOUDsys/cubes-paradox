@@ -2,7 +2,7 @@ Cubes Paradox es un juego de puzles sobre cajas que contienen salas enteras.
 
 Empuja las cajas a sus sitios: fácil. Pero las cajas de colores son distintas, porque cada una contiene una sala completa. Entra en una caja y estarás dentro. Empuja una caja dentro de otra. Mete cajas, sácalas y apila salas dentro de salas dentro de salas. Algunas salas incluso se contienen a sí mismas: sales de una y vuelves a entrar.
 
-14 MUNDOS, CADA UNO CON SU IDEA
+21 MUNDOS, CADA UNO CON SU IDEA
 • El taller: el arte de empujar
 • Puertas: una caja es una puerta, así que empújala o entra en ella
 • El almacén: guarda una caja dentro de una sala y luego sácala
@@ -11,9 +11,10 @@ Empuja las cajas a sus sitios: fácil. Pero las cajas de colores son distintas, 
 • Salas en salas, La sala objetivo, Inmersión: dos y tres niveles abajo
 • Sala de espejos: una sala que se contiene a sí misma
 • Agujeros, Suelo agrietado, Colores, Sala de control, Sentido único: reglas nuevas, siempre con salas dentro de salas
+• Suelo helado, Túneles de viento, Plataformas de salto, Salas hambrientas, Salas gemelas, Salas espejo, Dos brotes: siete mundos de trucos nuevos, y niveles que los mezclan
 
 CADA NIVEL SE GANA SU SITIO
-193 niveles, todos comprobados por un solucionador: todos tienen solución y todas las cajas hacen falta. Los primeros mundos son suaves, luego se complica, y los tres últimos niveles de cada mundo son desafíos difíciles.
+298 niveles, todos comprobados por un solucionador: todos tienen solución y todas las cajas hacen falta. Los primeros mundos son suaves, luego se complica, y los tres últimos niveles de cada mundo son desafíos difíciles.
 
 UN RETO DIFÍCIL NUEVO CADA DÍA
 Resuelve el reto del día y mantén tu racha.
@@ -21,7 +22,7 @@ Resuelve el reto del día y mantén tu racha.
 ESTRELLAS, LOGROS Y PISTAS
 Resuelve con los mínimos movimientos para ganar tres estrellas y desbloquea 12 logros. ¿Atascado? Compra la idea en una frase y, si aún hace falta, tus próximos movimientos. Deshaz todo lo que quieras o toca dos veces el tablero.
 
-Los 6 primeros mundos son gratis. Una compra en la app desbloquea los otros 8 mundos y 110 niveles. El reto del día sigue siendo gratis.
+Los 6 primeros mundos son gratis. Una compra en la app desbloquea los otros 15 mundos y 215 niveles. El reto del día sigue siendo gratis.
 
 HECHO PARA EL MÓVIL
 • Desliza para moverte, basta una mano

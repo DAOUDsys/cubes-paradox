@@ -2,7 +2,7 @@ Cubes Paradox is a puzzle game about boxes that hold whole rooms.
 
 Push boxes onto their spots: simple enough. But the colored boxes are different, because each one holds a complete room. Walk into a box and you are inside it. Push a box into another box. Carry boxes in, push them back out, and stack rooms inside rooms inside rooms. Some rooms even contain themselves: walk out of one and you walk straight back in.
 
-14 WORLDS, EACH WITH ITS OWN IDEA
+21 WORLDS, EACH WITH ITS OWN IDEA
 • Workshop: the art of pushing
 • Doorways: a box is a door, so push it or walk right in
 • Storage: park a box inside a room, then take it back out
@@ -11,9 +11,10 @@ Push boxes onto their spots: simple enough. But the colored boxes are different,
 • Rooms in Rooms, The Goal Room, Deep Dive: two and three levels deep
 • Mirror Hall: a room that holds itself
 • Holes, Cracked Floor, Colors, Control Room, One-Way Doors: new rules, always about rooms in rooms
+• Frozen Floor, Wind Tunnels, Jump Pads, Hungry Rooms, Twin Rooms, Mirror Rooms, Two Sprouts: seven worlds of new tricks, and levels that mix them
 
 EVERY LEVEL EARNS ITS PLACE
-193 levels, all checked by a solver: each one can be solved and every box in it is needed. The first worlds are gentle, then it gets harder, and the last three levels of each world are hard challenges.
+298 levels, all checked by a solver: each one can be solved and every box in it is needed. The first worlds are gentle, then it gets harder, and the last three levels of each world are hard challenges.
 
 A NEW HARD PUZZLE EVERY DAY
 Solve the daily puzzle and keep your streak going.
@@ -21,7 +22,7 @@ Solve the daily puzzle and keep your streak going.
 STARS, ACHIEVEMENTS AND HINTS
 Solve in the fewest moves for three stars and unlock 12 achievements. Stuck? Buy the idea in one sentence and, if you still need it, your next moves. Undo as much as you like, or just double-tap the board.
 
-The first 6 worlds are free. One in-app purchase unlocks the other 8 worlds and 110 levels. The daily puzzle stays free.
+The first 6 worlds are free. One in-app purchase unlocks the other 15 worlds and 215 levels. The daily puzzle stays free.
 
 MADE FOR PHONES
 • Swipe to move, one hand is enough

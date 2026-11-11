@@ -2,7 +2,7 @@ Cubes Paradox, içinde koca odalar olan kutular hakkında bir bulmaca oyunudur.
 
 Kutuları yerlerine it: buraya kadar kolay. Ama renkli kutular farklıdır, çünkü her birinin içinde tam bir oda vardır. Bir kutuya gir, artık içindesin. Bir kutuyu başka bir kutunun içine it. Kutuları içeri sok, geri çıkar ve odaların içinde odaların içinde odalar kur. Bazı odalar kendini bile içerir: birinden çıkarsın ve yine içine düşersin.
 
-KENDİ FİKRİYLE 14 DÜNYA
+KENDİ FİKRİYLE 21 DÜNYA
 • Atölye: itme sanatı
 • Kapılar: kutu bir kapıdır, it ya da içine gir
 • Depo: bir kutuyu odaya koy, sonra geri çıkar
@@ -11,9 +11,10 @@ KENDİ FİKRİYLE 14 DÜNYA
 • Odada oda, Hedef oda, Derin dalış: iki ve üç kat aşağı
 • Aynalı salon: kendini içeren bir oda
 • Çukurlar, Çatlak zemin, Renkler, Kontrol odası, Tek yönlü kapılar: yeni kurallar, hep odaların içinde odalarla
+• Donmuş zemin, Rüzgar tünelleri, Atlama kareleri, Aç odalar, İkiz odalar, Ayna odaları, İki filiz: yeni numaralarla yedi dünya ve bunları karıştıran bölümler
 
 HER BÖLÜMÜN BİR NEDENİ VAR
-193 bölümün hepsi bir çözücüyle denendi: her birinin çözümü var ve her kutu gerekli. İlk dünyalar yumuşak başlar, sonra zorlaşır ve her dünyanın son üç bölümü zor meydan okumalardır.
+298 bölümün hepsi bir çözücüyle denendi: her birinin çözümü var ve her kutu gerekli. İlk dünyalar yumuşak başlar, sonra zorlaşır ve her dünyanın son üç bölümü zor meydan okumalardır.
 
 HER GÜN YENİ BİR ZOR BULMACA
 Günün bulmacasını çöz ve serini sürdür.
@@ -21,7 +22,7 @@ Günün bulmacasını çöz ve serini sürdür.
 YILDIZLAR, BAŞARIMLAR VE İPUÇLARI
 En az hamleyle çözüp üç yıldız al, 12 başarımı aç. Takıldın mı? Fikri tek cümleyle satın al, gerekirse sonraki hamlelerini de. İstediğin kadar geri al ya da oyun alanına iki kez dokun.
 
-İlk 6 dünya ücretsizdir. Tek bir uygulama içi satın alma diğer 8 dünyayı ve 110 bölümü açar. Günün bulmacası ücretsiz kalır.
+İlk 6 dünya ücretsizdir. Tek bir uygulama içi satın alma diğer 15 dünyayı ve 215 bölümü açar. Günün bulmacası ücretsiz kalır.
 
 TELEFON İÇİN YAPILDI
 • Hareket etmek için kaydır, tek el yeter

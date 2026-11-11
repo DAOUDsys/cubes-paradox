@@ -7,7 +7,7 @@
 <p align="center">
   A puzzle game about boxes that hold whole rooms.<br>
   Push boxes, walk inside them, and find your way back out.<br>
-  <b>193 levels · 14 worlds · a daily puzzle · 7 languages · fully offline</b>
+  <b>298 levels · 21 worlds · a daily puzzle · 7 languages · fully offline</b>
 </p>
 
 <p align="center">
@@ -32,7 +32,7 @@
 </p>
 <p align="center">
   <img src="store/screenshots/05-two-step-hints.png" width="200" alt="Two-step hints">
-  <img src="store/screenshots/06-worlds-and-daily.png" width="200" alt="14 worlds and a daily puzzle">
+  <img src="store/screenshots/06-worlds-and-daily.png" width="200" alt="21 worlds and a daily puzzle">
   <img src="store/screenshots/07-seven-languages.png" width="200" alt="Seven languages">
 </p>
 
@@ -58,6 +58,15 @@ Every world after the first is built around rooms inside rooms, often two or thr
 | 12 | Colors | Each colored box belongs in the room of its color | Hard |
 | 13 | Control Room | A plate inside one room opens a gate in another | Hard |
 | 14 | One-Way Doors | Arrows on room doors: in one way, out another | Hard |
+| 15 | Frozen Floor | On ice, whatever moves keeps sliding until something stops it | Hard |
+| 16 | Wind Tunnels | A wind tile blows whatever stands on it one step, after every move | Hard |
+| 17 | Jump Pads | Step on a pad and you come out of its twin pad. Boxes too | Hard |
+| 18 | Hungry Rooms | Push a hungry room onto a stuck box and the room swallows it | Hard |
+| 19 | Twin Rooms | Two boxes, one room: walk into either, but you always come out of the first | Hard |
+| 20 | Mirror Rooms | Inside a mirror room left and right are swapped | Hard |
+| 21 | Two Sprouts | Two sprouts move together; use walls to get them apart | Hard |
+
+Worlds 15 to 21 add new rules, and some of their levels mix in a second idea from another world.
 
 A world is a ladder. Its first level shows the idea, and each level after it asks for more than the one before: harder to work out, and using the idea at least as much. The last three levels of each world are optional challenges, the hardest of its idea. A new hard **daily puzzle** waits every day.
 
@@ -73,7 +82,7 @@ A world is a ladder. Its first level shows the idea, and each level after it ask
 - Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser
 - 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
-- The APK here and on Orion Store has all 14 worlds open. On Google Play the first 6 worlds are free and one purchase unlocks the other 8
+- The APK here and on Orion Store has all 21 worlds open. On Google Play the first 6 worlds are free and one purchase unlocks the other 15
 - No ads, no accounts, no data collected — progress stays on the device ([privacy policy](https://daoudsys.github.io/cubes-paradox-privacy/))
 
 ## Run it
@@ -95,7 +104,7 @@ npm run apk
 
 The APK is written to `android/app/build/outputs/apk/play/debug/app-play-debug.apk`.
 
-The app has two builds: `play` (Google Play, worlds 7–14 are one purchase) and `orion` (Orion Store and GitHub releases, every world open). Its `src/orion` folder replaces `www/js/edition.js`. `npm run release` builds both, signed, when `android/keystore.properties` is present.
+The app has two builds: `play` (Google Play, worlds 7–21 are one purchase) and `orion` (Orion Store and GitHub releases, every world open). Its `src/orion` folder replaces `www/js/edition.js`. `npm run release` builds both, signed, when `android/keystore.properties` is present.
 
 ## Levels
 
@@ -116,7 +125,7 @@ Levels are generated, solved and picked by scripts in `tools/`:
 | `www/js/app.js` | Screens, input, animation, progress, hints |
 | `www/js/i18n.js` | English and Arabic text, world names |
 | `www/js/i18n-langs.js` | Spanish, French, German, Portuguese and Turkish |
-| `www/js/levels.js`, `daily.js` | The 193 world levels and 90 daily puzzles |
+| `www/js/levels.js`, `daily.js` | The 298 world levels and 90 daily puzzles |
 | `tools/` | Level generator, hardener, picker and solver |
 | `store/` | Store listing text, icon, banner and screenshots |
 | `android/` | Capacitor Android project |

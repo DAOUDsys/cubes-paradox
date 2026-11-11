@@ -48,6 +48,9 @@ const T = {
   }
 };
 
+// the first level of each of worlds 15-21 (tools/tutorials.js), keyed by the world's kind
+Object.assign(T, require('./tutorials.js'));
+
 // Doorways: one clear idea each, designed by hand (doors on the left and top of the room).
 const LEFT_TOP_DOORS = ['##.##', '#...#', '....#', '#...#', '#####'];
 const DOORWAYS_HAND = [
@@ -89,7 +92,15 @@ const WORLDS = [
   { tier: 'hard', main: 9, kind: 'crumble', uses: (m) => m.broken },
   { tier: 'hard', main: 10, kind: 'colors', uses: (m) => 2 * (U(m).boxIn || 0) + m.enters },
   { tier: 'hard', main: 12, kind: 'remote', uses: (m) => (U(m).gate || 0) + m.enters },
-  { tier: 'hard', main: 9, kind: 'oneway', uses: (m) => (U(m).arrow || 0) }
+  { tier: 'hard', main: 9, kind: 'oneway', uses: (m) => (U(m).arrow || 0) },
+  // worlds 15-21 (1.6.0): each starts with its hand-made first level
+  { tier: 'hard', main: 12, tut: 'ice', kind: 'ice', uses: (m) => m.slides + m.enters },
+  { tier: 'hard', main: 12, tut: 'wind', kind: 'wind', uses: (m) => (U(m).wind || 0) },
+  { tier: 'hard', main: 12, tut: 'pads', kind: 'pads', uses: (m) => (U(m).pad || 0) },
+  { tier: 'hard', main: 12, tut: 'hungry', kind: 'hungry', uses: (m) => 2 * (U(m).eat || 0) + m.enters },
+  { tier: 'hard', main: 12, tut: 'twins', kind: 'twins', uses: (m) => 2 * (U(m).twin || 0) + m.exits },
+  { tier: 'hard', main: 12, tut: 'mirror', kind: 'mirror', uses: (m) => (U(m).flip || 0) },
+  { tier: 'hard', main: 12, tut: 'sprouts', kind: 'sprouts', uses: (m) => (U(m).split || 0) }
 ];
 
 /* ---------- pools ---------- */
@@ -113,7 +124,8 @@ const take = (c) => { usedFamilies.add(family(c)); return Object.assign({}, c); 
 // truly hard: scores high, has one solution, and has several places where a wrong choice loses
 const isHard = (c) => c.m.score >= HARD_MIN && c.m.unique && c.m.trapSteps >= 3 && c.m.choices >= 6;
 // a rough fingerprint of what the solution does, to keep two levels of one world from being the same thing twice
-const shape = (c) => [c.m.pushes, c.m.enters, c.m.exits, c.m.maxDepth, c.m.drops, c.m.broken, Object.keys(c.def.rooms).length].join('/');
+const shape = (c) => [c.m.pushes, c.m.enters, c.m.exits, c.m.maxDepth, c.m.drops, c.m.broken, Object.keys(c.def.rooms).length]
+  .concat(['wind', 'pad', 'eat', 'twin', 'flip', 'split'].map(k => U(c.m)[k] || 0)).join('/');
 const tooClose = (c, picked) => picked.some(p => shape(p) === shape(c) && Math.abs(p.m.moves - c.m.moves) <= 3);
 // when two do the same job, the shorter one is the better puzzle
 const better = (a, b) => (b.m.score - a.m.score) || (a.m.moves - b.m.moves);
@@ -159,7 +171,19 @@ const ROOM_WORDS = {
   en: { teal: 'green box', violet: 'purple box', pink: 'pink box', root: 'main room' },
   ar: { teal: 'الصندوق الأخضر', violet: 'الصندوق البنفسجي', pink: 'الصندوق الزهري', root: 'الغرفة الرئيسية' }
 };
-function ideaFor(def) {
+// the first hint of a level from worlds 15-21 names that world's idea (texts fixed with Daoud's wording in i18n)
+const NEW_IDEAS = {
+  ice: ['slides', { en: 'Let the ice carry it: aim before you push', ar: 'خلّي الجليد يوصّله: صوّب قبل ما تدفش' }],
+  wind: ['wind', { en: 'Let the wind do the last step for you', ar: 'خلّي الريح تعمل آخر خطوة عنك' }],
+  pads: ['pad', { en: 'Something has to go through a jump pad', ar: 'في إشي لازم يمرق من بلاطة النقل' }],
+  hungry: ['eat', { en: 'The hungry room has to swallow a box', ar: 'الغرفة الجوعانة لازم تبلع صندوق' }],
+  twins: ['twin', { en: 'Go in through the twin, come out of the first box', ar: 'فوت من التوأم، واطلع من الصندوق الأصلي' }],
+  mirror: ['flip', { en: 'Use the mirror room to come out on the other side', ar: 'استعمل غرفة المرآة عشان تطلع من الجهة التانية' }],
+  sprouts: ['split', { en: 'Use a wall to move one sprout without the other', ar: 'استعمل الحيط عشان تحرّك نبتة بدون التانية' }]
+};
+function ideaFor(def, kind, m) {
+  const ni = NEW_IDEAS[kind];
+  if (ni && m && (ni[0] === 'slides' ? m.slides : (m.uses || {})[ni[0]])) return Object.assign({}, ni[1]);
   const Engine = require('../www/js/engine.js');
   const { level, state } = Engine.parseLevel(def);
   const room = (k, lang) => (k === level.root ? ROOM_WORDS[lang].root : ROOM_WORDS[lang][level.rooms[k].palette] || ROOM_WORDS[lang].teal);
@@ -254,6 +278,7 @@ WORLDS.forEach((W, w) => {
     const ceiling = challenges.length ? challenges[0].m.score : Infinity;
     const intro = [];
     if (W.tut) intro.push(Object.assign(handLevel(T[W.tut], 'tutorial'), { d: 1 }));
+    if (W.tut && NEW_IDEAS[W.tut]) intro[0].def.idea = Object.assign({}, NEW_IDEAS[W.tut][1]);
     for (const h of W.hand || []) intro.push(Object.assign(handLevel(h, 'hand'), { d: 1 }));
     let body, slack;
     if (W.tier === 'medium') {
@@ -283,7 +308,7 @@ WORLDS.forEach((W, w) => {
     const d = x.def;
     if (!x.keep) {
       if (n > 0) { delete d.name; delete d.tip; }
-      d.idea = d.idea || ideaFor(d);
+      d.idea = d.idea || ideaFor(d, x.kind, x.m);
       if (x.kind !== 'tutorial' && x.kind !== 'hand') centerRoot(d);
     }
     levels.push(Object.assign(x, { w, n }));
@@ -305,7 +330,7 @@ const daily = [];
       if (!c || daily.length >= 90 || !free(c)) continue;
       const x = take(c);
       const d = centerRoot(JSON.parse(JSON.stringify(x.def)));
-      d.idea = ideaFor(d);
+      d.idea = ideaFor(d, k, x.m);
       daily.push({ def: d, m: x.m, kind: k });
     }
   }
@@ -338,7 +363,7 @@ function emit(d, extra) {
   const keys = Object.keys(d.rooms);
   keys.forEach((k, j) => {
     const r = d.rooms[k];
-    lines.push(`      ${k}: { palette: '${r.palette}', map: [`);
+    lines.push(`      ${k}: { palette: '${r.palette}', ${r.flip ? 'flip: true, ' : ''}${r.eats ? 'eats: true, ' : ''}map: [`);
     lines.push(r.map.map(row => `        '${row}'`).join(',\n'));
     if (r.terrain) {
       lines.push('      ], terrain: [');
@@ -354,7 +379,9 @@ function emit(d, extra) {
 const wrap = (name, what, body) => `/* Cubes Paradox ${what} (written by tools/curate.js — edit there or here, then run \`npm run solve\`).
    Symbols: # wall  . floor  P player  b box  t teal box  u purple box  _ box goal  = player goal
    Any other capital letter is a box that holds the room with that key. Rooms must be square.
+   p second sprout  1 2 3 twin of room A B C  (room props: flip = mirror room, eats = hungry room)
    terrain (optional, same size): ~ ice  o plate  | gate  ^ > v < one-way arrows  O hole  x crumbling floor
+   U R D L wind tiles  1-4 jump pads (in pairs)
    sol = a known solution (U R D L), used for hints; idea = the first hint step; d = how hard (1 easy, 2 medium, 3 hard). */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();

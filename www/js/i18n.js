@@ -48,6 +48,7 @@
       hintChoose: 'How much help?', hintIdea: 'The idea', hintIdeaSub: 'One sentence about the key to this level',
       hintMoves: 'The moves', hintMovesSub: 'Your next 8 moves, shown on the board', ideaNone: 'Look for the one thing that has to happen first',
       legendHole: 'Hole: a box fills it', legendCrack: 'Cracked: breaks after you leave', legendTealBox: 'Teal box: into a teal room', legendVioletBox: 'Purple box: into a purple room',
+      legendWind: 'Wind: blows one step', legendPad: 'Jump pad', legendTwin: 'Twin box: same room', legendMirror: 'Mirror room', legendHungry: 'Hungry room: swallows', legendSprout2: 'Second sprout',
       ach: {
         first: ['First steps', 'Solve your first level'], world1: ['Warmed up', 'Finish the first world'],
         half: ['Halfway there', 'Solve half of all levels'], all: ['Cubes master', 'Solve every level'],
@@ -103,6 +104,7 @@
       hintChoose: 'قدّيش بدك مساعدة؟', hintIdea: 'الفكرة', hintIdeaSub: 'جملة وحدة عن مفتاح المرحلة',
       hintMoves: 'الحركات', hintMovesSub: 'حركاتك الـ٨ الجاية عاللوحة', ideaNone: 'دوّر عالإشي اللي لازم يصير أول',
       legendHole: 'حفرة: الصندوق بيعبّيها', legendCrack: 'أرض مشقّقة: بتنكسر بعد ما تطلع عنها', legendTealBox: 'صندوق أخضر: لجوّا غرفة خضرا', legendVioletBox: 'صندوق بنفسجي: لجوّا غرفة بنفسجية',
+      legendWind: 'ريح: بتدفش خطوة', legendPad: 'بلاطة نقل', legendTwin: 'صندوق توأم: نفس الغرفة', legendMirror: 'غرفة مرآة', legendHungry: 'غرفة جوعانة: بتبلع', legendSprout2: 'النبتة التانية',
       ach: {
         first: ['أول خطوة', 'حلّ أول مرحلة'], world1: ['سخّنت', 'خلّص العالم الأول'],
         half: ['نص الطريق', 'حلّ نص المراحل'], all: ['معلّم المكعبات', 'حلّ كل المراحل'],
@@ -115,7 +117,7 @@
     }
   };
 
-  // Fourteen worlds: each built around one idea, with its own colour on the map (palette keys in render.js).
+  // Twenty-one worlds: each built around one idea, with its own colour on the map (palette keys in render.js).
   const WORLDS = [
     { palette: 'workshop', en: ["Workshop", "Push the boxes onto their spots."], ar: ["الورشة", "ادفع الصناديق لأماكنها."] },
     { palette: 'greenhouse', en: ["Doorways", "A colored box is a door: push it, or walk right in."], ar: ["الأبواب", "الصندوق الملوّن باب: يا بتدفشه، يا بتفوت فيه."] },
@@ -130,7 +132,14 @@
     { palette: 'glacier', en: ["Cracked Floor", "Cracked floor breaks once you step off. Plan one clean path."], ar: ["الأرض المشقّقة", "الأرض المشقّقة بتنكسر بعد ما تطلع عنها. خطط طريق واحد."] },
     { palette: 'maze', en: ["Colors", "Each colored box belongs inside the room of its color."], ar: ["الألوان", "كل صندوق ملوّن مكانه جوّا الغرفة اللي بلونه."] },
     { palette: 'power', en: ["Control Room", "A plate inside one room opens a gate in another."], ar: ["غرفة التحكم", "زر جوّا غرفة بيفتح بوابة بغرفة تانية."] },
-    { palette: 'paradox', en: ["One-Way Doors", "Arrows on room doors: in one way, out another."], ar: ["أبواب باتجاه واحد", "أسهم على أبواب الغرف: بتفوت من باب وبتطلع من غيره."] }
+    { palette: 'paradox', en: ["One-Way Doors", "Arrows on room doors: in one way, out another."], ar: ["أبواب باتجاه واحد", "أسهم على أبواب الغرف: بتفوت من باب وبتطلع من غيره."] },
+    { palette: 'ice', en: ["Frozen Floor", "On ice, whatever moves keeps sliding until something stops it."], ar: ["الأرض المجمّدة", "عالجليد، كل إشي بيتحرك بيضل يتزحلق لحد ما يوقفه إشي."] },
+    { palette: 'wind', en: ["Wind Tunnels", "A wind tile blows whatever stands on it one step, after every move."], ar: ["ممرات الريح", "بلاطة الريح بتدفش اللي واقف عليها خطوة، بعد كل حركة."] },
+    { palette: 'pads', en: ["Jump Pads", "Step on a pad and you come out of its twin pad. Boxes too."], ar: ["بلاطات النقل", "ادعس على بلاطة بتطلع من البلاطة التوأم إلها. والصناديق كمان."] },
+    { palette: 'hungry', en: ["Hungry Rooms", "Push a hungry room onto a stuck box and the room swallows it."], ar: ["الغرف الجوعانة", "ادفش غرفة جوعانة على صندوق محشور، والغرفة بتبلعه."] },
+    { palette: 'twins', en: ["Twin Rooms", "Two boxes, one room: walk into either, but you always come out of the first."], ar: ["الغرف التوأم", "صندوقين وغرفة وحدة: فوت من أي واحد، بس دايماً بتطلع من الأول."] },
+    { palette: 'mirror', en: ["Mirror Rooms", "Inside a mirror room left and right are swapped: in from the left, you appear on the right."], ar: ["غرف المرآة", "جوّا غرفة المرآة اليمين والشمال مبدّلين: بتفوت من الشمال، بتطلع عاليمين."] },
+    { palette: 'sprouts', en: ["Two Sprouts", "Two sprouts move together. Use walls to get them apart."], ar: ["النبتتين", "النبتتين بيتحركوا سوا. استعمل الحيطان عشان تفرّقهم."] }
   ];
 
   const DIGITS_AR = '٠١٢٣٤٥٦٧٨٩';

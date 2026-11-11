@@ -63,7 +63,11 @@
     gate: () => { tone(220, 330, 0.18, 0.08, 'sawtooth'); noise(700, 1400, 0.16, 0.04); },
     hint: () => { tone(988, 988, 0.12, 0.06, 'sine'); tone(1319, 1319, 0.16, 0.05, 'sine', 0.09); },
     win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, f, 0.32, 0.08, 'triangle', i * 0.09)),
-    tap: () => tone(700, 600, 0.04, 0.035, 'sine')
+    tap: () => tone(700, 600, 0.04, 0.035, 'sine'),
+    // new rules: a soft whoosh when the wind blows something, a blip through a jump pad, a gulp when a room swallows
+    wind: () => { noise(700, 1800, 0.22, 0.045); noise(1800, 900, 0.18, 0.03, 0.08); },
+    jump: () => { tone(520, 1180, 0.09, 0.06, 'sine'); tone(1180, 1500, 0.06, 0.04, 'sine', 0.08); },
+    eat: () => { tone(300, 110, 0.16, 0.13, 'triangle'); noise(600, 250, 0.12, 0.05, 0.03); tone(150, 120, 0.06, 0.08, 'sine', 0.15); }
   };
 
   function play(name) {

@@ -16,7 +16,9 @@
     workshop: '#8B6A4E', greenhouse: '#4F8A5B', warehouse: '#A88052', well: '#3A5BB8', ice: '#7FB6CC',
     power: '#9A5050', factory: '#6B7380', lake: '#557A9E', control: '#7F8A3A', conveyor: '#B0663A',
     glacier: '#A9C4D6', maze: '#3F7A45', echo: '#8E4C8A', freeze: '#5D7BC7', observatory: '#4B4FA6',
-    labyrinth: '#9C8540', paradox: '#5A5A66'
+    labyrinth: '#9C8540', paradox: '#5A5A66',
+    // worlds 16-21 (world 15 uses ice)
+    wind: '#5E9C93', pads: '#C08A2E', hungry: '#B5534A', twins: '#4F7FA8', mirror: '#7A5FB0', sprouts: '#6E8F3A'
   };
   function mix(a, b, t) {
     const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16);
@@ -37,7 +39,12 @@
     plate: '#E8C547', plateOn: '#3CC9B0', gate: '#E8C547', arrow: 'rgba(236,238,245,0.55)',
     pit: '#0D0F08', pitRim: 'rgba(0,0,0,0.45)', patch: 'rgba(255,255,230,0.07)', crack: 'rgba(14,16,8,0.75)',
     doorLine: 'rgba(255,248,210,0.7)', dim: 'rgba(0,0,0,0.38)',
-    boxColors: { teal: ['#4FB9A0', '#2E7E6B'], violet: ['#9B8CFF', '#6F62C9'] }
+    boxColors: { teal: ['#4FB9A0', '#2E7E6B'], violet: ['#9B8CFF', '#6F62C9'] },
+    // the second sprout: same character, sky blue
+    player2: '#6EC1FF', player2Shadow: '#3F8FCC',
+    cream: '#ECF0DC', teeth: 'rgba(236,240,220,0.92)',
+    // jump pads: one color per pair (terrain digits 1..4)
+    pads: { 1: '#6EC1FF', 2: '#F78FB3', 3: '#C6E36B', 4: '#ECF0DC' }
   };
   const PAD = 0.035;     // room frame thickness, as a share of the room's size
   const ROOMIN = 0.06;   // a room-box sits this far inside its cell
@@ -78,12 +85,15 @@
   }
 
   /* ---------- geometry (rects are squares: {x, y, s}) ---------- */
+  // A rect may carry f: true when the room in it shows mirrored left-right on screen (a mirror
+  // room seen from outside, or the outside seen from inside a mirror room). Its columns then
+  // run right to left; everything else stays the same.
 
   function cellRect(L, roomKey, r, x, y) {
     const R = L.rooms[roomKey];
     const p = r.s * PAD;
     const cs = (r.s - 2 * p) / R.w;
-    return { x: r.x + p + x * cs, y: r.y + p + y * cs, s: cs };
+    return { x: r.x + p + (r.f ? R.w - 1 - x : x) * cs, y: r.y + p + y * cs, s: cs };
   }
 
   function innerRect(cell) {
@@ -91,18 +101,24 @@
     return { x: cell.x + b, y: cell.y + b, s: cell.s - 2 * b };
   }
 
-  // rect of the room that `ro` (a room-box) sits in, given the rect of the room it holds
+  // rect of the room that `ro` (a room-box) sits in, given the rect of the room it holds.
+  // Crossing a mirror room's edge swaps left and right, so the outside of a mirror room is mirrored.
   function parentRect(L, childRect, ro) {
     const P = L.rooms[ro.room];
+    const f = !!childRect.f !== !!(ro.ref && L.rooms[ro.ref].flip);
     const cs = childRect.s / (1 - 2 * ROOMIN);
     const cx = childRect.x - ROOMIN * cs, cy = childRect.y - ROOMIN * cs;
     const s = cs * P.w / (1 - 2 * PAD);
     const p = s * PAD;
-    return { x: cx - ro.x * cs - p, y: cy - ro.y * cs - p, s };
+    const out = { x: cx - (f ? P.w - 1 - ro.x : ro.x) * cs - p, y: cy - ro.y * cs - p, s };
+    if (f) out.f = true;
+    return out;
   }
 
   function childRect(L, parentR, ro) {
-    return innerRect(cellRect(L, ro.room, parentR, ro.x, ro.y));
+    const r = innerRect(cellRect(L, ro.room, parentR, ro.x, ro.y));
+    if (!!parentR.f !== !!L.rooms[ro.ref].flip) r.f = true;
+    return r;
   }
 
   // Where every nearby room sits when `anchor` is drawn at `rect` (closest copy wins).
@@ -150,14 +166,18 @@
   };
 
   Renderer.prototype.visible = function (r) {
-    return !(r.x > this.size || r.y > this.size || r.x + r.s < 0 || r.y + r.s < 0);
+    const S = this.size, out = (x) => x > S || r.y > S || x + r.s < 0 || r.y + r.s < 0;
+    // while the scene is flipped (o.flipX) a rect may show on the other side of the axis
+    return !out(r.x) || (this.flipC != null && !out(2 * this.flipC - r.x - r.s));
   };
 
   Renderer.prototype.drawRoom = function (st, L, key, r, depth, o) {
     if (!this.visible(r)) return;
     const ctx = this.ctx, R = L.rooms[key], P = pal(L, key);
+    // a twin box's walls are lighter, so it never reads as the box you come out of
+    const wallCol = r.twin ? mix(P.wall, C.cream, 0.38) : P.wall;
     if (r.s < 3 || depth > 24) {
-      ctx.fillStyle = P.frame;
+      ctx.fillStyle = wallCol;
       ctx.fillRect(r.x, r.y, r.s, r.s);
       return;
     }
@@ -166,19 +186,22 @@
     // one soft light across the whole room: bright top-left, darker bottom-right
     const sheen = ctx.createLinearGradient(r.x, r.y, r.x + r.s, r.y + r.s);
     sheen.addColorStop(0, 'rgba(255,255,235,0.26)'); sheen.addColorStop(0.5, 'rgba(255,255,235,0)'); sheen.addColorStop(1, 'rgba(0,0,0,0.18)');
-    const solid = () => { ctx.fillStyle = P.wall; ctx.fill(); ctx.fillStyle = sheen; ctx.fill(); };
+    const solid = () => { ctx.fillStyle = wallCol; ctx.fill(); ctx.fillStyle = sheen; ctx.fill(); };
     rr(ctx, r.x, r.y, r.s, r.s, r.s * 0.1);
     solid();
     rr(ctx, ix, iy, is, is, r.s * 0.06);
     ctx.fillStyle = P.floor; ctx.fill();
     if (cs < 1.6) {
-      ctx.globalAlpha *= 0.55; ctx.fillStyle = P.wall; ctx.fillRect(ix, iy, is, is); ctx.globalAlpha /= 0.55;
+      ctx.globalAlpha *= 0.55; ctx.fillStyle = wallCol; ctx.fillRect(ix, iy, is, is); ctx.globalAlpha /= 0.55;
       return;
     }
 
+    // the loops below walk screen columns (sx); a mirrored room reads its columns right to left
+    const f = !!r.f;
+    const lx = (sx) => (f ? R.w - 1 - sx : sx);
     // walls are one merged shape: a wall cell rounds only the corners where both neighbours are open
     const open = Engine.gatesOpen(st, L);
-    const isWall = (x, y) => (x < 0 || y < 0 || x >= R.w || y >= R.h ? true : R.wall[y][x]);
+    const isWall = (x, y) => (x < 0 || y < 0 || x >= R.w || y >= R.h ? true : R.wall[y][lx(x)]);
     const rad = cs * 0.42, fil = rad * 0.55;
     for (let y = 0; y < R.h; y++) {
       for (let x = 0; x < R.w; x++) {
@@ -209,7 +232,7 @@
           ctx.beginPath(); ctx.arc(fx - dx * fil, fy - dy * fil, fil, 0, Math.PI * 2);
           ctx.fillStyle = P.floor; ctx.fill();
         }
-        if (cs > 4) this.drawTerrain(R, x, y, cx, cy, cs, open, st, L, key);
+        if (cs > 4) this.drawTerrain(R, lx(x), y, cx, cy, cs, open, st, L, key, f, o);
         // the room you are inside: its gaps show a dot, so the way out is easy to find
         if (o.doors === key && depth === o.doorDepth && cs > 8 && (edgeL || edgeR || edgeT || edgeB)) {
           ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.1, 0, Math.PI * 2);
@@ -217,11 +240,20 @@
         }
       }
     }
+    if (R.eats && cs > 3) this.drawTeeth(R, r, p, ix, iy, cs, isWall);
+    if (R.flip && depth > 0 && r.s > 8) {
+      // a mirror room's box: a thin line of glass across its top and bottom edge (under what stands there)
+      const mx = r.x + r.s / 2, gl = Math.max(p + cs * 0.3, r.s * 0.09);
+      ctx.beginPath(); ctx.moveTo(mx, r.y + r.s * 0.012); ctx.lineTo(mx, r.y + gl);
+      ctx.moveTo(mx, r.y + r.s * 0.988); ctx.lineTo(mx, r.y + r.s - gl);
+      ctx.strokeStyle = C.cream; ctx.globalAlpha *= 0.85; ctx.lineWidth = Math.max(1, r.s * 0.025); ctx.lineCap = 'round'; ctx.stroke();
+      ctx.globalAlpha /= 0.85;
+    }
 
     // goals
     if (cs > 5) {
       for (const g of R.goals) {
-        const cx = ix + g.x * cs, cy = iy + g.y * cs;
+        const cx = ix + (f ? R.w - 1 - g.x : g.x) * cs, cy = iy + g.y * cs;
         ctx.setLineDash([cs * 0.11, cs * 0.085]);
         ctx.lineWidth = cs * 0.055;
         if (g.type === 'box') {
@@ -245,12 +277,45 @@
       const sl = o.slide && o.slide.get(ob.id);
       if (sl) { gx = sl.fx + (ob.x - sl.fx) * o.slideT; gy = sl.fy + (ob.y - sl.fy) * o.slideT; }
       if (o.bump && o.bump.id === ob.id) { gx += o.bump.dx; gy += o.bump.dy; }
-      this.drawObject(st, L, ob, { x: ix + gx * cs, y: iy + gy * cs, s: cs }, depth, o);
+      if (f) gx = R.w - 1 - gx;
+      this.drawObject(st, L, ob, { x: ix + gx * cs, y: iy + gy * cs, s: cs }, depth, o, f);
     }
   };
 
-  // Ice, plates, gates and one-way arrows, drawn on top of a floor tile.
-  Renderer.prototype.drawTerrain = function (R, x, y, cx, cy, cs, open, st, L, key) {
+  // A hungry room's doors are mouths: small teeth on both sides of each gap in its edge.
+  Renderer.prototype.drawTeeth = function (R, r, p, ix, iy, cs, isWall) {
+    const ctx = this.ctx, n = R.w, len = p + cs * 0.7, tl = cs * 0.2;
+    ctx.fillStyle = C.teeth;
+    // each gap: where its mouth opens on the edge, the turn that points it inwards, and its two neighbours on the edge
+    const gaps = [];
+    for (let i = 0; i < n; i++) {
+      if (!isWall(i, 0)) gaps.push([ix + (i + 0.5) * cs, r.y, 0, isWall(i - 1, 0), isWall(i + 1, 0)]);
+      if (!isWall(n - 1, i)) gaps.push([r.x + r.s, iy + (i + 0.5) * cs, 1, isWall(n - 1, i - 1), isWall(n - 1, i + 1)]);
+      if (!isWall(i, n - 1)) gaps.push([ix + (i + 0.5) * cs, r.y + r.s, 2, isWall(i + 1, n - 1), isWall(i - 1, n - 1)]);
+      if (!isWall(0, i)) gaps.push([r.x, iy + (i + 0.5) * cs, 3, isWall(0, i + 1), isWall(0, i - 1)]);
+    }
+    for (const [gx, gy, d, left, right] of gaps) {
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(d * Math.PI / 2);
+      ctx.beginPath();
+      // in this frame the mouth runs down (+y); teeth only where the gap has a wall beside it
+      for (const [side, on] of [[-1, left], [1, right]]) {
+        if (!on) continue;
+        const ex = side * cs / 2;
+        for (const k of [0.12, 0.56]) {
+          const y0 = len * k, tb = len * 0.32;
+          ctx.moveTo(ex, y0); ctx.lineTo(ex - side * tl, y0 + tb / 2); ctx.lineTo(ex, y0 + tb); ctx.closePath();
+        }
+      }
+      ctx.fill();
+      ctx.restore();
+    }
+  };
+
+  // Ice, plates, gates, one-way arrows, wind and jump pads, drawn on top of a floor tile.
+  // (x, y) is the cell in the room, (cx, cy) where it is on screen; f: the room shows mirrored.
+  Renderer.prototype.drawTerrain = function (R, x, y, cx, cy, cs, open, st, L, key, f, o) {
     const ctx = this.ctx;
     const k = Engine.cellKey(key, x, y);
     const filled = st.filled && st.filled.indexOf(k) !== -1;
@@ -306,11 +371,39 @@
       ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.17, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(18,20,28,0.35)'; ctx.fill();
     }
+    const pd = R.pad && R.pad[y][x];
+    if (pd) {
+      // a jump pad: a ring in its pair's color with a dot in the middle
+      const col = C.pads[pd] || C.cream;
+      ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.3, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.globalAlpha *= 0.14; ctx.fill(); ctx.globalAlpha /= 0.14;
+      ctx.strokeStyle = col; ctx.lineWidth = cs * 0.075; ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx + cs / 2, cy + cs / 2, cs * 0.08, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+    }
+    const wd = R.wind ? R.wind[y][x] : -1;
+    if (wd >= 0 && cs > 6) {
+      // wind: three faint chevrons drifting the way it blows (o.windT, seconds, moves them)
+      const ph = ((o && o.windT) || 0) * 0.5 % 1;
+      ctx.save();
+      ctx.beginPath(); ctx.rect(cx, cy, cs, cs); ctx.clip();
+      ctx.translate(cx + cs / 2, cy + cs / 2);
+      ctx.rotate((f ? Engine.mirror(wd) : wd) * Math.PI / 2);
+      ctx.strokeStyle = C.cream; ctx.lineWidth = cs * 0.06; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const base = ctx.globalAlpha;
+      for (let i = 0; i < 3; i++) {
+        const u = (i / 3 + ph) % 1, yy = cs * (0.4 - u * 0.8);
+        ctx.globalAlpha = base * 0.35 * (0.35 + 0.65 * Math.sin(Math.PI * u));
+        ctx.beginPath(); ctx.moveTo(-cs * 0.15, yy + cs * 0.08); ctx.lineTo(0, yy); ctx.lineTo(cs * 0.15, yy + cs * 0.08);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
     const a = R.arrow[y][x];
     if (a >= 0) {
       ctx.save();
       ctx.translate(cx + cs / 2, cy + cs / 2);
-      ctx.rotate(a * Math.PI / 2);
+      ctx.rotate((f ? Engine.mirror(a) : a) * Math.PI / 2);
       ctx.beginPath();
       for (const off of [-0.12, 0.12]) {
         ctx.moveTo(-cs * 0.2, cs * (0.1 + off)); ctx.lineTo(0, cs * (-0.1 + off)); ctx.lineTo(cs * 0.2, cs * (0.1 + off));
@@ -320,12 +413,16 @@
     }
   };
 
-  Renderer.prototype.drawObject = function (st, L, ob, cell, depth, o) {
+  // f: the object stands in a room that shows mirrored, so its own room (and the player's eyes) flip too
+  Renderer.prototype.drawObject = function (st, L, ob, cell, depth, o, f) {
     const ctx = this.ctx, cs = cell.s;
     if (ob.kind === 'room') {
       const ir = innerRect(cell);
+      if (!!f !== !!L.rooms[ob.ref].flip) ir.f = true;
+      if (ob.twin) ir.twin = true;
       if (cs > 8) { rr(ctx, ir.x, ir.y + cs * 0.08, ir.s, ir.s, ir.s * 0.07); ctx.fillStyle = pal(L, ob.ref).shadow; ctx.fill(); }
       this.drawRoom(st, L, ob.ref, ir, depth + 1, o);
+      if (ob.twin && ir.s > 8 && this.visible(ir)) this.drawTwinMarks(ir);
       return;
     }
     if (ob.kind === 'box') {
@@ -354,7 +451,7 @@
       ctx.save();
       if (o.sway) {
         // the sprout sways after each step and settles
-        const [sdx] = Engine.DIRS[o.sway.dir];
+        const sdx = Engine.DIRS[o.sway.dir][0] * (f ? -1 : 1);
         const angle = (sdx ? -sdx : 0.6) * 0.8 * Math.exp(-o.sway.age / 260) * Math.cos(o.sway.age / 70);
         ctx.translate(mid, top + cs * 0.02); ctx.rotate(angle); ctx.translate(-mid, -(top + cs * 0.02));
       }
@@ -364,10 +461,11 @@
       ctx.beginPath(); ctx.ellipse(mid + cs * 0.1, top - cs * 0.17, cs * 0.105, cs * 0.055, -0.5, 0, Math.PI * 2); ctx.fillStyle = C.leafDark; ctx.fill();
       ctx.restore();
     }
-    if (cs > 8) { rr(ctx, cell.x + b, top + cs * 0.08, w, h, cs * 0.24); ctx.fillStyle = C.playerShadow; ctx.fill(); }
-    rr(ctx, cell.x + b, top, w, h, cs * 0.24); ctx.fillStyle = C.player; ctx.fill(); gloss(ctx, top, h);
+    if (cs > 8) { rr(ctx, cell.x + b, top + cs * 0.08, w, h, cs * 0.24); ctx.fillStyle = ob.second ? C.player2Shadow : C.playerShadow; ctx.fill(); }
+    rr(ctx, cell.x + b, top, w, h, cs * 0.24); ctx.fillStyle = ob.second ? C.player2 : C.player; ctx.fill(); gloss(ctx, top, h);
     if (cs > 9) {
-      const look = Engine.DIRS[o.look == null ? 1 : o.look];
+      const ld = o.look == null ? 1 : o.look;
+      const look = Engine.DIRS[f ? Engine.mirror(ld) : ld];
       const ey = top + cs * 0.27;
       if (o.face === 'surprise') {
         ctx.beginPath(); ctx.arc(mid, top + cs * 0.46, cs * 0.045, 0, Math.PI * 2); ctx.fillStyle = '#16180F'; ctx.fill();
@@ -394,6 +492,25 @@
     }
   };
 
+  // A twin box: a perforated outer edge and a badge of two overlapping squares in its corner.
+  Renderer.prototype.drawTwinMarks = function (ir) {
+    const ctx = this.ctx, lw = Math.max(1, ir.s * PAD * 0.7);
+    ctx.save();
+    rr(ctx, ir.x + lw / 2, ir.y + lw / 2, ir.s - lw, ir.s - lw, ir.s * 0.09);
+    ctx.setLineDash([ir.s * 0.055, ir.s * 0.045]);
+    ctx.strokeStyle = C.page; ctx.lineWidth = lw; ctx.stroke();
+    ctx.setLineDash([]);
+    if (ir.s > 18) {
+      const q = ir.s * 0.19, x0 = ir.x + ir.s - q * 1.65, y0 = ir.y + q * 0.15, rq = q * 0.25;
+      for (const [dx, dy] of [[0, 0], [q * 0.5, q * 0.5]]) {
+        rr(ctx, x0 + dx, y0 + dy, q, q, rq);
+        ctx.fillStyle = C.page; ctx.fill();
+        ctx.strokeStyle = C.cream; ctx.lineWidth = Math.max(1, q * 0.16); ctx.stroke();
+      }
+    }
+    ctx.restore();
+  };
+
   // Draw the scene with room `anchor` filling rect `r` (canvas px). Rooms around it are drawn
   // too when they show (e.g. while zooming out).
   Renderer.prototype.render = function (st, L, anchor, r, o) {
@@ -406,6 +523,13 @@
     ctx.clip();
     ctx.fillStyle = C.page;
     ctx.fillRect(0, 0, S, S);
+    // o.flipX = { c, s }: squeeze the scene to s times its width about x = c (s < 0 mirrors it);
+    // the zoom into or out of a mirror room turns over like a card halfway through
+    this.flipC = null;
+    if (o.flipX) {
+      this.flipC = o.flipX.c;
+      ctx.translate(o.flipX.c, 0); ctx.scale(o.flipX.s, 1); ctx.translate(-o.flipX.c, 0);
+    }
 
     let top = anchor, tr = r, hops = 0;
     for (let i = 0; i < 8; i++) {
@@ -414,7 +538,7 @@
       if (!ro) break;
       // a room pushed while you are inside it stays put on screen: what is around it slides instead
       const sl = o.slide && o.slide.get(ro.id);
-      tr = parentRect(L, tr, sl ? { room: ro.room, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
+      tr = parentRect(L, tr, sl ? { room: ro.room, ref: ro.ref, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
       top = ro.room;
       hops++;
     }
@@ -423,8 +547,9 @@
 
     if (o.overlay) {
       for (const ov of o.overlay) {
+        if (!ov.rect || !isFinite(ov.rect.x + ov.rect.y + ov.rect.s)) { window.__badOverlay = { kind: ov.obj && ov.obj.kind, id: ov.obj && ov.obj.id }; continue; }
         ctx.globalAlpha = ov.alpha == null ? 1 : ov.alpha;
-        this.drawObject(st, L, ov.obj, ov.rect, 1, o);
+        this.drawObject(st, L, ov.obj, ov.rect, 1, o, ov.rect.f);
         ctx.globalAlpha = 1;
       }
     }
@@ -444,6 +569,12 @@
       ctx.fillStyle = C.dim;
       ctx.fill('evenodd');
     }
+    // o.fade: the page colour over everything (the camera cut of a jump between rooms)
+    if (o.fade) {
+      ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+      ctx.globalAlpha = Math.min(1, o.fade); ctx.fillStyle = C.page; ctx.fillRect(0, 0, S, S); ctx.globalAlpha = 1;
+    }
+    this.flipC = null;
     ctx.restore();
   };
 
@@ -453,14 +584,15 @@
     const ctx = this.ctx, S = this.size;
     const ro = Engine.roomObject(st, anchor);
     const sl = o.slide && o.slide.get(ro.id);
-    const pr = parentRect(L, r, sl ? { room: ro.room, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
+    const pr = parentRect(L, r, sl ? { room: ro.room, ref: ro.ref, x: sl.fx + (ro.x - sl.fx) * o.slideT, y: sl.fy + (ro.y - sl.fy) * o.slideT } : ro);
+    const mx = pr.f ? -1 : 1; // the outside of a mirror room shows mirrored
     ctx.save();
     ctx.beginPath();
     ctx.rect(0, 0, S, S);
     ctx.rect(r.x, r.y, r.s, r.s);
     ctx.clip('evenodd');
-    for (const [dx, dy] of Engine.DIRS) {
-      const nx = ro.x + dx, ny = ro.y + dy;
+    for (const [ldx, dy] of Engine.DIRS) {
+      const nx = ro.x + ldx, ny = ro.y + dy, dx = ldx * mx;
       const ob = Engine.objectAt(st, ro.room, nx, ny);
       if (!ob || (o.skip && o.skip.has(ob.id))) continue;
       const cell = cellRect(L, ro.room, pr, nx, ny);
@@ -468,7 +600,7 @@
       const dist = dx > 0 ? cell.x + near - (r.x + r.s) : dx < 0 ? r.x - (cell.x + cell.s - near)
         : dy > 0 ? cell.y + near - (r.y + r.s) : r.y - (cell.y + cell.s - near);
       const shift = dist - S * PEEK_GAP;
-      this.drawObject(st, L, ob, { x: cell.x - dx * shift, y: cell.y - dy * shift, s: cell.s }, hops + 1, o);
+      this.drawObject(st, L, ob, { x: cell.x - dx * shift, y: cell.y - dy * shift, s: cell.s }, hops + 1, o, pr.f);
     }
     ctx.restore();
   };
@@ -488,7 +620,8 @@
   };
 
   // Small flat map of a room, with one room-box ringed ("you are inside this one").
-  function drawMini(canvas, st, L, roomKey, ringRef) {
+  // flip: seen from inside a mirror room, the outside is mirrored.
+  function drawMini(canvas, st, L, roomKey, ringRef, flip) {
     const R = L.rooms[roomKey], P = pal(L, roomKey);
     const cell = 11, gap = 2, n = R.w;
     const size = n * cell + (n - 1) * gap + 8;
@@ -500,12 +633,13 @@
     ctx.clearRect(0, 0, size, size);
     for (let y = 0; y < n; y++) {
       for (let x = 0; x < n; x++) {
-        const px = 4 + x * (cell + gap), py = 4 + y * (cell + gap);
+        const px = 4 + (flip ? n - 1 - x : x) * (cell + gap), py = 4 + y * (cell + gap);
         const ob = Engine.objectAt(st, roomKey, x, y);
         let col = R.wall[y][x] || (R.gate[y][x] && !Engine.gatesOpen(st, L)) ? P.wall : R.ice[y][x] ? '#3B5C6B' : P.floorAlt;
-        if (ob) col = ob.kind === 'box' ? C.box : ob.kind === 'player' ? C.player : pal(L, ob.ref).wall;
+        if (ob) col = ob.kind === 'box' ? C.box : ob.kind === 'player' ? (ob.second ? C.player2 : C.player) : pal(L, ob.ref).wall;
         rr(ctx, px, py, cell, cell, 3); ctx.fillStyle = col; ctx.fill();
-        if (ob && ob.kind === 'room' && ob.ref === ringRef) {
+        if (ob && ob.twin) { ctx.strokeStyle = C.page; ctx.lineWidth = 1.5; ctx.setLineDash([2, 2]); ctx.stroke(); ctx.setLineDash([]); }
+        if (ob && ob.kind === 'room' && ob.ref === ringRef && !ob.twin) {
           rr(ctx, px - 2.5, py - 2.5, cell + 5, cell + 5, 5);
           ctx.strokeStyle = C.player; ctx.lineWidth = 2; ctx.stroke();
         }

@@ -1,7 +1,9 @@
 /* Cubes Paradox levels (written by tools/curate.js — edit there or here, then run `npm run solve`).
    Symbols: # wall  . floor  P player  b box  t teal box  u purple box  _ box goal  = player goal
    Any other capital letter is a box that holds the room with that key. Rooms must be square.
+   p second sprout  1 2 3 twin of room A B C  (room props: flip = mirror room, eats = hungry room)
    terrain (optional, same size): ~ ice  o plate  | gate  ^ > v < one-way arrows  O hole  x crumbling floor
+   U R D L wind tiles  1-4 jump pads (in pairs)
    sol = a known solution (U R D L), used for hints; idea = the first hint step; d = how hard (1 easy, 2 medium, 3 hard). */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -5987,6 +5989,3680 @@
       ] }
     },
     sol: 'RUDRRUULLLRRULLDRDDLURUURDDDRRRLLLLDDUURRRULLDRURRDDDLLUULURDDDLURDRRUULLLL'
+  },
+  {
+    id: 194, w: 14, n: 0, d: 1,
+    name: {"en":"First Slide","ar":"أول زحلقة"},
+    tip: {"en":"On ice you keep sliding until something stops you","ar":"عالجليد بتضل تتزحلق لحد ما يوقفك إشي"},
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#######',
+        '#Pb.._#',
+        '#.###.#',
+        '#....=#',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...~~..',
+        '.......',
+        '...~~..',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'RLDDRR'
+  },
+  {
+    id: 195, w: 14, n: 1, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##..###',
+        '#=b...#',
+        '#P....#',
+        '#...A##',
+        '##..###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...~~~.',
+        '...~~~.',
+        '.......',
+        '..~~...',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##..#',
+        '.....',
+        '#_..#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDRULDDLDRRRRDRRUULDRDLUUUULL'
+  },
+  {
+    id: 196, w: 14, n: 2, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P.A._#',
+        '##..b.#',
+        '###...#',
+        '##...##',
+        '###B###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '...~~~.',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '#####',
+        '#####',
+        '##.##'
+      ] },
+      B: { palette: 'violet', flip: true, map: [
+        '##.##',
+        '##..#',
+        '..=_.',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'RRRLDDRURULULDDDDDRDDLLUR'
+  },
+  {
+    id: 197, w: 14, n: 3, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#P...#',
+        '##.A.#',
+        '#..b.#',
+        '#....#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '..~...',
+        '..~...',
+        '.~~~~.',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '##.#..#',
+        '.#.....',
+        '#_....#',
+        '##..###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '...~...',
+        '.......'
+      ] }
+    },
+    sol: 'RRRDLDUULDRRDLLLLULDRDLLL'
+  },
+  {
+    id: 198, w: 14, n: 4, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.#...#',
+        '#P.#..#',
+        '##Bb..#',
+        '##..A.#',
+        '#.....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '....~~.',
+        '....~~.',
+        '....~~.',
+        '.......',
+        '...~~~.',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#_....#',
+        '#.#.#.#',
+        '.....##',
+        '#.....#',
+        '#.....#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#....##',
+        '#.#.###',
+        '#.....#',
+        '#.....#',
+        '#...#.#',
+        '###.###'
+      ] }
+    },
+    sol: 'RDRDRURDDDDDDDRDLLDLUUU'
+  },
+  {
+    id: 199, w: 14, n: 5, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##.._B#',
+        '#.PA..#',
+        '#..b..#',
+        '#..####',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....~~.',
+        '....~~.',
+        '..~....',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#######',
+        '.######',
+        '#######',
+        '#######',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '#####',
+        '._###',
+        '#####',
+        '##.##'
+      ] }
+    },
+    sol: 'URRDLULLDDRULURURRRLDLULUR'
+  },
+  {
+    id: 200, w: 14, n: 6, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P#####',
+        '#....##',
+        '###...#',
+        '#...b.#',
+        '#._Ab.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '...~...',
+        '.~.~...',
+        '.~.....',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##._.##',
+        '####..#',
+        '.##.=..',
+        '###...#',
+        '#######',
+        '#######'
+      ] }
+    },
+    sol: 'DRRRDRDDLULLDRURRULULDDDUDRRDLLLLLDLLURRRLL'
+  },
+  {
+    id: 201, w: 14, n: 7, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.#.###',
+        '#P..b.#',
+        '#...#.#',
+        '#.#.A.#',
+        '#....##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '...~...',
+        '.....~.',
+        '.......',
+        '.......',
+        '...~~..',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '##...##',
+        '#_....#',
+        '##...=.',
+        '####.##',
+        '###..##',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '...~...',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DDDRRUURUURRRLLLLDDLDDUUDRRUULLLLLRRDLUUURUURULLLDRR'
+  },
+  {
+    id: 202, w: 14, n: 8, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.A..P#',
+        '#.b.B.#',
+        '#..##.#',
+        '#.....#',
+        '#.....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.....~.',
+        '....~~.',
+        '....~~.',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '#.....#',
+        '#.....#',
+        '#...._#',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '#....##',
+        '#.....#',
+        '...#...',
+        '#.....#',
+        '#=..#.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.~...~.',
+        '.....~.',
+        '.....~.',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DDLULULURRRRRDRULLLLLDDRRUULLLLURRRRRURDDDDDDDDLDRRUUUULUULD'
+  },
+  {
+    id: 203, w: 14, n: 9, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.#...#',
+        '#B.A#.#',
+        '#.b...#',
+        '#.###P#',
+        '#._._##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.~.....',
+        '.~.....',
+        '.~.....',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '.###.',
+        '#####',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#_.##',
+        '..b..',
+        '#...#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '...~.',
+        '..~~.',
+        '.....'
+      ] }
+    },
+    sol: 'UUULLDLLLDLURUUUDRRURRDDLLULLDDDDLDDRURRRLLLDLURUUURRDLULDDDDLDDRURLLDLU'
+  },
+  {
+    id: 204, w: 14, n: 10, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#....#',
+        '#.bb.#',
+        '##P_A#',
+        '######',
+        '######'
+      ], terrain: [
+        '......',
+        '..~~~.',
+        '......',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##..._#',
+        '#.....#',
+        '.....##',
+        '##...##',
+        '###.=##',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....~..',
+        '...~~..',
+        '...~~..',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'RRRURURUUULDRURDDDRRDLLULDLDLLLURURDDDRDLULLLRRRDLUULURRD'
+  },
+  {
+    id: 205, w: 14, n: 11, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#...###',
+        '#.#...#',
+        '#.##..#',
+        '#...b.#',
+        '#..AP##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '..~~...',
+        '.~.~~~.',
+        '.~...~.',
+        '.~~~.~.',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '###..##',
+        '##.B.##',
+        '...#.##',
+        '#.....#',
+        '#..####',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#..##',
+        '#_...',
+        '##.##',
+        '#####'
+      ], terrain: [
+        '.....',
+        '..~..',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'LULDRRRRRURURDDDDRRRLLLDLURULLLLULURDRDLUULULDDDDLDRRRRRRRDRRRUULLDURRDDLLDLURULLLLLLL'
+  },
+  {
+    id: 206, w: 14, n: 12, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##P####',
+        '##.####',
+        '#.=####',
+        '#b.A.##',
+        '#....##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '..~....',
+        '..~....',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#.#.###',
+        '#_..###',
+        '._.....',
+        '#.#..##',
+        '#.b.###',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '...~...',
+        '.......',
+        '.......',
+        '...~...',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DDDRUUULLDDRLUULLDRUUDDRULLLLLLRDLLUURURUUDRDLULDDDDUUURDLLLLLURUUUR'
+  },
+  {
+    id: 207, w: 14, n: 13, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#..#.#',
+        '#.AbP#',
+        '#....#',
+        '#.B..#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '.~~~~.',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##..#.#',
+        '#...#.#',
+        '..#....',
+        '#.#..C#',
+        '#....##',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '#.....#',
+        '#.....#',
+        '#......',
+        '#.....#',
+        '#.....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...~~~.',
+        '...~~~.',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '##._#',
+        '.....',
+        '#.=.#',
+        '#####'
+      ] }
+    },
+    sol: 'DLULDRLUURDDRDLLLLLDLUUUUURULLULDDDDDDRDLLDLLURRRRRRRDRUDL'
+  },
+  {
+    id: 208, w: 14, n: 14, d: 3,
+    idea: {"en":"Let the ice carry it: aim before you push","ar":"خلّي الجليد يوصّله: صوّب قبل ما تدفش"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##PA.#',
+        '#...##',
+        '#.b..#',
+        '#....#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '...~..',
+        '...~~.',
+        '...~~.',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '####..#',
+        '#.##.B.',
+        '#.....#',
+        '#.#=..#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....~..',
+        '.......',
+        '.~~....',
+        '.......',
+        '.......'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '##..#',
+        '##..#',
+        '#._.#',
+        '#####'
+      ] }
+    },
+    sol: 'DRUUURUURDRRLDRULLUUURRUDLLDDRULLULDDRDLULDDDDURDLUULDDDDUUUURUU'
+  },
+  {
+    id: 209, w: 15, n: 0, d: 1,
+    name: {"en":"Tailwind","ar":"ريح بالظهر"},
+    tip: {"en":"A wind tile blows whatever stands on it one step after every move","ar":"بلاطة الريح بتدفش اللي واقف عليها خطوة بعد كل حركة"},
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#..b..#',
+        '#.###_#',
+        '#P#####',
+        '#######',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.....D.',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'UURRR'
+  },
+  {
+    id: 210, w: 15, n: 1, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##..PA#',
+        '#..#..#',
+        '#....b#',
+        '#.##B.#',
+        '#....##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '..U....',
+        '.L.....',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '._...',
+        '#...#',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.....',
+        '..U..',
+        '.L...',
+        '.....'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
+        '###.###',
+        '###.###',
+        '##=.###',
+        '#######',
+        '#######'
+      ] }
+    },
+    sol: 'LLDLDDDRRRURUUUDLURRRRDDLDDDDLUUDLLURRRLDRUUULDDDDDL'
+  },
+  {
+    id: 211, w: 15, n: 2, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.P..#',
+        '#b.A.#',
+        '#..###',
+        '#..###',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '..L...',
+        '.U....',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '###..##',
+        '##...##',
+        '##.#.#.',
+        '##._..#',
+        '###...#',
+        '#######'
+      ] }
+    },
+    sol: 'RRDLULDULDDDDRDDDLLUURURDDULLDDRDRRUL'
+  },
+  {
+    id: 212, w: 15, n: 3, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.b...#',
+        '#.b...#',
+        '#B....#',
+        '##PA..#',
+        '#._...#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.....x.',
+        '...D...',
+        '..R....',
+        '.......',
+        '....D..',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '#_..#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '##....#',
+        '#=....#',
+        '#.....#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '...x...',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'URUULLDRDDDDDRDLURRRLUURUULLDLDDDDDLL'
+  },
+  {
+    id: 213, w: 15, n: 4, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.P####',
+        '#.b._.#',
+        '#...#.#',
+        '#.A.b.#',
+        '#.#####',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '#._..',
+        '#=.##',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.L.L.',
+        '.R.L.',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'DRRRDDLLLULURRDDLLLLDL'
+  },
+  {
+    id: 214, w: 15, n: 5, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '####_##',
+        '##.#..#',
+        '#.bbAP#',
+        '#.....#',
+        '#.....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '..R....',
+        '.......',
+        '....D..',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#=..#',
+        '#....',
+        '###_#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '..UD.',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'ULDDLLLURDRRUUDDLLURDRRUULDRDDLRLLLLLLL'
+  },
+  {
+    id: 215, w: 15, n: 6, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#_....#',
+        '#...A.#',
+        '#.P..##',
+        '##b#.##',
+        '##....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '..R....',
+        '.......',
+        '.......',
+        '....L..',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '#....B#',
+        '#.....#',
+        '#.....#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '#._.#',
+        '#....',
+        '#.=.#',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.....',
+        '...L.',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'RRDDLUURRULLRRULLLDDLLUUULURRDRUUUUUUD'
+  },
+  {
+    id: 216, w: 15, n: 7, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#...###',
+        '#b#.b.#',
+        '#P.._.#',
+        '#...A.#',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.....D.',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#_...##',
+        '###...#',
+        '##..#.#',
+        '##....#',
+        '##...##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...D...',
+        '.......',
+        '.......',
+        '..RD...',
+        '.......'
+      ] }
+    },
+    sol: 'RRRRDLLLURUULLDDRRRRULDLLLUURRDULLDDRRLLDDDDLDDUUUDRRUULULL'
+  },
+  {
+    id: 217, w: 15, n: 8, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##B..#',
+        '#.b..#',
+        '#..AP#',
+        '###..#',
+        '######'
+      ], terrain: [
+        '......',
+        '....L.',
+        '...D..',
+        '.L....',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '##.##',
+        '#...#',
+        '#_C.#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '###..##',
+        '###...#',
+        '####...',
+        '####..#',
+        '#####.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.....L.',
+        '.......'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '##..#',
+        '#...#',
+        '#.=.#',
+        '##.##'
+      ] }
+    },
+    sol: 'DLUULLURRRDDLUURUULLLDLUUUUUUURUULDDDDRDLUUU'
+  },
+  {
+    id: 218, w: 15, n: 9, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.....#',
+        '##....#',
+        '#.b.P##',
+        '#.A...#',
+        '#...b.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '..R....',
+        '...D...',
+        '...U...',
+        '.......',
+        '.U.....',
+        '.......'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '#####',
+        '#.._#',
+        '...=.',
+        '#.._#',
+        '##.##'
+      ] }
+    },
+    sol: 'DRDLLUULDURDDLRULLLRRDLUUULUURDLDRUR'
+  },
+  {
+    id: 219, w: 15, n: 10, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.##P.#',
+        '#...#A#',
+        '##....#',
+        '#...b.#',
+        '#.b...#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '..1..L.',
+        '.....D.',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '##...##',
+        '#._...#',
+        '....#.#',
+        '#...=##',
+        '#..._.#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '..R....',
+        '.......',
+        '.1.....',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'RDDLDULULDLLRRRLLLDRRRRRLLUULULDLLLLURRDRRUDURRDDLUDDRUR'
+  },
+  {
+    id: 220, w: 15, n: 11, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##..###',
+        '##b...#',
+        '#PBA..#',
+        '#...#.#',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....R..',
+        '.......',
+        '..U....',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '###..##',
+        '###._##',
+        '##....#',
+        '##...##',
+        '###..##',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '##.##',
+        '##.##',
+        '##=##',
+        '##.##'
+      ] }
+    },
+    sol: 'RRURDLLUULDRDDLRUULDLRRRUDDDDDLDRDRUULUUUULLLLDDDD'
+  },
+  {
+    id: 221, w: 15, n: 12, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '###..##',
+        '#.A...#',
+        '#..=b.#',
+        '##P.#.#',
+        '#.....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...R...',
+        '..D....',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##.##',
+        '#...#',
+        '#.._#',
+        '#####'
+      ] }
+    },
+    sol: 'RUURDLLLLURRDDDLUURUUURDRDLLLLURDDRUUURDRDLLLDDDDLDRUUUURU'
+  },
+  {
+    id: 222, w: 15, n: 13, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.#.##',
+        '#...A#',
+        '#..b##',
+        '#.BP.#',
+        '######'
+      ], terrain: [
+        '......',
+        '...D..',
+        '..RL..',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '..###',
+        '#..=#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###..##',
+        '##.b.##',
+        '##.#...',
+        '#.._..#',
+        '#.._#.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '....L..',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'UUUDDDDRDDDLUURUUULDRUUDDDRDDDLDLLURUURURDDRDLUULLDDLDRUUURUUULURRDRR'
+  },
+  {
+    id: 223, w: 15, n: 14, d: 3,
+    idea: {"en":"Let the wind do the last step for you","ar":"خلّي الريح تعمل آخر خطوة عنك"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#...#.#',
+        '#.#b..#',
+        '#...A.#',
+        '#.B#..#',
+        '#.P_=.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.....U.',
+        '.UR....',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '#####',
+        '#####',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '#####',
+        '#....',
+        '#_..#',
+        '##.##'
+      ] }
+    },
+    sol: 'LUUURRDRDRDDLUUDDLLUUUURRRURDRDDLLLUURURRDDDLUUUDRULLLDLDDRDDLLULUURRDRDDDLLUURURDDRDL'
+  },
+  {
+    id: 224, w: 16, n: 0, d: 1,
+    name: {"en":"First Jump","ar":"أول نطّة"},
+    tip: {"en":"Step on a pad and you come out of the pad of the same color","ar":"ادعس على بلاطة بتطلع من البلاطة اللي بنفس لونها"},
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P....#',
+        '#######',
+        '#..b._#',
+        '#######',
+        '#######',
+        '#######'
+      ], terrain: [
+        '.......',
+        '....1..',
+        '.......',
+        '..1....',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'RRRRR'
+  },
+  {
+    id: 225, w: 16, n: 1, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##...#',
+        '##b#A#',
+        '#....#',
+        '#..#P#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '......',
+        '.1....',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##..#',
+        '#....',
+        '#._.#',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.....',
+        '.1...',
+        '.....'
+      ] }
+    },
+    sol: 'ULLDLURUUULLDURRDDDDDDLURRLUURRDDDDD'
+  },
+  {
+    id: 226, w: 16, n: 2, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.b..#',
+        '#.#..#',
+        '#.A..#',
+        '#..P##',
+        '######'
+      ], terrain: [
+        '......',
+        '.1....',
+        '......',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#._.#',
+        '....#',
+        '#B..#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '##..#',
+        '##.=#',
+        '#####',
+        '#####'
+      ], terrain: [
+        '.....',
+        '...1.',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'LLURDRUUDLLUUDURRRRURRDDLULDDDR'
+  },
+  {
+    id: 227, w: 16, n: 3, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.P####',
+        '#A...##',
+        '#.#...#',
+        '#.b.#.#',
+        '#..b..#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '...1...',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '#._..',
+        '#.._#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.....',
+        '..1..',
+        '.....'
+      ] }
+    },
+    sol: 'LDDDRDRUDLLLLLDRRRDDLLLLL'
+  },
+  {
+    id: 228, w: 16, n: 4, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#P#.##',
+        '#.b..#',
+        '#A..B#',
+        '#...##',
+        '######'
+      ], terrain: [
+        '......',
+        '...x..',
+        '...x..',
+        '......',
+        '...1..',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '##._#',
+        '##...',
+        '##..#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '..1..',
+        '...x.',
+        '.....'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#=.##',
+        '..###',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'DRDDLURRRRURUULLLRDRDDRULURRU'
+  },
+  {
+    id: 229, w: 16, n: 5, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##.b_#',
+        '##A..#',
+        '#...P#',
+        '##.#.#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '...1..',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##.##',
+        '..=_#',
+        '#..##',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '..1..',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'ULUUDRDLLLRRUDDDDUUDLLUURRRR'
+  },
+  {
+    id: 230, w: 16, n: 6, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##....#',
+        '#...#b#',
+        '#.#P#.#',
+        '#.A.#.#',
+        '#.#_b.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '..2....',
+        '.......',
+        '.......',
+        '.......',
+        '.1...2.',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#_.=#',
+        '#...#',
+        '##..#',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.1...',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'ULLDDRLDRDDDUUULULRRRLLUUUUUURULR'
+  },
+  {
+    id: 231, w: 16, n: 7, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#_#P.#',
+        '#.bA.#',
+        '#....#',
+        '#...##',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '......',
+        '..21..',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#..####',
+        '##.####',
+        '.=.#_##',
+        '#.....#',
+        '##...##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.1.....',
+        '..2....',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DRDLLDUDLUURDRRUULDRDLULDRDRDUDDLDRRDRULLUL'
+  },
+  {
+    id: 232, w: 16, n: 8, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##...#',
+        '#....#',
+        '#.PAb#',
+        '#.b..#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '..2...',
+        '......',
+        '....1.',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#_..#',
+        '#....',
+        '#=_##',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.2.1.',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'LDRRUURULLLLUURDUULLLULLUURDDLUUDD'
+  },
+  {
+    id: 233, w: 16, n: 9, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##._b.#',
+        '##.#P.#',
+        '#..b.##',
+        '##..###',
+        '#..A.##',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '..2....',
+        '.......',
+        '...1...',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##..#.#',
+        '#...#.#',
+        '..#_#..',
+        '###.#.#',
+        '###..=#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '...1...',
+        '.....2.',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'RULDDLDDDDDRRUUUDUDRRLUUDULDRDLLDLLRURDUDDUDDUULUDDD'
+  },
+  {
+    id: 234, w: 16, n: 10, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#._...#',
+        '#.##..#',
+        '#.....#',
+        '#.#bP.#',
+        '#.b..A#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '..1.2..',
+        '.......',
+        '....2..',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '###.#.#',
+        '###.#.#',
+        '##..#..',
+        '##..=.#',
+        '##_.###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.....1.',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DLLDULDDRRRUUUDLDULDULDDRRUURUDURULLRRDDDDDDDUUUULDLLDDDLLULDRR'
+  },
+  {
+    id: 235, w: 16, n: 11, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#....#',
+        '#b#.##',
+        '#A..##',
+        '#..PB#',
+        '######'
+      ], terrain: [
+        '......',
+        '...12.',
+        '...2..',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##...##',
+        '##.C=##',
+        '####..#',
+        '###...#',
+        '###.#.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '...1...',
+        '.......',
+        '.......'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '#######',
+        '#._.###',
+        '...####',
+        '#..####',
+        '#######',
+        '#######'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '#..##',
+        '..###',
+        '#####',
+        '##.##'
+      ] }
+    },
+    sol: 'UULRUUULLDRURDDDDLDLLRURLLLDDDDLDRURDDRDLUUULUUUURRRLDLRLRDLDRRRDRULLLUULRUU'
+  },
+  {
+    id: 236, w: 16, n: 12, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#..####',
+        '#b....#',
+        '#A#B#.#',
+        '#P....#',
+        '#...###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.1.....',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '##.##',
+        '.#_##',
+        '##.##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '##..###',
+        '#...###',
+        '....###',
+        '#=....#',
+        '###...#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '....1..',
+        '.......'
+      ] }
+    },
+    sol: 'RRRRUULLDURRDDLLLRUULULUDDDDDDDLDDRLUURDUUUUUUURULDRLLUULLDRUUURUUUUULUUUUUUUUUUDDDDDDDDDLL'
+  },
+  {
+    id: 237, w: 16, n: 13, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.b.b.#',
+        '#.b#A.#',
+        '#...._#',
+        '#....P#',
+        '#..####',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.....2.',
+        '.....1.',
+        '..~~~..',
+        '..~~~..',
+        '..2....',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#.._#',
+        '.#...',
+        '#_..#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.1...',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'LDRLDDRDLDLRLUUUDDDRLLLLRRRDRRDULLULLLLDLURULRDRRRRRUUDLLLLRDDDRDDRU'
+  },
+  {
+    id: 238, w: 16, n: 14, d: 3,
+    idea: {"en":"Something has to go through a jump pad","ar":"في إشي لازم يمرق من بلاطة النقل"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#####.#',
+        '#.....#',
+        '#.A..b#',
+        '#.#.#.#',
+        '#._.bP#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '...1...',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#._####',
+        '#.....#',
+        '#...#.#',
+        '#...=.#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '..12...',
+        '.2.....',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'LLUUDUURRDULLLLDRRRLDUDDRRUUUUUUDLLULUDULDDRRDRRUULLRRDDDDDDLLUDRDDDLLDURRUUULUUDDRDR'
+  },
+  {
+    id: 239, w: 17, n: 0, d: 1,
+    name: {"en":"Open Wide","ar":"افتح تمّك"},
+    tip: {"en":"Push the hungry room onto a box that can’t move, and the room swallows it","ar":"ادفش الغرفة الجوعانة على صندوق محشور، بتبلعه"},
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.....#',
+        '#.H..b#',
+        '#.#####',
+        '#P#####',
+        '#######',
+        '#######'
+      ] },
+      H: { palette: 'pink', eats: true, map: [
+        '#####',
+        '#...#',
+        '#..._',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'UURRR'
+  },
+  {
+    id: 240, w: 17, n: 1, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '####P#',
+        '###..#',
+        '#bBA.#',
+        '######',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '##..#',
+        '.....',
+        '#.#_#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
+        '##...##',
+        '.......',
+        '###.#.#',
+        '###...#',
+        '###.###'
+      ] }
+    },
+    sol: 'DDLLLLLLLLRRRRRRRLLLULDDDDLLLLRURD'
+  },
+  {
+    id: 241, w: 17, n: 2, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.A..b#',
+        '#..#..#',
+        '#.P.Bb#',
+        '#.....#',
+        '#.....#',
+        '#######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '#__.#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#.....#',
+        '#.#...#',
+        '.......',
+        '#.....#',
+        '##....#',
+        '###.###'
+      ] }
+    },
+    sol: 'RDRRULLDLUUUURULULDLLRRRDDRUU'
+  },
+  {
+    id: 242, w: 17, n: 3, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##..b#',
+        '#P.AB#',
+        '####.#',
+        '######',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#._.#',
+        '.#...',
+        '#...#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', flip: true, map: [
+        '###.###',
+        '##...##',
+        '###..##',
+        '.#.....',
+        '###.=.#',
+        '###.###',
+        '###.###'
+      ] }
+    },
+    sol: 'RRRLLDLUUUUDDDDDDDUUUUUUUR'
+  },
+  {
+    id: 243, w: 17, n: 4, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##b###',
+        '#.B#.#',
+        '##AbP#',
+        '##...#',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#._.#',
+        '..=..',
+        '#...#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '.._....',
+        '#...#.#',
+        '#.....#',
+        '###.###'
+      ] }
+    },
+    sol: 'DLLUDRRULDLUUUUURULUUDLDRDDDDDUUUU'
+  },
+  {
+    id: 244, w: 17, n: 5, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#...P#',
+        '#A####',
+        '#B...#',
+        '#b..##',
+        '######'
+      ], terrain: [
+        '......',
+        '.x....',
+        '......',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '###.###',
+        '#.=...#',
+        '##....#',
+        '...#...',
+        '#C....#',
+        '#.....#',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....x..',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '#...#',
+        '##.##'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '#...#',
+        '..._.',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'LLLDDDDDDUUUUUDDDLDRURDDRDLLLLRUUU'
+  },
+  {
+    id: 245, w: 17, n: 6, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.##b#',
+        '#...A#',
+        '#...B#',
+        '#P#..#',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '###.###',
+        '#.#_..#',
+        '#.....#',
+        '...##..',
+        '#.....#',
+        '#.C...#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '.......',
+        '#.....#',
+        '#.....#',
+        '###.###'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '#=..#',
+        '....#',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'UURRRRDDRUULLLDRRUURRUUUULURDDDLDDRUUUULURRDRUUULURRURRDLLLLRRU'
+  },
+  {
+    id: 246, w: 17, n: 7, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#b..b.#',
+        '#..A#.#',
+        '#.B...#',
+        '#.##.##',
+        '#P...##',
+        '#######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#..##',
+        '._...',
+        '#._##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#####',
+        '.#=..',
+        '#####',
+        '##.##'
+      ] }
+    },
+    sol: 'RRRUULUDRRUULLLLLRRDLUULUURDDDDDURRDLRRDDLLLUUUUDRULLLLLL'
+  },
+  {
+    id: 247, w: 17, n: 8, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##.b.##',
+        '###...#',
+        '#.AB..#',
+        '#.#.P.#',
+        '#...###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.x.....',
+        '.......'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#._.#',
+        '...#.',
+        '#..##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '##...##',
+        '###=.##',
+        '.#...#.',
+        '###..##',
+        '#....##',
+        '###.###'
+      ] }
+    },
+    sol: 'LUDDLLUURRDRRULDLUUUUUUUUUDRDDLUUUUUUUUUU'
+  },
+  {
+    id: 248, w: 17, n: 9, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.B..#',
+        '##.bb#',
+        '##.A.#',
+        '#P...#',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '##_.#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', flip: true, map: [
+        '##.##',
+        '#.._#',
+        '...=.',
+        '#.#.#',
+        '##.##'
+      ] }
+    },
+    sol: 'RRUUUUURRRLLLRURDDRDDLUUUDRDRRLLLLRDDRUUDLULLRURDR'
+  },
+  {
+    id: 249, w: 17, n: 10, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#b.B.#',
+        '##P.##',
+        '##.A##',
+        '###.##',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#._.#',
+        '._...',
+        '#..##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#.b.#',
+        '.....',
+        '##=##',
+        '##.##'
+      ] }
+    },
+    sol: 'RUUURRRLDLDRRRDDDUUUUURRRLLLLLLRRRRRLLLULLDRURDDRDRRLLLLULLDRRRLLDDDRULLLD'
+  },
+  {
+    id: 250, w: 17, n: 11, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.#####',
+        '#.##..#',
+        '#...PA#',
+        '#####B#',
+        '####.b#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '....x..',
+        '.......'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '##.##',
+        '...#.',
+        '#.C.#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#..##',
+        '.=...',
+        '#...#',
+        '##.##'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '#.#_#',
+        '#....',
+        '###.#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.x...',
+        '..x..',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'URDDDLDDRULURRRDDUULLLDDRRULLLLLRRRURRRUUUDDDDUUUUUDDDDDDDLLRRRRRLLLLDLDDUUUUL'
+  },
+  {
+    id: 251, w: 17, n: 12, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '###...#',
+        '##.A_##',
+        '#..=.##',
+        '##.##.#',
+        '#PB..b#',
+        '#######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '##b_#',
+        '.....',
+        '#...#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '##..#',
+        '.....',
+        '#...#',
+        '##.##'
+      ] }
+    },
+    sol: 'RUURRUULDDDRDDLUUUDDLLLURDDRDRRLULDDDDDLLLRRRRRRRLLLLLRRRRDRULLLLLLUUR'
+  },
+  {
+    id: 252, w: 17, n: 13, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#bBP.#',
+        '#.#A.#',
+        '###.##',
+        '######',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '###.###',
+        '#...###',
+        '#b.##_#',
+        '.......',
+        '##....#',
+        '##._..#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#..##',
+        '...=.',
+        '#...#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDLLDDLLDDURULLLDLLURDRUUUULUULDRDLLRRRDDDDLLUURDDRUUUURRRRLLLLRRRRRLLLLDLUULUURDDDDLURRDRUUUUR'
+  },
+  {
+    id: 253, w: 17, n: 14, d: 3,
+    idea: {"en":"The hungry room has to swallow a box","ar":"الغرفة الجوعانة لازم تبلع صندوق"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#bB.##',
+        '#..A##',
+        '#Pb..#',
+        '##...#',
+        '######'
+      ] },
+      A: { palette: 'teal', eats: true, map: [
+        '##.##',
+        '#.###',
+        '..._.',
+        '#_.##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '##..#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDRRULDLUUUURURRDULLULLDRRDLDDDDRRULDLUUUURULLLRRDDDRULLLLLLULLDRRRLULUUDR'
+  },
+  {
+    id: 254, w: 18, n: 0, d: 1,
+    name: {"en":"Seeing Double","ar":"شايف تنين"},
+    tip: {"en":"Both boxes lead to the same room, but you always come out of the solid one","ar":"الصندوقين بيودّوا عنفس الغرفة، بس دايماً بتطلع من الصندوق الأصلي"},
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P1####',
+        '#######',
+        '#..A.=#',
+        '#######',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '.....',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'RRRRRRR'
+  },
+  {
+    id: 255, w: 18, n: 1, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#..1bP#',
+        '#.#.A.#',
+        '#.....#',
+        '####_##',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##.##',
+        '#....',
+        '##_=#',
+        '#####'
+      ] }
+    },
+    sol: 'LLLLLRRULDDDDDRD'
+  },
+  {
+    id: 256, w: 18, n: 2, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '####.##',
+        '###..1#',
+        '###..##',
+        '#P#.b.#',
+        '#...A.#',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '###..##',
+        '.=...##',
+        '#.#...#',
+        '#..._##',
+        '###.###'
+      ] }
+    },
+    sol: 'DRRRUULURRRRRURDDULLL'
+  },
+  {
+    id: 257, w: 18, n: 3, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#..#B#',
+        '#.A#b#',
+        '##...#',
+        '##.#P#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '#.._.',
+        '##..#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '##..#',
+        '..=.#',
+        '#1..#',
+        '##.##'
+      ] }
+    },
+    sol: 'UUUURUULDRDLLLULLDRUUUDDRRUUUU'
+  },
+  {
+    id: 258, w: 18, n: 4, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#...b1#',
+        '#..####',
+        '#A....#',
+        '#...#P#',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '###=#',
+        '.....',
+        '#_..#',
+        '##.##'
+      ] }
+    },
+    sol: 'ULLLUURRRRRRRLDLDDUDRRULDLUUUDRULLDLURU'
+  },
+  {
+    id: 259, w: 18, n: 5, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#1.####',
+        '#..####',
+        '#...bB#',
+        '#...P##',
+        '#A#####',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '##_#.',
+        '##.=#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#..##',
+        '....#',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'LURRRDRRULLLLLLDLUUUUR'
+  },
+  {
+    id: 260, w: 18, n: 6, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#Pb._.#',
+        '#.#.b.#',
+        '#...#=#',
+        '#A....#',
+        '#.1.###',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '....._#',
+        '#.....#',
+        '##....#',
+        '###.###'
+      ] }
+    },
+    sol: 'DDRRUURRDLULDDURRDDLLULDDDDLDRRUULUUUURRDRRD'
+  },
+  {
+    id: 261, w: 18, n: 7, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '####B#',
+        '###..#',
+        '#..b.#',
+        '#PA..#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '####..#',
+        '##....#',
+        '##.#...',
+        '##.2.##',
+        '###..##',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '###.###',
+        '###_###',
+        '######.',
+        '#######',
+        '#######',
+        '#######'
+      ] }
+    },
+    sol: 'URRDLLLULLLDDRDRUUDLLUURRURDLDRRRRUURDDD'
+  },
+  {
+    id: 262, w: 18, n: 8, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#...2.#',
+        '##.b..#',
+        '#.....#',
+        '#A..B.#',
+        '##.#.P#',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#.....#',
+        '#.....#',
+        '......#',
+        '#_....#',
+        '#.....#',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#...#',
+        '#=..#',
+        '#...#',
+        '##.##'
+      ] }
+    },
+    sol: 'LURULLLURDRUUURUULDDDDDDDRDLLUUURUUUUL'
+  },
+  {
+    id: 263, w: 18, n: 9, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#..#B#',
+        '##APb#',
+        '#_...#',
+        '#....#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#...#',
+        '.....',
+        '#...#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '#.....#',
+        '#..1..#',
+        '......#',
+        '#...=_#',
+        '#.....#',
+        '###.###'
+      ] }
+    },
+    sol: 'DRUUULUUURURDDLLDRRRRURDDDUURRRDLURRUUUR'
+  },
+  {
+    id: 264, w: 18, n: 10, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.._#.#',
+        '#A.=..#',
+        '#.b##.#',
+        '#....##',
+        '#.B#P.#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.....1.',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#...#',
+        '.....',
+        '#C..#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '#...#',
+        '.1...',
+        '#...#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '..1..',
+        '.....',
+        '.....'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '#...#',
+        '.....',
+        '#.._#',
+        '##.##'
+      ] }
+    },
+    sol: 'ULLLDRRURRDLDLLULLDDDRUULURDRRRULLLLLULDDDDLDRRRRRRRRRDLL'
+  },
+  {
+    id: 265, w: 18, n: 11, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##.._.#',
+        '##..A.#',
+        '#Pb.#1#',
+        '###=..#',
+        '####..#',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '##..#',
+        '..._.',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'RUURRRDLLRRDDLLUDRRUULLLRRLLLULDRDDRDRRRURRRDDLLUULURDDD'
+  },
+  {
+    id: 266, w: 18, n: 12, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##=####',
+        '#1b.###',
+        '#.b.A.#',
+        '##..#.#',
+        '#P_...#',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '##.####',
+        '##_#...',
+        '#....##',
+        '##..###',
+        '###.###'
+      ] }
+    },
+    sol: 'RURUULDDUULRLRDDLLULULUUURURRLLDLDDDUDDRRUULRDDLLUUUUDDLULLLDLDLURDDDLUU'
+  },
+  {
+    id: 267, w: 18, n: 13, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.P..1#',
+        '##bA#.#',
+        '##b...#',
+        '#...#.#',
+        '#..####',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.....~.',
+        '.....~.',
+        '.~~~.~.',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '###.###',
+        '#._.###',
+        '##..###',
+        '.......',
+        '##_####',
+        '##.=###',
+        '###.###'
+      ] }
+    },
+    sol: 'RRRRRDDRDDUUULUURRRRRLLRDDDLDRUURUULLLLLRRRRRDDRRUUULUUURDRRRRRDDLURULLLLLULDRRRRRRDDRRUUU'
+  },
+  {
+    id: 268, w: 18, n: 14, d: 3,
+    idea: {"en":"Go in through the twin, come out of the first box","ar":"فوت من التوأم، واطلع من الصندوق الأصلي"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#....##',
+        '#.##.##',
+        '#.Bb.##',
+        '#A.####',
+        '#..#P2#',
+        '#######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '.=#_.',
+        '#####',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '##..#',
+        '.....',
+        '#...#',
+        '##.##'
+      ] }
+    },
+    sol: 'RLUURRRDDLLLLDLLURRRRDDLUUUUURUULDDDDUUURRRRRDDLLLRDLUUUULURRRRRRR'
+  },
+  {
+    id: 269, w: 19, n: 0, d: 1,
+    name: {"en":"Wrong Side","ar":"الجهة الغلط"},
+    tip: {"en":"Inside a mirror room left and right are swapped","ar":"جوّا غرفة المرآة اليمين والشمال مبدّلين"},
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#######',
+        '#P..###',
+        '###M.=#',
+        '#######',
+        '#######',
+        '#######'
+      ] },
+      M: { palette: 'violet', flip: true, map: [
+        '##.##',
+        '##.##',
+        '.....',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'RRDDDLLLR'
+  },
+  {
+    id: 270, w: 19, n: 1, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#A..###',
+        '#...###',
+        '#...###',
+        '##.bP##',
+        '##...##',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '##._#',
+        '.=...',
+        '#...#',
+        '#####'
+      ] }
+    },
+    sol: 'LDLUUURULLRRDRULL'
+  },
+  {
+    id: 271, w: 19, n: 2, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#A..b.#',
+        '#.B...#',
+        '#...#.#',
+        '##P####',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '##..#',
+        '.....',
+        '#...#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '##.##',
+        '..._#',
+        '#.=##',
+        '##.##'
+      ] }
+    },
+    sol: 'UURRRULLLLRRRRRRD'
+  },
+  {
+    id: 272, w: 19, n: 3, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '##.A..#',
+        '##..#b#',
+        '#.B...#',
+        '#.#P###',
+        '#...###',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '#._.#',
+        '#....',
+        '##..#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '##=####',
+        '##.####',
+        '...####',
+        '#######',
+        '#######',
+        '#######'
+      ] }
+    },
+    sol: 'UULURRLDDRRUUUURRRLDDDDLLUURRRRRRUU'
+  },
+  {
+    id: 273, w: 19, n: 4, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '###..P#',
+        '#B....#',
+        '##.#b.#',
+        '#...b.#',
+        '#....A#',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '#...#',
+        '.....',
+        '#._.#',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
+        '###.###',
+        '#...._#',
+        '#.....#',
+        '.......',
+        '#.....#',
+        '#....##',
+        '###.###'
+      ] }
+    },
+    sol: 'DLDULLDDRDRRLULDRRRUURULLLLLDLUULUR'
+  },
+  {
+    id: 274, w: 19, n: 5, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#..###',
+        '#.B..#',
+        '##b.##',
+        '##PA.#',
+        '######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '##.##',
+        '#.C.#',
+        '#..##',
+        '#..##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '#####',
+        '..###',
+        '#..##',
+        '##.##'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '##..#',
+        '.=...',
+        '#._.#',
+        '#####'
+      ] }
+    },
+    sol: 'URDDLDDRUUUULULURRDRDULULLDRRRRDRRUULDL'
+  },
+  {
+    id: 275, w: 19, n: 6, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#####.#',
+        '#...PA#',
+        '#..#.=#',
+        '##b##.#',
+        '##....#',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '###.###',
+        '#_....#',
+        '###.#.#',
+        '##.....',
+        '###.#.#',
+        '###...#',
+        '#######'
+      ] }
+    },
+    sol: 'DRDDLLLUULURRRRLLRDDLLUUUDRRUULLLRUUDD'
+  },
+  {
+    id: 276, w: 19, n: 7, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#A=b..#',
+        '#P###.#',
+        '#..b..#',
+        '###.#.#',
+        '###.._#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '.1.....',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#######',
+        '#######',
+        '##..###',
+        '....._.',
+        '#.....#',
+        '##....#',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '.......',
+        '...1...',
+        '.......',
+        '.......',
+        '.......'
+      ] }
+    },
+    sol: 'DUDRRDDRRUUUULLLLRDRRURRRLLLULDLDRRRDRULLLULLLRRRDDDUUULLL'
+  },
+  {
+    id: 277, w: 19, n: 8, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#....#',
+        '#b...#',
+        '#PA#.#',
+        '#....#',
+        '######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#######',
+        '#######',
+        '#....##',
+        '...#B#.',
+        '#.....#',
+        '#...###',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '##=.#',
+        '._#..',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'DRUDRRUULLRURRRDDDRDRRLLLDLURULLLULLDRRRLURDDDD'
+  },
+  {
+    id: 278, w: 19, n: 9, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#.b...#',
+        '#_.b..#',
+        '##....#',
+        '#.P.A##',
+        '#.....#',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '##.##',
+        '#...#',
+        '#.._#',
+        '#.=.#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDRUULLULURRDLDRDRUUUDDRULLLULDDLDRD'
+  },
+  {
+    id: 279, w: 19, n: 10, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#P#..#',
+        '#bb.b#',
+        '#_.A.#',
+        '#_...#',
+        '######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '#.=_#',
+        '#....',
+        '#..##',
+        '##.##'
+      ] }
+    },
+    sol: 'DDRDRRULUURDLDDLUUURRRRDRULLURDRDRUUUUURRRDRDLLURURLLLUR'
+  },
+  {
+    id: 280, w: 19, n: 11, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#Pb.##',
+        '#.#.##',
+        '#A#.##',
+        '#.=.B#',
+        '######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '##.##',
+        '#...#',
+        '.C.##',
+        '#..##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#######',
+        '####.##',
+        '#..#.##',
+        '...#.##',
+        '#....##',
+        '#...###',
+        '#######'
+      ] },
+      C: { palette: 'pink', map: [
+        '#####',
+        '#####',
+        '#_...',
+        '##.##',
+        '##.##'
+      ] }
+    },
+    sol: 'DDDDDLLLRRRURDLDDRRULDLURULLLLLRDRUUUUUDDDDLLLRUUULLLLRRRRDDDL'
+  },
+  {
+    id: 281, w: 19, n: 12, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '###.P#',
+        '#...A#',
+        '#.b..#',
+        '##.#.#',
+        '######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '###.###',
+        '#######',
+        '###.#.#',
+        '###....',
+        '###...#',
+        '#B._.##',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '##..#',
+        '.....',
+        '#.=.#',
+        '#####'
+      ] }
+    },
+    sol: 'DLLLDRRRLDLDLDDULURLDLLURRRRDRUDLLLURRDRUUURUULDRDLLLLDLLURRRRLLDL'
+  },
+  {
+    id: 282, w: 19, n: 13, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '###P###',
+        '###b.##',
+        '#...A.#',
+        '#..=b.#',
+        '#######',
+        '#######'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '##.##',
+        '#._.#',
+        '.._..',
+        '#_b.#',
+        '##.##'
+      ] }
+    },
+    sol: 'DRDDDLLLLULDRRDLLLLRURUURLDDRDDLULLLURURDRDLLLLRLLR'
+  },
+  {
+    id: 283, w: 19, n: 14, d: 3,
+    idea: {"en":"Use the mirror room to come out on the other side","ar":"استعمل غرفة المرآة عشان تطلع من الجهة التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P.####',
+        '#..b.##',
+        '##...##',
+        '#.A_.##',
+        '#...###',
+        '#######'
+      ], terrain: [
+        '.......',
+        '..1....',
+        '.......',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '#_###',
+        '..#..',
+        '#=..#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.....',
+        '...1.',
+        '.....'
+      ] }
+    },
+    sol: 'RURRDRURURULDLRDRRDUURRRDRURUULLDURRDLDDLLURDRURULLLULDUUURRRUUULLUD'
+  },
+  {
+    id: 284, w: 20, n: 0, d: 1,
+    name: {"en":"Together","ar":"سوا"},
+    tip: {"en":"Both sprouts move together. A wall can hold one of them back","ar":"النبتتين بيتحركوا سوا. الحيط بيوقّف وحدة منهم"},
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#P...=#',
+        '#.#####',
+        '#p..=.#',
+        '#######',
+        '#######',
+        '#######'
+      ] }
+    },
+    sol: 'URDRRR'
+  },
+  {
+    id: 285, w: 20, n: 1, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##p.##',
+        '#.#b##',
+        '#A.=P#',
+        '#.._.#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '...=.',
+        '##..#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDLLDLUUUUR'
+  },
+  {
+    id: 286, w: 20, n: 2, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##...#',
+        '#..#_#',
+        '#PA..#',
+        '##=..#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#..##',
+        '...=.',
+        '##p.#',
+        '#####'
+      ] }
+    },
+    sol: 'RRDRURLLUUDRRDDL'
+  },
+  {
+    id: 287, w: 20, n: 3, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##.P##',
+        '#._=.#',
+        '#.Ap##',
+        '#=...#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#..##',
+        '##.#.',
+        '#####',
+        '#####'
+      ] }
+    },
+    sol: 'DLDRRULDDRULUURDDL'
+  },
+  {
+    id: 288, w: 20, n: 4, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.A.##',
+        '##_.##',
+        '#.pb=#',
+        '##..P#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#.#.#',
+        '#.=..',
+        '##..#',
+        '#####'
+      ] }
+    },
+    sol: 'URULDLURULLLLLDR'
+  },
+  {
+    id: 289, w: 20, n: 5, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#._.##',
+        '#.P#.#',
+        '##.A.#',
+        '##=.##',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#=.##',
+        '.....',
+        '#..p#',
+        '##.##'
+      ] }
+    },
+    sol: 'DURRDDLUUUUUUUDL'
+  },
+  {
+    id: 290, w: 20, n: 6, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#####',
+        '##_.#',
+        '#PbA#',
+        '##=_#',
+        '#####'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#.###',
+        '..#.#',
+        '#=.p#',
+        '##.##'
+      ] }
+    },
+    sol: 'LDRULULRDULLRDDLUDRRULDD'
+  },
+  {
+    id: 291, w: 20, n: 7, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#_.#.#',
+        '#..A=#',
+        '#P..##',
+        '###.p#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '..R...',
+        '......',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##=.#',
+        '.....',
+        '##..#',
+        '##.##'
+      ] }
+    },
+    sol: 'RRUULURRRLLUUUUUURD'
+  },
+  {
+    id: 292, w: 20, n: 8, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '###..#',
+        '#.#A_#',
+        '#.pP.#',
+        '#.=#.#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#####',
+        '...#.',
+        '#.=.#',
+        '#####'
+      ] }
+    },
+    sol: 'DRUULDRDDURDLRURRRLDLDR'
+  },
+  {
+    id: 293, w: 20, n: 9, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.####',
+        '#.#P=#',
+        '#.b._#',
+        '#._A.#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '......',
+        '.x....',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#..##',
+        '.=.p.',
+        '#.#.#',
+        '#####'
+      ] }
+    },
+    sol: 'LLLLLUURDDLLLDRRULLLR'
+  },
+  {
+    id: 294, w: 20, n: 10, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##.#.#',
+        '#._b.#',
+        '##=A.#',
+        '#.P.=#',
+        '######'
+      ], terrain: [
+        '......',
+        '......',
+        '......',
+        '......',
+        '...1..',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#p..#',
+        '.....',
+        '#...#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '...1.',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'UUURRRUULRUDDRRURRUDLRULDDD'
+  },
+  {
+    id: 295, w: 20, n: 11, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '#.AP.#',
+        '##b_=#',
+        '#..#.#',
+        '##...#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '#...#',
+        '.=..#',
+        '##.p#',
+        '##.##'
+      ] }
+    },
+    sol: 'RDDDLULLUUUULRUULDDDRRRRD'
+  },
+  {
+    id: 296, w: 20, n: 12, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##...#',
+        '#....#',
+        '#PA#.#',
+        '##..=#',
+        '######'
+      ], terrain: [
+        '......',
+        '..~~~.',
+        '.~~~~.',
+        '....~.',
+        '......',
+        '......'
+      ] },
+      A: { palette: 'teal', map: [
+        '#####',
+        '##_##',
+        '...B.',
+        '##b##',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#p.##',
+        '##.##',
+        '#=..#',
+        '#####'
+      ] }
+    },
+    sol: 'URDLLUURULLLURRDDDLLDDDULURDLDRUUUUDDDDRRULLD'
+  },
+  {
+    id: 297, w: 20, n: 13, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#####',
+        '#.AP#',
+        '#_..#',
+        '#p=##',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '..1..',
+        '.....',
+        '.....'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##.##',
+        '.B..#',
+        '##=.#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
+        '###.#',
+        '###.#',
+        '#...#',
+        '##.##'
+      ], terrain: [
+        '.....',
+        '...1.',
+        '.....',
+        '.....',
+        '.....'
+      ] }
+    },
+    sol: 'UURRDLDUUURULURDDDLLRRRRDLUDUD'
+  },
+  {
+    id: 298, w: 20, n: 14, d: 3,
+    idea: {"en":"Use a wall to move one sprout without the other","ar":"استعمل الحيط عشان تحرّك نبتة بدون التانية"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '##=###',
+        '#=_._#',
+        '#pA..#',
+        '#P#..#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '##.##',
+        '..b##',
+        '#...#',
+        '##.##'
+      ] }
+    },
+    sol: 'URURRDLULDRDURRDDLURUULDLLDDDURRDLLRUUULLLU'
   }
   ];
 });

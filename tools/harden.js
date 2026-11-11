@@ -6,6 +6,8 @@
 // a box with its goal. An edit is kept only if the level still uses its world's idea, every box is
 // still needed, and the level got harder by gen.js `score` (choices and traps, not steps).
 // One child at most per parent, so a world never gets two levels that look alike (curate.js `family`).
+// The 1.6 kinds have one more edit: move a room-box, or add, move or turn a wind tile, an ice cell or a pad.
+// Edits never put a box, goal or wall on a tile (wind, pad, ice...), and pads stay in pairs.
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -16,7 +18,8 @@ const sigOf = (def) => JSON.stringify(def.rooms);
 
 if (!isMainThread && workerData && workerData.harden) {
   const { analyze } = require('./analyze.js');
-  const { meets, score, metrics, trim, tighten, boxesNeeded, mulberry32 } = require('./gen.js');
+  const { KINDS, meets, score, metrics, trim, tighten, boxesNeeded, mulberry32 } = require('./gen.js');
+  const Engine = require('../www/js/engine.js');
   const CAP = workerData.wide ? 260000 : 150000;
   const hash = (s) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
   // long levels are not what we want: past 50 steps, every extra step costs
@@ -36,10 +39,69 @@ if (!isMainThread && workerData && workerData.harden) {
   const setCell = (def, k, x, y, ch) => { const row = def.rooms[k].map[y]; def.rooms[k].map[y] = row.slice(0, x) + ch + row.slice(x + 1); };
   const nearFloor = (r, x, y) => [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => r.map[y + dy][x + dx] !== '#');
   const pickOne = (rng, list) => list[Math.floor(rng() * list.length)];
+  const setTerr = (def, k, x, y, ch) => {
+    const r = def.rooms[k];
+    if (!r.terrain) r.terrain = r.map.map(row => '.'.repeat(row.length));
+    r.terrain[y] = r.terrain[y].slice(0, x) + ch + r.terrain[y].slice(x + 1);
+  };
+  const isPad = (t) => t >= '1' && t <= '4';
+  const isWind = (t) => 'URDL'.indexOf(t) >= 0;
 
-  function mutate(def, rng) {
+  // the 1.6 edit: move a room-box (or twin) inside the room that holds it, or move / add / turn a tile
+  function newEdit(d, rng) {
+    const free = cells(d, (ch, t) => ch === '.' && t === '.');
+    if (!free.length) return false;
+    if (rng() < 0.4) {
+      const boxes = cells(d, (ch) => /[A-Z123]/.test(ch) && ch !== d.root);
+      if (!boxes.length) return false;
+      const [k, x, y] = pickOne(rng, boxes);
+      const spots = free.filter(f => f[0] === k);
+      if (!spots.length) return false;
+      const [, x2, y2] = pickOne(rng, spots);
+      const ch = d.rooms[k].map[y][x];
+      setCell(d, k, x, y, '.'); setCell(d, k, x2, y2, ch);
+      return true;
+    }
+    const tiles = cells(d, (ch, t) => ch === '.' && (isWind(t) || isPad(t) || t === '~'));
+    const hasWind = tiles.some(([k, x, y]) => isWind(d.rooms[k].terrain[y][x]));
+    const hasIce = tiles.some(([k, x, y]) => d.rooms[k].terrain[y][x] === '~');
+    const roll = rng();
+    if (roll < 0.45 && tiles.length) {
+      // move one tile to a free floor cell (a pad keeps its digit, so the pair stays a pair)
+      const [k, x, y] = pickOne(rng, tiles);
+      const t = d.rooms[k].terrain[y][x];
+      const [k2, x2, y2] = pickOne(rng, free);
+      setTerr(d, k, x, y, '.'); setTerr(d, k2, x2, y2, t);
+      return true;
+    }
+    if (roll < 0.65 && hasWind) {
+      // turn a wind tile
+      const winds = tiles.filter(([k, x, y]) => isWind(d.rooms[k].terrain[y][x]));
+      const [k, x, y] = pickOne(rng, winds);
+      setTerr(d, k, x, y, 'URDL'[Math.floor(rng() * 4)]);
+      return true;
+    }
+    // add a tile of a kind the level already has: a wind tile (at most 5) or an ice cell next to ice
+    if (hasWind && (!hasIce || rng() < 0.5)) {
+      if (tiles.filter(([k, x, y]) => isWind(d.rooms[k].terrain[y][x])).length >= 5) return false;
+      const [k, x, y] = pickOne(rng, free);
+      setTerr(d, k, x, y, 'URDL'[Math.floor(rng() * 4)]);
+      return true;
+    }
+    if (hasIce) {
+      const byIce = free.filter(([k, x, y]) => { const t = d.rooms[k].terrain; return t && [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => t[y + dy][x + dx] === '~'); });
+      if (!byIce.length) return false;
+      const [k, x, y] = pickOne(rng, byIce);
+      setTerr(d, k, x, y, '~');
+      return true;
+    }
+    return false;
+  }
+
+  function mutate(def, rng, kind) {
     const d = JSON.parse(JSON.stringify(def));
     delete d.sol;
+    if (KINDS[kind] && KINDS[kind].fresh && rng() < 0.25) return newEdit(d, rng) ? d : null;
     const roll = rng();
     if (roll < 0.35) {
       const walls = cells(d, (ch, t, r, x, y) => ch === '#' && nearFloor(r, x, y));
@@ -47,13 +109,13 @@ if (!isMainThread && workerData && workerData.harden) {
       const [k, x, y] = pickOne(rng, walls);
       setCell(d, k, x, y, '.');
     } else if (roll < 0.7) {
-      const things = cells(d, (ch) => ch === 'b' || ch === '_' || ch === '=' || ch === 'P');
+      const things = cells(d, (ch) => ch === 'b' || ch === '_' || ch === '=' || ch === 'P' || ch === 'p');
       const free = cells(d, (ch, t) => ch === '.' && t === '.');
       if (!things.length || !free.length) return null;
       const [k, x, y] = pickOne(rng, things);
       const ch = d.rooms[k].map[y][x];
       // the player stays in its own room: where a level starts is part of its idea
-      const spots = ch === 'P' ? free.filter(f => f[0] === k) : free;
+      const spots = ch === 'P' || ch === 'p' ? free.filter(f => f[0] === k) : free;
       if (!spots.length) return null;
       const [k2, x2, y2] = pickOne(rng, spots);
       setCell(d, k, x, y, '.');
@@ -87,11 +149,13 @@ if (!isMainThread && workerData && workerData.harden) {
     const start = worth(bestA);
     let bestW = start, kept = 0;
     for (let t = 0; t < trials && Date.now() - t0 < ms; t++) {
-      let cand = mutate(best, rng);
+      let cand = mutate(best, rng, kind);
       if (!cand) continue;
       let a;
       try {
+        Engine.parseLevel(cand); // an edit must never make a level that does not load
         cand = trim(cand, CAP);
+        Engine.parseLevel(cand);
         a = analyze(cand, CAP);
       } catch (e) { continue; }
       if (!a || a.capped || a.moves > 110 || !meets(kind, a)) continue;
@@ -114,7 +178,8 @@ if (!isMainThread && workerData && workerData.harden) {
   const secs = +process.argv[2] || 600;
   const WIDE = !!process.env.WIDE;
   const want = process.argv.slice(3);
-  const HARD = ['pocket', 'carry', 'unpack', 'nest2', 'roomgoal', 'deep3', 'self', 'holes', 'crumble', 'colors', 'remote', 'oneway', 'daily', 'doorway'];
+  const HARD = ['pocket', 'carry', 'unpack', 'nest2', 'roomgoal', 'deep3', 'self', 'holes', 'crumble', 'colors', 'remote', 'oneway', 'daily', 'doorway',
+    'ice', 'wind', 'pads', 'hungry', 'twins', 'mirror', 'sprouts'];
   const kinds = want.length ? want : HARD;
   const read = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : []);
   const out = {}, jobs = [];

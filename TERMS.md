@@ -8,11 +8,11 @@ These terms apply when you download or play Cubes Paradox, an Android puzzle gam
 
 The first 6 worlds and the daily puzzle are free. The game has no accounts and no ads, and it works offline.
 
-The copy from Orion Store or from the game's GitHub releases has all 14 worlds open and no purchase. The rest of these terms apply to it too.
+The copy from Orion Store or from the game's GitHub releases has all 21 worlds open and no purchase. The rest of these terms apply to it too.
 
 ## The purchase
 
-In the copy from Google Play, one in-app purchase unlocks worlds 7 to 14. You pay once: it is not a subscription. The price is shown before you buy.
+In the copy from Google Play, one in-app purchase unlocks worlds 7 to 21. You pay once: it is not a subscription. The price is shown before you buy.
 
 Google Play handles the payment under its own terms. The purchase belongs to the Google account you bought it with, so if you reinstall the game with that account, the worlds unlock again once the game can reach Google Play.
 

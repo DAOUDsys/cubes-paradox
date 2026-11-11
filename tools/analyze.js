@@ -15,15 +15,7 @@ function configKey(st) {
 }
 
 // how many rooms deep a room is, counted from the main room
-function depthOf(st, L, room) {
-  let d = 0, cur = room;
-  for (let i = 0; i < 12 && cur !== L.root; i++) {
-    const ro = Engine.roomObject(st, cur);
-    if (!ro) break;
-    cur = ro.room; d++;
-  }
-  return d;
-}
+const depthOf = Engine.depthOf;
 
 // Explores every reachable state (up to `cap`). Returns null if the level can't be won
 // (or the cap was hit before any win was found).
@@ -101,7 +93,9 @@ function analyze(def, cap) {
   {
     const ids = new Map(), cid = new Int32Array(n), uf = new Int32Array(n);
     for (let i = 0; i < n; i++) {
-      const k = configKey(states[i]) + '@' + Engine.player(states[i]).room;
+      // the room of every sprout (one sprout: the same key as before)
+      const ps = Engine.players(states[i]);
+      const k = configKey(states[i]) + '@' + (ps.length > 1 ? ps[0].room + ',' + ps[1].room : ps[0].room);
       let v = ids.get(k);
       if (v === undefined) { v = ids.size; ids.set(k, v); }
       cid[i] = v; uf[i] = i;
@@ -165,16 +159,26 @@ function analyze(def, cap) {
   let switches = 0, lastPushed = '', goalDrops = 0, goalsDone = Engine.goalStatus(state, level).done;
   let reversals = 0; const lastDirOf = new Map();
   // how many times the solution uses each idea (the picker orders a world by these)
-  const uses = { pocket: 0, carry: 0, unpack: 0, gate: 0, arrow: 0, roomIn: 0, roomPush: 0, boxIn: 0 };
+  // wind: things blown, pad: jumps, eat: things swallowed, twin: entries through a twin box,
+  // flip: mirror-room edges crossed, split: moves where only one of two sprouts moved
+  const uses = { pocket: 0, carry: 0, unpack: 0, gate: 0, arrow: 0, roomIn: 0, roomPush: 0, boxIn: 0,
+    wind: 0, pad: 0, eat: 0, twin: 0, flip: 0, split: 0 };
+  const twoSprouts = Engine.players(state).length > 1;
   let inside = null; // { room, dir } while the player is inside a room it entered
   for (let mi = 0; mi < moves.length; mi++) {
     const d = moves[mi];
     const res = Engine.move(st, level, d);
     let pushed = false;
+    const info = res.info;
+    uses.wind += info.blown.length; uses.pad += info.jumped.length; uses.eat += info.eaten.length;
+    uses.twin += info.twinEntries; uses.flip += info.flips;
+    if (twoSprouts && info.moved.length === 1) uses.split++;
     for (const o of res.state.objects) {
       const p = Engine.byId(st, o.id);
       const movedHere = p.room !== o.room || p.x !== o.x || p.y !== o.y;
-      if (p.room === o.room && Math.abs(p.x - o.x) + Math.abs(p.y - o.y) > 1 && !res.events.length) slides++;
+      // a long move in one room is an ice slide, unless the wind or a pad did it
+      if (p.room === o.room && Math.abs(p.x - o.x) + Math.abs(p.y - o.y) > 1 && !res.events.length &&
+        info.blown.indexOf(o.id) < 0 && info.jumped.indexOf(o.id) < 0) slides++;
       if (movedHere) {
         const R = level.rooms[o.room];
         if (R.gate[o.y][o.x]) { gateUsed = true; uses.gate++; if (level.plates.some(pl => pl.room !== level.root)) remoteGate = true; }
@@ -213,7 +217,7 @@ function analyze(def, cap) {
     if (pushed && res.events.some(ev => ev.type === 'exit')) pistons++;
     for (const ev of res.events) {
       if (ev.type === 'enter') { enters++; enteredRooms.add(ev.into); inside = { room: ev.into, dir: d }; }
-      else {
+      else if (ev.type === 'exit') {
         exits++;
         if (inside && inside.room === ev.from && inside.dir === d) tunnel = true;
         inside = null;
