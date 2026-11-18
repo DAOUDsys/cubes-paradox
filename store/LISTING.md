@@ -9,7 +9,7 @@ Cubes Paradox
 com.daoud.matryo
 
 ## Version
-1.6.0 (version code 13)
+1.7.0 (version code 14)
 
 ## Category
 Games › Puzzle
@@ -53,6 +53,9 @@ Solve in the fewest moves for three stars. Unlock 12 achievements. Stuck? First 
 • Works fully offline — no ads, no accounts, no data collected
 • 7 languages: English, Arabic (full right-to-left layout), Spanish, French, German, Portuguese and Turkish
 
+## What's new (1.7.0)
+Every world from 3 on starts with two easy levels and three medium ones before it gets hard. World 2 opens after the first five levels of world 1. A new hint shows where every box has to end up, hints can be closed, and the game tells you when a new world opens.
+
 ## What's new (1.6.0)
 Seven new worlds with new rules: Frozen Floor, Wind Tunnels, Jump Pads, Hungry Rooms, Twin Rooms, Mirror Rooms and Two Sprouts. 105 new hard levels, some mixing two ideas, and new ideas in the daily puzzle.
 
@@ -95,8 +98,8 @@ The game collects no personal data. The in-app purchase is handled by Google Pla
 | `screenshots/05-two-step-hints.png` | 1080×1920 | Screenshot 5 |
 | `screenshots/06-worlds-and-daily.png` | 1080×1920 | Screenshot 6 |
 | `screenshots/07-seven-languages.png` | 1080×1920 | Screenshot 7 |
-| `../CubesParadox-1.6.0.aab` | — | Google Play upload |
-| `../CubesParadox-1.6.0-play.apk` | — | The Google Play build as an APK, for testing |
-| `../CubesParadox-1.6.0.apk` | — | The Orion Store build (every world open), the GitHub release asset |
+| `../CubesParadox-1.7.0.aab` | — | Google Play upload |
+| `../CubesParadox-1.7.0-play.apk` | — | The Google Play build as an APK, for testing |
+| `../CubesParadox-1.7.0.apk` | — | The Orion Store build (every world open), the GitHub release asset |
 
 The screenshots are rendered from the real game by `store/src/shot.html` (served from the project root). To make them again, see `store/src/README.md`.

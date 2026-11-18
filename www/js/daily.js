@@ -18,38 +18,34 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#.b.=#',
-        '#PbA.#',
-        '#....#',
-        '#...##',
+        '#.b..#',
+        '#.b=.#',
+        '#P.A.#',
+        '###..#',
         '######'
       ], terrain: [
         '......',
         '......',
+        '.L....',
         '......',
         '......',
-        '...L..',
         '......'
       ] },
-      A: { palette: 'teal', flip: true, map: [
-        '#######',
-        '#.....#',
-        '##....#',
-        '...._.#',
-        '#...._#',
-        '#.....#',
-        '###.###'
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#..##',
+        '#_...',
+        '#.._#',
+        '##.##'
       ], terrain: [
-        '.......',
-        '.......',
-        '...L...',
-        '.......',
-        '.L.....',
-        '....D..',
-        '.......'
+        '.....',
+        '.....',
+        '..D..',
+        '.....',
+        '.....'
       ] }
     },
-    sol: 'URLDDRUDRRULLDLURRRULLLRRRUURRRDDULLDLLLRR'
+    sol: 'UURLDDRURRDDLURULLDLURRRULLLLLRRRDLUULRDDRR'
   },
   {
     id: 'd2',
@@ -139,25 +135,31 @@
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '#######',
-        '#..##.#',
-        '#1P...#',
-        '#..#A.#',
-        '#..#._#',
-        '#######',
-        '#######'
+        '######',
+        '#B..1#',
+        '#P.._#',
+        '#.b.b#',
+        '###.A#',
+        '######'
       ] },
       A: { palette: 'teal', map: [
-        '###.###',
-        '###..##',
-        '####.##',
-        '####...',
+        '##.##',
+        '##.##',
+        '...##',
+        '#####',
+        '#####'
+      ] },
+      B: { palette: 'violet', map: [
         '#######',
         '#######',
+        '###_.##',
+        '###....',
+        '###...#',
+        '##=.###',
         '#######'
       ] }
     },
-    sol: 'LRDLURULLLLLUULUULDRRRLLLDDUDD'
+    sol: 'DRURRDULURLURULURRRUUULLURULLLLDLUDDL'
   },
   {
     id: 'd6',
@@ -222,38 +224,28 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#...##',
-        '#Ab..#',
-        '#b.#.#',
-        '#P...#',
+        '##P..#',
+        '#.b..#',
+        '#_Ab.#',
+        '#....#',
         '######'
       ], terrain: [
         '......',
-        '......',
+        '...~~.',
         '...~~.',
         '....~.',
         '...~~.',
         '......'
       ] },
-      A: { palette: 'teal', map: [
-        '###.###',
-        '#=._.##',
-        '#.#...#',
-        '......#',
-        '##..#.#',
-        '#_....#',
-        '###.###'
-      ], terrain: [
-        '.......',
-        '.......',
-        '.......',
-        '...~...',
-        '..~~...',
-        '..~~...',
-        '.......'
+      A: { palette: 'teal', flip: true, map: [
+        '#####',
+        '##._#',
+        '.=..#',
+        '#...#',
+        '##.##'
       ] }
     },
-    sol: 'UUDRDRULLDLUUULULUURRDDLDRDDRDDLUUUUURRDDDLLULUU'
+    sol: 'RDLLUURURDLLLRRDRULL'
   },
   {
     id: 'd9',
@@ -359,28 +351,37 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#...A#',
-        '#.b#.#',
-        '#B..P#',
-        '#.####',
+        '#...1#',
+        '#.b..#',
+        '###.##',
+        '#.ABP#',
         '######'
+      ], terrain: [
+        '......',
+        '......',
+        '....~.',
+        '...~..',
+        '......',
+        '......'
       ] },
       A: { palette: 'teal', map: [
+        '#####',
+        '##=##',
+        '.#...',
         '##.##',
-        '##..#',
-        '#...#',
-        '#_..#',
         '##.##'
       ] },
       B: { palette: 'violet', map: [
-        '##.##',
-        '##..#',
-        '#=...',
-        '#.1.#',
-        '#####'
+        '#######',
+        '#######',
+        '#._.###',
+        '....##.',
+        '##..###',
+        '#######',
+        '###.###'
       ] }
     },
-    sol: 'LLLLULUUURDLDDDDDDDDDDDLLULDDDDDDDRDLDDDLLLDDDL'
+    sol: 'LURUUURRRRUULLDRURDRUUURRRRRRURRDDLULLLLLLLU'
   },
   {
     id: 'd13',
@@ -482,20 +483,20 @@
       R: { palette: 'navy', map: [
         '######',
         '#...##',
-        '#....#',
-        '##Ab_#',
-        '#P..##',
+        '#A..##',
+        '#_bb.#',
+        '#..P.#',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '#####',
+        '##_##',
+        '#._..',
         '##..#',
-        '.....',
-        '#_..#',
-        '#####'
+        '##.##'
       ] }
     },
-    sol: 'RRURULULLDRURDRDLLLULDRDLURRRDLURUULLDRURDLDR'
+    sol: 'LUDRRULULLLDLURRRULDRRDLLL'
   },
   {
     id: 'd17',
@@ -556,41 +557,50 @@
   },
   {
     id: 'd19',
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '##.##P#',
-        '#.b...#',
-        '#.A.b.#',
-        '#..####',
-        '##...=#',
+        '##A.bP#',
+        '##.#.##',
+        '####.##',
+        '#=...##',
+        '#######',
         '#######'
       ], terrain: [
         '.......',
         '.......',
+        '..|.|..',
         '.......',
         '.......',
-        '..|....',
         '.......',
         '.......'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
+        '#######',
+        '#######',
+        '####..#',
+        '##.B...',
+        '##....#',
+        '###...#',
+        '###.###'
+      ] },
+      B: { palette: 'violet', map: [
         '#####',
-        '._...',
-        '#####',
+        '##..#',
+        '....#',
+        '#...#',
         '#####'
       ], terrain: [
         '.....',
         '.....',
-        '..o..',
         '.....',
+        '.o...',
         '.....'
       ] }
     },
-    sol: 'DDLLLLLRRDLURRULLLRRDDDRRR'
+    sol: 'LLLLULDDLLURRURDDLLDRRRDRRUULDRDLULLLUURRRRDDDLLL'
   },
   {
     id: 'd20',
@@ -669,80 +679,6 @@
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '####.##',
-        '#.A..##',
-        '##P#_##',
-        '#######',
-        '###.###',
-        '#######'
-      ], terrain: [
-        '.......',
-        '.......',
-        '...O...',
-        '.......',
-        '.......',
-        '...O...',
-        '.......'
-      ] },
-      A: { palette: 'teal', map: [
-        '###.###',
-        '###...#',
-        '###B..#',
-        '.......',
-        '#....##',
-        '#.b...#',
-        '###.###'
-      ], terrain: [
-        '.......',
-        '.......',
-        '....O..',
-        '.......',
-        '.......',
-        '.......',
-        '.......'
-      ] },
-      B: { palette: 'violet', map: [
-        '##.##',
-        '#...#',
-        '...##',
-        '#..##',
-        '##.##'
-      ] }
-    },
-    sol: 'UUUURRUULLDDDDULLDRURDDDDLDDRUUUUUULURRRRLLLLLLLRRRRRRUUUUD'
-  },
-  {
-    id: 'd23',
-    idea: {"en":"Something has to come out of the green box","ar":"في إشي لازم يطلع من الصندوق الأخضر"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '######',
-        '##._##',
-        '#.PA.#',
-        '#.##.#',
-        '#....#',
-        '######'
-      ] },
-      A: { palette: 'teal', map: [
-        '###.###',
-        '##...##',
-        '#....##',
-        '.b.....',
-        '#bb_.##',
-        '#_#..##',
-        '###.###'
-      ] }
-    },
-    sol: 'URDDDDLLDRURRDDLUUUUUDRDDRRRDDLLLUURRRRRURD'
-  },
-  {
-    id: 'd24',
-    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
-    root: 'R',
-    rooms: {
-      R: { palette: 'navy', map: [
-        '#######',
         '###P###',
         '##.b#=#',
         '#.A.._#',
@@ -776,6 +712,63 @@
     sol: 'DLDLDRURDDRDLLLLURRDLULLDDRULURDRULURRRDDUUUUUDLDRRDLULDURRRRRUUU'
   },
   {
+    id: 'd23',
+    idea: {"en":"Something has to come out of the green box","ar":"في إشي لازم يطلع من الصندوق الأخضر"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '######',
+        '###P.#',
+        '###A_#',
+        '#..._#',
+        '#.=..#',
+        '######'
+      ] },
+      A: { palette: 'teal', map: [
+        '#######',
+        '#######',
+        '#######',
+        '####...',
+        '###.b.#',
+        '##..b_#',
+        '###.###'
+      ] }
+    },
+    sol: 'RDLLDDLRUULDLDDURUURRRDLRUULDRDDLLLURDRRUDLLURDL'
+  },
+  {
+    id: 'd24',
+    idea: {"en":"A box has to fill a hole before you can cross","ar":"لازم صندوق يعبّي الحفرة قبل ما تقطع"},
+    root: 'R',
+    rooms: {
+      R: { palette: 'navy', map: [
+        '#######',
+        '#..####',
+        '#...###',
+        '#.b._##',
+        '##..###',
+        '#PA####',
+        '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '...O...',
+        '...O...',
+        '.......',
+        '.......',
+        '.......'
+      ] },
+      A: { palette: 'teal', map: [
+        '##.##',
+        '#...#',
+        '..b..',
+        '##..#',
+        '#####'
+      ] }
+    },
+    sol: 'RRURUUULUURDLDRDDDRDDLUUUUULUURDLDRR'
+  },
+  {
     id: 'd25',
     idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
@@ -805,30 +798,32 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##..##',
-        '##AB##',
-        '#..P##',
-        '#...##',
+        '##P###',
+        '##.###',
+        '##A###',
+        '#.B.##',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
-        '##.##',
-        '##=..',
-        '#####',
-        '##.##'
+        '#######',
+        '#=#####',
+        '#.#####',
+        '..####.',
+        '#######',
+        '#######',
+        '###.###'
       ] },
       B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '#.#####',
-        '#_.####',
-        '#....##',
-        '#....##',
+        '###.###',
+        '###..##',
+        '###...#',
+        '..#.#..',
+        '#...b.#',
+        '##._._#',
         '###.###'
       ] }
     },
-    sol: 'ULLLUUUDRDDLLURDRUUUURULLDLURULLL'
+    sol: 'DDDDDDDLDRRLUUURRDDLRUULLDDRDRRUU'
   },
   {
     id: 'd27',
@@ -1431,26 +1426,35 @@
   },
   {
     id: 'd45',
-    idea: {"en":"The way forward starts inside the green box","ar":"الطريق بيبلش من جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#...##',
-        '#A.P##',
-        '#.b..#',
-        '##._.#',
+        '#=..##',
+        '#.b#.#',
+        '#..A.#',
+        '#.P..#',
         '######'
       ] },
       A: { palette: 'teal', map: [
+        '###.###',
+        '#######',
+        '##.#..#',
+        '..b....',
+        '#....##',
+        '##...B#',
+        '#######'
+      ] },
+      B: { palette: 'violet', map: [
+        '#####',
         '##.##',
-        '#_b##',
-        '#...#',
-        '#...#',
-        '##.##'
+        '..__#',
+        '#####',
+        '#####'
       ] }
     },
-    sol: 'DDLURUULLDRURDDULLDDLDDRRULDLU'
+    sol: 'RRULDLLUUURDLDDRURRDLLULUURDDRDLLLULDDLDRULLLURRRRRRURRDLLLLULDDLDRRRLLUURRRUUUL'
   },
   {
     id: 'd46',
@@ -1459,51 +1463,68 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##P..#',
-        '#.b..#',
-        '#_Ab.#',
         '#....#',
+        '#.bb.#',
+        '##P_A#',
+        '######',
         '######'
       ], terrain: [
         '......',
-        '...~~.',
-        '...~~.',
-        '....~.',
-        '...~~.',
+        '..~~~.',
+        '......',
+        '......',
+        '......',
         '......'
       ] },
-      A: { palette: 'teal', flip: true, map: [
-        '#####',
-        '##._#',
-        '.=..#',
-        '#...#',
-        '##.##'
+      A: { palette: 'teal', map: [
+        '###.###',
+        '##..._#',
+        '#.....#',
+        '.....##',
+        '##...##',
+        '###.=##',
+        '###.###'
+      ], terrain: [
+        '.......',
+        '.......',
+        '....~..',
+        '...~~..',
+        '...~~..',
+        '.......',
+        '.......'
       ] }
     },
-    sol: 'RDLLUURURDLLLRRDRULL'
+    sol: 'RRRURURUUULDRURDDDRRDLLULDLDLLLURURDDDRDLULLLRRRDLUULURRD'
   },
   {
     id: 'd47',
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"The purple box has to go inside the main room","ar":"الصندوق البنفسجي لازم يفوت جوّا الغرفة الرئيسية"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '###P.#',
-        '#._.=#',
-        '#.#._#',
-        '#.bA.#',
+        '##...#',
+        '##.#_#',
+        '##b..#',
+        '#AP..#',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
-        '#.b.#',
-        '.....',
+        '#####',
         '##..#',
+        '#.B..',
+        '#...#',
+        '##.##'
+      ] },
+      B: { palette: 'violet', map: [
+        '##.##',
+        '#..##',
+        '..###',
+        '#####',
         '#####'
       ] }
     },
-    sol: 'DDDDRDDLUUUURUULDLLDDRRURULDDRRURRDDLUUUULUURD'
+    sol: 'LLDLLURRRRURRDLURUULLDDRDLLLDLLURRRRRRRURUU'
   },
   {
     id: 'd48',
@@ -1542,20 +1563,20 @@
       R: { palette: 'navy', map: [
         '######',
         '###P.#',
-        '#..._#',
-        '#.bb.#',
-        '##A###',
+        '#._.=#',
+        '#.#._#',
+        '#.bA.#',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '#...#',
-        '..=.#',
-        '#.._#',
+        '#.b.#',
+        '.....',
+        '##..#',
         '#####'
       ] }
     },
-    sol: 'DLDURRDLULDDDLDDRUUUULURRDLDDD'
+    sol: 'DDDDRDDLUUUURUULDLLDDRRURULDDRRURRDDLUUUULUURD'
   },
   {
     id: 'd50',
@@ -1564,51 +1585,47 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#.b..#',
-        '#.b=.#',
-        '#P.A.#',
-        '###..#',
+        '#.P..#',
+        '#b.A.#',
+        '#..###',
+        '#..###',
         '######'
       ], terrain: [
         '......',
         '......',
-        '.L....',
         '......',
-        '......',
+        '..L...',
+        '.U....',
         '......'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
-        '#..##',
-        '#_...',
-        '#.._#',
-        '##.##'
-      ], terrain: [
-        '.....',
-        '.....',
-        '..D..',
-        '.....',
-        '.....'
+        '###.###',
+        '###..##',
+        '##...##',
+        '##.#.#.',
+        '##._..#',
+        '###...#',
+        '#######'
       ] }
     },
-    sol: 'UURLDDRURRDDLURULLDLURRRULLLLLRRRDLUULRDDRR'
+    sol: 'RRDLULDULDDDDRDDDLLUURURDDULLDDRDRRUL'
   },
   {
     id: 'd51',
-    idea: {"en":"The way forward starts inside the main room","ar":"الطريق بيبلش من جوّا الغرفة الرئيسية"},
+    idea: {"en":"The main room has to move before anything else","ar":"الغرفة الرئيسية لازم يتحرك قبل أي إشي"},
     root: 'V',
     rooms: {
       V: { palette: 'navy', map: [
         '#######',
-        '####.V#',
-        '##.#b##',
-        '..b.b.#',
-        '#__.=.#',
-        '##P_.##',
-        '#######'
+        '####P##',
+        '#_.b.##',
+        '.Vb._..',
+        '##b.###',
+        '##.._##',
+        '###.###'
       ] }
     },
-    sol: 'URRRULDLLLULLDDRDLULDURUURRRLLLDDRDLLLURLLLLDDRDLLR'
+    sol: 'DLLRDLRDDLURURRRRRURDDLDR'
   },
   {
     id: 'd52',
@@ -1652,36 +1669,34 @@
   },
   {
     id: 'd53',
-    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
+    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '##..A.#',
-        '##.#P.#',
-        '#...#.#',
-        '#..ut.#',
-        '#B#...#',
+        '###..##',
+        '#...t##',
+        '#u.b.##',
+        '#PB._A#',
+        '#######',
         '#######'
       ] },
       A: { palette: 'teal', map: [
         '#####',
         '#####',
-        '####.',
+        '..###',
         '#####',
-        '##.##'
+        '#####'
       ] },
       B: { palette: 'violet', map: [
-        '###.###',
-        '###.###',
-        '#######',
-        '#######',
-        '#######',
-        '#######',
-        '#######'
+        '##.##',
+        '##.##',
+        '##...',
+        '#####',
+        '#####'
       ] }
     },
-    sol: 'RDDLLULUURRLLDDLDRRRDRUUU'
+    sol: 'RUURURDDLDDDRRRLLRUULLDRRURD'
   },
   {
     id: 'd54',
@@ -1690,60 +1705,38 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#.P=.#',
-        '#.#AB#',
-        '#b...#',
         '#...##',
+        '#Ab..#',
+        '#b.#.#',
+        '#P...#',
         '######'
       ], terrain: [
         '......',
         '......',
-        '......',
+        '...~~.',
         '....~.',
-        '......',
+        '...~~.',
         '......'
       ] },
       A: { palette: 'teal', map: [
-        '#####',
-        '#.###',
-        '.C.##',
-        '#..##',
-        '##.##'
+        '###.###',
+        '#=._.##',
+        '#.#...#',
+        '......#',
+        '##..#.#',
+        '#_....#',
+        '###.###'
       ], terrain: [
-        '.....',
-        '.....',
-        '..~..',
-        '.~...',
-        '.....'
-      ] },
-      B: { palette: 'violet', map: [
-        '#####',
-        '#####',
-        '...##',
-        '##.##',
-        '##.##'
-      ], terrain: [
-        '.....',
-        '.....',
-        '.....',
-        '..~..',
-        '.....'
-      ] },
-      C: { palette: 'pink', map: [
-        '##.##',
-        '#.._#',
-        '#...#',
-        '#.#.#',
-        '#####'
-      ], terrain: [
-        '.....',
-        '.~~..',
-        '.~~..',
-        '.~...',
-        '.....'
+        '.......',
+        '.......',
+        '.......',
+        '...~...',
+        '..~~...',
+        '..~~...',
+        '.......'
       ] }
     },
-    sol: 'RDRRRDDLDLLUDRUUULLRRDDDRUUULLDDDDRDLUUUURRDDLRUULLDDDDLDRRRRDDDULURUUUURR'
+    sol: 'UUDRDRULLDLUUULULUURRDDLDRDDRDDLUUUUURRDDDLLULUU'
   },
   {
     id: 'd55',
@@ -1827,36 +1820,36 @@
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '##..###',
-        '##b.###',
-        '#P.A..#',
-        '#.....#',
-        '#####=#',
+        '##.##P#',
+        '#.b...#',
+        '#.A.b.#',
+        '#..####',
+        '##...=#',
         '#######'
       ], terrain: [
         '.......',
         '.......',
         '.......',
-        '....|..',
-        '....|..',
+        '.......',
+        '..|....',
         '.......',
         '.......'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '#..##',
-        '..b#.',
-        '#_..#',
-        '##.##'
+        '#####',
+        '._...',
+        '#####',
+        '#####'
       ], terrain: [
         '.....',
         '.....',
+        '..o..',
         '.....',
-        '...o.',
         '.....'
       ] }
     },
-    sol: 'RRRURDLDRULLLRUULDRDDLLURRRRLDRUUUULDRDDDD'
+    sol: 'DDLLLLLRRDLURRULLLRRDDDRRR'
   },
   {
     id: 'd58',
@@ -1865,21 +1858,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '###.##',
-        '#.bA##',
-        '#P..##',
-        '#.=.##',
+        '###P.#',
+        '#..._#',
+        '#.bb.#',
+        '##A###',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '#_..#',
-        '.....',
-        '#.###',
-        '##.##'
+        '#...#',
+        '..=.#',
+        '#.._#',
+        '#####'
       ] }
     },
-    sol: 'URRRURUUDLDRRURRDLLLRURUUDULLDRURDDULDRRRRULUULD'
+    sol: 'DLDURRDLULDDDLDDRUUUULURRDLDDD'
   },
   {
     id: 'd59',
@@ -1973,21 +1966,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##._##',
-        '#.b..#',
-        '##A..#',
-        '#..P_#',
+        '#...##',
+        '#....#',
+        '##Ab_#',
+        '#P..##',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
-        '#._.#',
-        '...b.',
-        '#...#',
-        '##.##'
+        '#####',
+        '##..#',
+        '.....',
+        '#_..#',
+        '#####'
       ] }
     },
-    sol: 'ULLULLDRRRLDLDDRRUULULDDDDRDDLULLLRRUU'
+    sol: 'RRURULULLDRURDRDLLLULDRDLURRRDLURUULLDRURDLDR'
   },
   {
     id: 'd62',
@@ -1996,32 +1989,36 @@
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '###.###',
-        '##..###',
-        '#P.A._#',
-        '###...#',
+        '#.P...#',
+        '#.A...#',
+        '#..#._#',
+        '#..####',
         '#######',
         '#######'
       ], terrain: [
         '.......',
         '.......',
+        '...O...',
         '.......',
-        '....O..',
         '.......',
         '.......',
         '.......'
       ] },
       A: { palette: 'teal', map: [
-        '###.###',
-        '##..###',
-        '##b.###',
-        '....###',
-        '###.###',
-        '###.###',
-        '###.###'
+        '##.##',
+        '#.b.#',
+        '...##',
+        '#####',
+        '#####'
+      ], terrain: [
+        '.....',
+        '...O.',
+        '.....',
+        '.....',
+        '.....'
       ] }
     },
-    sol: 'RRRRRUULDRDDDDDULURRRURDDDDUUULLLLDRLURRRUURUUDLDRR'
+    sol: 'DLDRRRUUDDLLLURLDDRULURRRURD'
   },
   {
     id: 'd63',
@@ -2069,47 +2066,60 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#Bbb.#',
-        '#.AP.#',
-        '##..##',
-        '##.###',
+        '#.P=.#',
+        '#.#AB#',
+        '#b...#',
+        '#...##',
         '######'
       ], terrain: [
         '......',
+        '......',
+        '......',
         '....~.',
-        '....~.',
-        '...~..',
-        '..~...',
+        '......',
         '......'
       ] },
       A: { palette: 'teal', map: [
-        '##.##',
-        '##._#',
-        '.._.#',
-        '##.=#',
+        '#####',
+        '#.###',
+        '.C.##',
+        '#..##',
         '##.##'
       ], terrain: [
         '.....',
         '.....',
-        '...~.',
-        '.....',
+        '..~..',
+        '.~...',
         '.....'
       ] },
       B: { palette: 'violet', map: [
         '#####',
-        '#..##',
-        '#....',
-        '#...#',
+        '#####',
+        '...##',
+        '##.##',
         '##.##'
       ], terrain: [
         '.....',
         '.....',
-        '.~~~.',
-        '.~~~.',
+        '.....',
+        '..~..',
+        '.....'
+      ] },
+      C: { palette: 'pink', map: [
+        '##.##',
+        '#.._#',
+        '#...#',
+        '#.#.#',
+        '#####'
+      ], terrain: [
+        '.....',
+        '.~~..',
+        '.~~..',
+        '.~...',
         '.....'
       ] }
     },
-    sol: 'RULDDLUUULLLRDRULLUULDRURRRRRLLDRUURUD'
+    sol: 'RDRRRDDLDLLUDRUUULLRRDDDRUUULLDDDDRDLUUUURRDDLRUULLDDDDLDRRRRDDDULURUUUURR'
   },
   {
     id: 'd65',
@@ -2118,37 +2128,30 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#...1#',
-        '#.b..#',
-        '###.##',
-        '#.ABP#',
+        '#..#B#',
+        '##APb#',
+        '#_...#',
+        '#....#',
         '######'
-      ], terrain: [
-        '......',
-        '......',
-        '....~.',
-        '...~..',
-        '......',
-        '......'
       ] },
       A: { palette: 'teal', map: [
         '#####',
-        '##=##',
-        '.#...',
-        '##.##',
+        '#...#',
+        '.....',
+        '#...#',
         '##.##'
       ] },
       B: { palette: 'violet', map: [
         '#######',
-        '#######',
-        '#._.###',
-        '....##.',
-        '##..###',
-        '#######',
+        '#.....#',
+        '#..1..#',
+        '......#',
+        '#...=_#',
+        '#.....#',
         '###.###'
       ] }
     },
-    sol: 'LURUUURRRRUULLDRURDRUUURRRRRRURRDDLULLLLLLLU'
+    sol: 'DRUUULUUURURDDLLDRRRRURDDDUURRRDLURRUUUR'
   },
   {
     id: 'd66',
@@ -2157,21 +2160,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##..P#',
+        '##._##',
+        '#.b..#',
         '##A..#',
-        '#..b_#',
-        '#...##',
+        '#..P_#',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '##b##',
-        '##__.',
-        '#####',
+        '#._.#',
+        '...b.',
+        '#...#',
         '##.##'
       ] }
     },
-    sol: 'DDLDLLURDRURULLRULDRDDLLURRURDD'
+    sol: 'ULLULLDRRRLDLDDRRUULULDDDDRDDLULLLRRUU'
   },
   {
     id: 'd67',
@@ -2249,21 +2252,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#P_.##',
-        '#.bb##',
-        '#_.A.#',
-        '######',
+        '###.##',
+        '#.bA##',
+        '#P..##',
+        '#.=.##',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '#####',
-        '#..##',
+        '##.##',
+        '#_..#',
         '.....',
-        '#...#',
+        '#.###',
         '##.##'
       ] }
     },
-    sol: 'DDRRLLUURRDULLDDRRRRDRRULLLLLU'
+    sol: 'URRRURUUDLDRRURRDLLLRURUUDULLDRURDDULDRRRRULUULD'
   },
   {
     id: 'd70',
@@ -2272,32 +2275,32 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##P###',
-        '##.###',
-        '##A###',
-        '#.B.##',
+        '#P####',
+        '#.##.#',
+        '#..BA#',
+        '####.#',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '#######',
-        '#=#####',
-        '#.#####',
-        '..####.',
-        '#######',
-        '#######',
+        '###.###',
+        '###.###',
+        '##=.###',
+        '....#..',
+        '###.#.#',
+        '###...#',
         '###.###'
       ] },
       B: { palette: 'violet', map: [
+        '#######',
+        '#######',
+        '#######',
+        '..#####',
+        '#_...##',
         '###.###',
-        '###..##',
-        '###...#',
-        '..#.#..',
-        '#...b.#',
-        '##._._#',
         '###.###'
       ] }
     },
-    sol: 'DDDDDDDLDRRLUUURRDDLRUULLDDRDRRUU'
+    sol: 'DDRRRRRRRDRRDDDUUUUDDDDDDDUUUUURRUURRLLLLDDLLUUUL'
   },
   {
     id: 'd71',
@@ -2306,22 +2309,36 @@
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
-        '###.#.#',
-        '#Pb_.A#',
-        '##.b..#',
-        '##..###',
+        '#A..b.#',
+        '#...#.#',
+        '##b...#',
+        '##.P###',
         '#######',
         '#######'
+      ], terrain: [
+        '.......',
+        '.......',
+        '..^....',
+        '.......',
+        '.......',
+        '.......',
+        '.......'
       ] },
       A: { palette: 'teal', map: [
         '#####',
-        '##..#',
-        '.=...',
+        '#._##',
+        '.....',
         '#_..#',
         '#####'
+      ], terrain: [
+        '.....',
+        '.....',
+        '.x...',
+        '..x..',
+        '.....'
       ] }
     },
-    sol: 'RRRLLDDRURURRDRRUULDRDLUL'
+    sol: 'LUURULLLLULDRRRRRDDRRUULLLLLDLU'
   },
   {
     id: 'd72',
@@ -2330,21 +2347,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##..##',
-        '#.._##',
-        '#.bA##',
-        '#P=.##',
+        '###..#',
+        '#..b.#',
+        '#.A.=#',
+        '##P_##',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '#####',
-        '##..#',
-        '.b._.',
-        '#_..#',
-        '#####'
+        '##.##',
+        '##_##',
+        '##.##',
+        '##.##'
       ] }
     },
-    sol: 'RURRDRRUULDRDLULLLDRULLURRRRLLLDD'
+    sol: 'URRUULDRDLDLUUUDDLURDRRUULDDR'
   },
   {
     id: 'd73',
@@ -2400,21 +2417,21 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '###..#',
-        '#..b.#',
-        '#.A.=#',
-        '##P_##',
+        '##..P#',
+        '##A..#',
+        '#..b_#',
+        '#...##',
         '######'
       ] },
       A: { palette: 'teal', map: [
+        '##.##',
+        '##b##',
+        '##__.',
         '#####',
-        '##.##',
-        '##_##',
-        '##.##',
         '##.##'
       ] }
     },
-    sol: 'URRUULDRDLDLUUUDDLURDRRUULDDR'
+    sol: 'DDLDLLURDRURULLRULDRDDLLURRURDD'
   },
   {
     id: 'd75',
@@ -2423,30 +2440,28 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '#B..1#',
-        '#P.._#',
-        '#.b.b#',
-        '###.A#',
+        '#...A#',
+        '#.b#.#',
+        '#B..P#',
+        '#.####',
         '######'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '##.##',
-        '...##',
-        '#####',
-        '#####'
+        '##..#',
+        '#...#',
+        '#_..#',
+        '##.##'
       ] },
       B: { palette: 'violet', map: [
-        '#######',
-        '#######',
-        '###_.##',
-        '###....',
-        '###...#',
-        '##=.###',
-        '#######'
+        '##.##',
+        '##..#',
+        '#=...',
+        '#.1.#',
+        '#####'
       ] }
     },
-    sol: 'DRURRDULURLURULURRRUUULLURULLLLDLUDDL'
+    sol: 'LLLLULUUURDLDDDDDDDDDDDLLULDDDDDDDRDLDDDLLLDDDL'
   },
   {
     id: 'd76',
@@ -2584,41 +2599,41 @@
   },
   {
     id: 'd81',
-    idea: {"en":"Something has to stay on the plate while you pass","ar":"لازم إشي يضل عالزر وإنت بتقطع"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
         '#######',
         '##..###',
-        '#.A.#=#',
+        '##b.###',
+        '#P.A..#',
         '#.....#',
-        '#.#b###',
-        '#..P.##',
+        '#####=#',
         '#######'
       ], terrain: [
         '.......',
         '.......',
         '.......',
         '....|..',
-        '.......',
+        '....|..',
         '.......',
         '.......'
       ] },
       A: { palette: 'teal', map: [
         '##.##',
-        '##..#',
-        '#...#',
-        '#...#',
-        '#####'
+        '#..##',
+        '..b#.',
+        '#_..#',
+        '##.##'
       ], terrain: [
         '.....',
+        '.....',
+        '.....',
         '...o.',
-        '.....',
-        '.....',
         '.....'
       ] }
     },
-    sol: 'LLUURRUULDLDDDRRUUDDLLUURUURDDDDDRDDLLURDRULUUUURRU'
+    sol: 'RRRURDLDRULLLRUULDRDDLLURRRRLDRUUUULDRDDDD'
   },
   {
     id: 'd82',
@@ -2627,30 +2642,28 @@
     rooms: {
       R: { palette: 'navy', map: [
         '######',
-        '##..##',
-        '#...##',
-        '#.A..#',
-        '#.PB.#',
+        '#..A.#',
+        '#.b..#',
+        '#B#.##',
+        '#...P#',
         '######'
       ] },
       A: { palette: 'teal', map: [
-        '#######',
-        '#######',
-        '#####=#',
-        '.##...#',
-        '###.###',
-        '###.###',
-        '###.###'
+        '#####',
+        '##=##',
+        '.#...',
+        '#####',
+        '##.##'
       ] },
       B: { palette: 'violet', map: [
         '#####',
-        '#.._#',
-        '#....',
         '#..##',
+        '#....',
+        '#_._#',
         '##.##'
       ] }
     },
-    sol: 'URRDLLURUULDDRDLLLULLDDRULURDRUUUURRU'
+    sol: 'LLLUDRRUULLLDLLUURDLDRDDURRRULLLLLULDRDLLLU'
   },
   {
     id: 'd83',
@@ -2715,35 +2728,27 @@
   },
   {
     id: 'd85',
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '######',
-        '#=..##',
-        '#.b#.#',
-        '#..A.#',
-        '#.P..#',
-        '######'
-      ] },
-      A: { palette: 'teal', map: [
-        '###.###',
         '#######',
-        '##.#..#',
-        '..b....',
-        '#....##',
-        '##...B#',
+        '###.#.#',
+        '#Pb_.A#',
+        '##.b..#',
+        '##..###',
+        '#######',
         '#######'
       ] },
-      B: { palette: 'violet', map: [
+      A: { palette: 'teal', map: [
         '#####',
-        '##.##',
-        '..__#',
-        '#####',
+        '##..#',
+        '.=...',
+        '#_..#',
         '#####'
       ] }
     },
-    sol: 'RRULDLLUUURDLDDRURRDLLULUURDDRDLLLULDDLDRULLLURRRRRRURRDLLLLULDDLDRRRLLUURRRUUUL'
+    sol: 'RRRLLDDRURURRDRRUULDRDLUL'
   },
   {
     id: 'd86',
@@ -2812,34 +2817,33 @@
   },
   {
     id: 'd88',
-    idea: {"en":"A box has to end up inside the purple box","ar":"في صندوق لازم يفوت جوّا الصندوق البنفسجي"},
+    idea: {"en":"A box has to end up inside the green box","ar":"في صندوق لازم يفوت جوّا الصندوق الأخضر"},
     root: 'R',
     rooms: {
       R: { palette: 'navy', map: [
-        '#######',
-        '###..##',
-        '#...t##',
-        '#u.b.##',
-        '#PB._A#',
-        '#######',
-        '#######'
+        '######',
+        '#.uA.#',
+        '#.Pt.#',
+        '###.B#',
+        '######',
+        '######'
       ] },
       A: { palette: 'teal', map: [
-        '#####',
-        '#####',
-        '..###',
-        '#####',
-        '#####'
+        '##.##',
+        '#_.##',
+        '...##',
+        '#..##',
+        '##.##'
       ] },
       B: { palette: 'violet', map: [
         '##.##',
-        '##.##',
-        '##...',
-        '#####',
+        '##..#',
+        '..#..',
+        '#...#',
         '#####'
       ] }
     },
-    sol: 'RUURURDDLDDDRRRLLRUULLDRRURD'
+    sol: 'LURRRRDRDDDDRDDLLULLURUULUURDDDDLLURRLDRUULU'
   },
   {
     id: 'd89',

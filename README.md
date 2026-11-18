@@ -68,7 +68,7 @@ Every world after the first is built around rooms inside rooms, often two or thr
 
 Worlds 15 to 21 add new rules, and some of their levels mix in a second idea from another world.
 
-A world is a ladder. Its first level shows the idea, and each level after it asks for more than the one before: harder to work out, and using the idea at least as much. The last three levels of each world are optional challenges, the hardest of its idea. A new hard **daily puzzle** waits every day.
+A world is a ladder. From world 3 on its first two levels are easy, the next three medium and the rest hard, and each level asks for more than the one before: harder to work out, and using the idea at least as much. The last three levels of each world are optional challenges, the hardest of its idea. A new hard **daily puzzle** waits every day.
 
 **Hard means hard to work out, not long.** A level's difficulty is measured by the choices on the way to its solution: how many real options there are at each one, how many of them quietly lose the level, and how often you have to leave one thing to move another or push something back. Steps do not count, so a long walk down a corridor is not a hard level. Every hard level has a single solution and several places where the wrong choice is a trap. In the game, one to three squares beside the level number show how hard it is.
 
@@ -77,7 +77,7 @@ A world is a ladder. Its first level shows the idea, and each level after it ask
 - Every level checked by a solver: every one can be solved, every box in it is needed, and its shortest solution really uses its world's idea
 - Stars for solving in the fewest moves, 12 achievements, and a daily puzzle with a streak
 - Share a win from the win screen
-- Two-step hints: first the idea in one sentence, then your next moves — from wherever you are
+- Three hints: the idea in one sentence, your next moves, or where every box has to end up — from wherever you are
 - Unlimited undo (or double-tap the board) and instant restart; come back to a level right where you left it
 - Sound effects made on the fly, vibration on Android
 - Swipe controls, plus arrow keys / WASD in a browser

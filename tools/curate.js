@@ -73,7 +73,9 @@ const DOORWAYS_HAND = [
 // hard: its first level shows the idea, and from the second level on every level is hard.
 // Every world ends with 3 challenge levels, the hardest of its idea.
 // `main` counts the levels before the challenges. `uses` says how much a solution uses the world's idea.
+const EASY = [3, 10];         // score band of an easy level (Daoud: a hard world starts with 2 easy, then 3 medium)
 const MEDIUM = [10, 21];      // score band of a medium level
+const EASY_COUNT = 2, MEDIUM_COUNT = 3;
 const HARD_MIN = 22;          // a hard level scores at least this, has one solution, and has real traps
 const CHALLENGES = 3;
 
@@ -286,15 +288,25 @@ WORLDS.forEach((W, w) => {
       ({ rungs: body, slack } = ladder(mediums, W.main - intro.length, W.uses, 0.8));
       body.forEach(c => { c.d = 2; });
     } else {
-      // a world without a hand-made first level starts with the gentlest level of its idea
-      if (!intro.length) {
-        const gentle = pool.filter(c => c.m.score >= 7 && c.m.score < 16 && c.m.unique && W.uses(c.m) > 0 && c.m.moves <= 30)
-          .sort((a, b) => (a.m.macro - b.m.macro) || (a.m.moves - b.m.moves))[0];
-        if (gentle) intro.push(Object.assign(take(gentle), { d: 2 }));
-      }
+      // a hard world steps up: 2 easy levels (the hand-made first level counts as one), then 3 medium, then hard.
+      // Easy and medium levels must use the world's idea too, and are short enough to read at a glance.
+      const shown = (c) => W.uses(c.m) > 0 && c.m.unique && c.m.moves <= 40 && challenges.indexOf(c) === -1;
+      const easies = distinct(pool.filter(c => shown(c) && c.m.score >= EASY[0] && c.m.score < EASY[1]));
+      const easy = ladder(easies, EASY_COUNT - intro.length, W.uses, 0.5).rungs;
+      easy.forEach(c => { intro.push(Object.assign(take(c), { d: 1 })); });
+      // some ideas have nothing that scores as easy (a box three rooms deep is never trivial):
+      // there the gentlest levels of the idea stand in, longest first left out
+      const gentlest = () => distinct(pool.filter(c => free(c) && W.uses(c.m) > 0 && c.m.unique && !isHard(c) && c.m.score < MEDIUM[1] && c.m.moves <= 70))
+        .sort((a, b) => (a.m.score - b.m.score) || (a.m.moves - b.m.moves));
+      for (const c of gentlest()) { if (intro.length >= EASY_COUNT) break; intro.push(Object.assign(take(c), { d: 1 })); }
+      const mediums = distinct(pool.filter(c => free(c) && shown(c) && c.m.score >= MEDIUM[0] && c.m.score < MEDIUM[1] && c.m.trapSteps >= 1));
+      const mid = ladder(mediums, MEDIUM_COUNT, W.uses, 0.8).rungs;
+      mid.forEach(c => { intro.push(Object.assign(take(c), { d: 2 })); });
+      for (const c of gentlest()) { if (intro.length >= EASY_COUNT + MEDIUM_COUNT) break; intro.push(Object.assign(take(c), { d: 2 })); }
       const rest = hardOnes.filter(c => challenges.indexOf(c) === -1 && c.m.score < ceiling && free(c));
       ({ rungs: body, slack } = ladder(rest, W.main - intro.length, W.uses, 1));
       body.forEach(c => { c.d = 3; });
+      if (intro.length < EASY_COUNT + MEDIUM_COUNT) console.log(`world ${w + 1}: only ${intro.length} easy/medium levels`);
     }
     for (const c of intro) list.push(c);
     for (const c of body) list.push(Object.assign(take(c), { d: c.d }));

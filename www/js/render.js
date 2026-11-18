@@ -619,6 +619,54 @@
     ctx.restore();
   };
 
+  // The 25-point hint: everything that has to move carries a number, and a dashed outline with the
+  // same number (in the thing's own colour) marks where it has to end up. `targets`: [{ id, label, room, x, y }].
+  Renderer.prototype.drawSpots = function (st, L, anchor, R, targets) {
+    const ctx = this.ctx, lay = layoutRooms(st, L, anchor, R);
+    const colorOf = (o) => (o.kind === 'room' ? pal(L, o.ref).wall : o.color ? C.boxColors[o.color][0] : C.box);
+    const badge = (cell, label, col) => {
+      const r = Math.max(7, cell.s * 0.19), cx = cell.x + r * 0.85, cy = cell.y + r * 0.85;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = C.page; ctx.fill();
+      ctx.lineWidth = Math.max(1.5, r * 0.22); ctx.strokeStyle = col; ctx.stroke();
+      ctx.fillStyle = '#EEF0E2'; ctx.font = '700 ' + Math.round(r * 1.25) + 'px Changa, Rubik, sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, cx, cy + r * 0.08);
+    };
+    // a cell too small to read stands for the room-box around it that is big enough (inside a room-box,
+    // a box is "in there"): several numbers on one room-box sit side by side
+    const visible = (room, x, y) => {
+      let r = lay.get(room), c = r && cellRect(L, room, r, x, y), ro = null;
+      for (let k = 0; (!c || c.s < 12) && k < 6; k++) {
+        ro = Engine.roomObject(st, room);
+        if (!ro) return null;
+        room = ro.room; x = ro.x; y = ro.y;
+        r = lay.get(room); c = r && cellRect(L, room, r, x, y);
+      }
+      return c && c.s >= 12 ? { cell: c, held: !!ro, key: room + ':' + x + ',' + y } : null;
+    };
+    const used = new Map();
+    const place = (v) => { const k = used.get(v.key) || 0; used.set(v.key, k + 1); return { x: v.cell.x + k * v.cell.s * 0.36, y: v.cell.y, s: v.cell.s }; };
+    ctx.save();
+    for (const t of targets) {
+      const o = Engine.byId(st, t.id);
+      if (!o) continue;
+      const col = colorOf(o), home = o.room === t.room && o.x === t.x && o.y === t.y;
+      const tv = home ? null : visible(t.room, t.x, t.y);
+      if (tv) {
+        const cell = tv.cell, m = tv.held ? -cell.s * 0.04 : cell.s * 0.1;
+        rr(ctx, cell.x + m, cell.y + m, cell.s - 2 * m, cell.s - 2 * m, cell.s * 0.2);
+        ctx.setLineDash([cell.s * 0.14, cell.s * 0.1]);
+        ctx.lineWidth = Math.max(2, cell.s * 0.07); ctx.strokeStyle = col; ctx.stroke();
+        ctx.setLineDash([]);
+        badge(place(tv), t.label, col);
+      }
+      const ov = visible(o.room, o.x, o.y);
+      if (ov) badge(place(ov), home ? '✓' : t.label, col);
+    }
+    ctx.restore();
+  };
+
   // Small flat map of a room, with one room-box ringed ("you are inside this one").
   // flip: seen from inside a mirror room, the outside is mirrored.
   function drawMini(canvas, st, L, roomKey, ringRef, flip) {

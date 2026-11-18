@@ -14,6 +14,7 @@
   const HINT_COST = 15;
   const HINT_STEPS = 8;   // moves shown per hint
   const SKIP_COST = 50;
+  const SPOTS_COST = 25;    // where every box has to end up
   const IDEA_COST = 5;      // first hint step: the level's idea in one sentence
   const DAILY_REWARD = 30;
   const DAY0 = Date.UTC(2026, 10, 1);
@@ -61,7 +62,9 @@
   const passed = (i) => isDone(i) || isSkipped(i);
   const worldLevels = (w) => LEVELS.map((_, i) => i).filter((i) => LEVELS[i].w === w);
   const passedIn = (w) => worldLevels(w).filter(passed).length;
-  const unlockNeed = (w) => Math.ceil(worldSize(w) * UNLOCK_SHARE);
+  // world 1 opens world 2 as soon as its five main levels are solved (its challenges are optional);
+  // after that a world opens when three quarters of the one before it are solved
+  const unlockNeed = (w) => (w === 0 ? worldSize(0) - CHALLENGES : Math.ceil(worldSize(w) * UNLOCK_SHARE));
   const worldOpen = (w) => w === 0 || (!paidLock(w) && passedIn(w - 1) >= unlockNeed(w - 1));
   // inside an open world levels go in order; all challenges open after the last main level
   function isOpen(i) {
@@ -209,6 +212,13 @@
       node.querySelector('small').textContent = open
         ? num(solved) + ' / ' + num(idx.length) + '  ·  ★ ' + num(stars)
         : paidLock(w) ? S.fullLocked : t('unlockAt', { n: num(unlockNeed(w - 1)), w: num(w) });
+      if (open && (progress.newWorlds || []).indexOf(w) !== -1) {
+        const tag = document.createElement('span');
+        tag.className = 'map-new';
+        tag.textContent = S.newTag;
+        tag.style.alignSelf = onLeft ? 'flex-start' : 'flex-end';
+        text.appendChild(tag);
+      }
       if (here) {
         const tag = document.createElement('span');
         tag.className = 'map-here';
@@ -252,6 +262,8 @@
 
   // one world: a planet whose islands are the main levels, with the challenges as moons around it
   function renderWorld(w) {
+    // visiting a world takes its "new" mark off the map
+    if ((progress.newWorlds || []).indexOf(w) !== -1) { progress.newWorlds = progress.newWorlds.filter((x) => x !== w); saveProgress(); }
     const world = I18N.WORLDS[w];
     const [title, desc] = world[progress.lang] || world.en;
     const P = Render.PAL[world.palette] || Render.PAL.olive;
@@ -364,7 +376,7 @@
     G.moves = 0; G.undos = 0; G.depth = depthNow(G.st); G.maxDepth = G.depth;
     G.anim = null; G.queue = []; G.won = false; G.look = 1; G.stepAt = -1e9;
     G.focus = Engine.player(G.st).room;
-    G.hint = null; G.hintLeft = 0; G.ideaShown = false; G.search = (G.search || 0) + 1;
+    G.hint = null; G.hintLeft = 0; G.ideaShown = false; G.ideaHidden = false; G.targets = null; G.search = (G.search || 0) + 1;
     // states along the stored solution, so a hint is instant while the player is on it
     G.solAt = new Map();
     let st = G.init;
@@ -406,10 +418,20 @@
     return S.swipe;
   }
 
+  // a close button on a hint, for when it is in the way
+  function hintClose(onClose) {
+    const x = document.createElement('button');
+    x.className = 'hint-x';
+    x.setAttribute('aria-label', S.close);
+    x.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    x.addEventListener('click', (e) => { e.stopPropagation(); Sfx.play('tap'); onClose(); });
+    return x;
+  }
   function showHintText(msg) {
     const el = $('hint');
     el.textContent = '';
-    const idea = !msg && !(G.hint && G.hint.length) && G.ideaShown;
+    el.classList.remove('closable');
+    const idea = !msg && !(G.hint && G.hint.length) && G.ideaShown && !G.ideaHidden;
     el.classList.toggle('idea', !!idea);
     $('play').classList.toggle('has-idea', !!idea);
     if (msg) { el.textContent = msg; return; }
@@ -417,6 +439,8 @@
       const label = document.createElement('b'); label.textContent = S.hintIdea;
       el.appendChild(label);
       el.appendChild(document.createTextNode(loc(G.def.idea) || S.ideaNone));
+      el.appendChild(hintClose(() => { G.ideaHidden = true; showHintText(); }));
+      el.classList.add('closable');
       return;
     }
     if (G.hint && G.hint.length) {
@@ -428,6 +452,14 @@
         arr.appendChild(s);
       });
       el.appendChild(arr);
+      el.appendChild(hintClose(() => { G.hint = null; showHintText(); draw(); }));
+      el.classList.add('closable');
+      return;
+    }
+    if (G.targets && G.spotsShown && G.targets.length && !G.won) {
+      el.appendChild(document.createTextNode(S.spotsOn));
+      el.appendChild(hintClose(() => { G.spotsShown = false; showHintText(); draw(); }));
+      el.classList.add('closable');
       return;
     }
     el.textContent = defaultTip();
@@ -520,6 +552,7 @@
       const p = Engine.player(G.st);
       renderer.drawHint(Render.cellRect(G.L, G.focus, R, p.x, p.y), G.hint[0]);
     }
+    if (G.targets && G.spotsShown && !G.anim) renderer.drawSpots(G.st, G.L, G.focus, R, G.targets.map((x) => Object.assign({ label: num(x.n) }, x)));
   }
 
   // Wind tiles drift slowly: a redraw about 8 times a second, only while a level with wind is on screen.
@@ -901,10 +934,12 @@
     if (Engine.goalStatus(res.state, G.L).done > Engine.goalStatus(G.st, G.L).done) haptic('goal');
     G.path += 'URDL'[dir];
     saveResume();
-    // following the hint uses it up; stepping off it hides the arrows (the rest stays paid for)
+    // following the arrows uses them up; stepping off them, or walking into or out of a box, ends them
+    // (what is left stays paid for: asking again is free)
     if (G.hint) {
-      if (G.hint[0] === dir) { G.hint.shift(); G.hintLeft--; if (!G.hint.length) G.hint = null; }
-      else G.hint = null;
+      const changedRoom = res.events.some((e) => e.type === 'enter' || e.type === 'exit' || (e.type === 'jump' && e.from !== e.into));
+      if (G.hint[0] === dir && !changedRoom) { G.hint.shift(); G.hintLeft--; if (!G.hint.length) G.hint = null; }
+      else { if (G.hint[0] === dir) G.hintLeft--; G.hint = null; }
       showHintText();
     }
     const from = G.st;
@@ -982,6 +1017,7 @@
       const id = G.def.id;
       const prev = progress.best[id];
       const wasDone = progress.done.indexOf(id) !== -1;
+      var openBefore = I18N.WORLDS.map((_, w) => worldOpen(w));
       // stars pay once: solving again with more of them earns only the difference
       const paid = wasDone && prev ? STAR_REWARD[prev.s] || STAR_REWARD[1] : 0;
       G.earned = Math.max(0, STAR_REWARD[G.stars] - paid);
@@ -990,6 +1026,12 @@
         progress.done.push(id);
         if (isChallenge(G.index)) progress.stats.challenges++;
       }
+    }
+    // a world that this win opened: said on the win screen, and marked "new" on the map until visited
+    G.newWorld = -1;
+    if (openBefore) {
+      G.newWorld = I18N.WORLDS.findIndex((_, w) => !openBefore[w] && worldOpen(w));
+      if (G.newWorld >= 0) progress.newWorlds = (progress.newWorlds || []).concat(G.newWorld);
     }
     if (G.undos === 0) progress.stats.clean++;
     progress.points += G.earned;
@@ -1011,6 +1053,14 @@
     const e = $('win-earned');
     e.textContent = G.earned ? t('earned', { n: num(G.earned) }) : S.noEarn;
     e.classList.toggle('none', !G.earned);
+    const nw = $('win-unlock');
+    nw.hidden = !(G.newWorld >= 0);
+    if (G.newWorld >= 0) {
+      const W = I18N.WORLDS[G.newWorld], P = Render.PAL[W.palette] || Render.PAL.olive;
+      nw.querySelector('.win-unlock-planet').innerHTML = Planets.marked(G.newWorld, P.wall);
+      nw.querySelector('b').textContent = t('worldOpened', { w: num(G.newWorld + 1) });
+      nw.querySelector('small').textContent = (W[progress.lang] || W.en)[0];
+    }
     $('win-moves').textContent = num(G.moves);
     $('win-undos').textContent = num(G.undos);
     $('win-depth').textContent = num(G.maxDepth);
@@ -1066,6 +1116,8 @@
     $('hint-idea-cost').textContent = G.ideaShown ? S.free : num(IDEA_COST);
     $('hint-moves-cost').textContent = G.hintLeft > 0 ? S.free : num(HINT_COST);
     $('hint-moves').hidden = !!G.daily;
+    $('hint-spots').hidden = !!G.daily;
+    $('hint-spots-cost').textContent = G.targets ? S.free : num(SPOTS_COST);
     $('hint-sheet').hidden = false;
   }
   function askIdea() {
@@ -1074,8 +1126,43 @@
       if (progress.points < IDEA_COST) { showHintText(S.noPoints); return; }
       progress.points -= IDEA_COST; G.ideaShown = true; saveProgress(); updatePoints();
     }
+    G.ideaHidden = false;
     Sfx.play('hint');
     showHintText();
+  }
+
+  // Where everything that moves has to end up, from a solution found from where the player stands:
+  // each thing gets a number, and a dashed outline with the same number marks its end spot.
+  function askSpots() {
+    $('hint-sheet').hidden = true;
+    if (screen !== 'play' || G.won || G.anim || G.busy || G.daily) return;
+    if (G.targets) { G.spotsShown = true; draw(); showHintText(); return; }
+    if (progress.points < SPOTS_COST) { showHintText(S.noPoints); return; }
+    const give = (dirs) => {
+      G.busy = false;
+      if (dirs === null) { showHintText(S.hintStuck); return; }
+      if (dirs === 'cap') { showHintText(S.hintRestart); return; }
+      let st = G.st;
+      for (const d of dirs) { const r = Engine.move(st, G.L, d); if (!r) break; st = r.state; }
+      const list = [];
+      for (const o of st.objects) {
+        const p = Engine.byId(G.st, o.id);
+        if (o.kind === 'player' || !p || (p.room === o.room && p.x === o.x && p.y === o.y)) continue;
+        list.push({ id: o.id, n: list.length + 1, room: o.room, x: o.x, y: o.y });
+      }
+      progress.points -= SPOTS_COST; saveProgress(); updatePoints();
+      G.targets = list; G.spotsShown = true;
+      Sfx.play('hint');
+      showHintText(list.length ? undefined : S.spotsNone);
+      draw();
+    };
+    const k = G.solAt.get(Engine.key(G.st));
+    const sol = G.def.sol || '';
+    if (k !== undefined) { give(sol.slice(k).split('').map((c) => 'URDL'.indexOf(c))); return; }
+    G.busy = true;
+    showHintText(S.hintThinking);
+    const token = G.search;
+    searchFrom(G.st, G.L, 150000, token, (r) => { if (token === G.search) give(r); else G.busy = false; });
   }
 
   function askHint() {
@@ -1123,7 +1210,15 @@
       progress.points -= SKIP_COST;
       const id = G.def.id;
       progress.resume = null;
+      const openBefore = I18N.WORLDS.map((_, w) => worldOpen(w));
       if (progress.skipped.indexOf(id) === -1) progress.skipped.push(id);
+      // skipping can open the next world too: say so at the top, and mark it on the map
+      const nw = I18N.WORLDS.findIndex((_, w) => !openBefore[w] && worldOpen(w));
+      if (nw >= 0) {
+        progress.newWorlds = (progress.newWorlds || []).concat(nw);
+        const W = I18N.WORLDS[nw];
+        note(t('worldOpened', { w: num(nw + 1) }), (W[progress.lang] || W.en)[0]);
+      }
       saveProgress();
       G.search++;
       if (G.index < LEVELS.length - 1 && isOpen(G.index + 1)) startLevel(G.index + 1); else show('levels');
@@ -1187,6 +1282,7 @@
   $('world-back').addEventListener('click', () => show('levels'));
   $('hint-idea').addEventListener('click', askIdea);
   $('hint-moves').addEventListener('click', askHint);
+  $('hint-spots').addEventListener('click', askSpots);
   $('hint-close').addEventListener('click', () => { $('hint-sheet').hidden = true; });
   $('set-vibrate').addEventListener('click', () => {
     progress.vibrate = !progress.vibrate; saveProgress(); renderSettings(); haptic('goal');
@@ -1198,9 +1294,18 @@
   $('restart').addEventListener('click', restart);
   $('hint-btn').addEventListener('click', openHints);
   $('skip-btn').addEventListener('click', askSkip);
+  // after world 1's fifth level the next one is an optional challenge: "next" goes on to world 2 instead
+  const nextIndex = () => {
+    const i = G.index + 1;
+    if (LEVELS[G.index].w === 0 && i < LEVELS.length && isChallenge(i)) {
+      const j = LEVELS.findIndex((l) => l.w === 1);
+      if (j >= 0 && isOpen(j) && !passed(j)) return j;
+    }
+    return i;
+  };
   $('win-next').addEventListener('click', () => {
     if (G.daily || G.custom) show('main');
-    else if (G.index < LEVELS.length - 1 && isOpen(G.index + 1)) startLevel(G.index + 1);
+    else if (G.index < LEVELS.length - 1 && isOpen(nextIndex())) startLevel(nextIndex());
     else { show('levels'); if (G.index < LEVELS.length - 1 && paidLock(LEVELS[G.index + 1].w)) openPaywall(); }
   });
   $('win-again').addEventListener('click', () => (G.custom ? startLevel(-1, G.def) : startLevel(G.daily ? 'daily' : G.index)));
